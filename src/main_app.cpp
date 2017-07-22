@@ -5,6 +5,8 @@
 #include "window/windowGLUT.h"
 #include "utils/logger.h"
 
+#include "recource_manager/xml_parser.h"
+
 #include <unistd.h>
 #include <iostream>
 
