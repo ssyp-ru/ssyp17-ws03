@@ -23,8 +23,8 @@ public:
         re::draw_rectangle(x, 50, 50, 50, re::RED);
         re::draw_rectangle(200, 200, 50, 50, re::RED);
         re::draw_circle(100, 100, 50, re::GREEN);
-
         re::draw_image( 0, 0, imgptr );
+        re::draw_line( x, 50, 200, 200, re::BLUE );
     }
 
     void on_key_pressed(re::Key key){

@@ -20,7 +20,7 @@ public:
 
     std::shared_ptr<Image> get_subimage(int x, int y, int size_x, int size_y);
 
-    void preapreForGL();
+    int preapreForGL();
 
     Color get_pix_color(int x, int y);
     void set_pix_color(int x, int y, Color c);
@@ -29,6 +29,7 @@ public:
 private:
     unsigned char* image_buffer;
     bool gl;
+    uint glid;
 };
 typedef std::shared_ptr<Image> ImagePtr;
 

@@ -14,6 +14,7 @@ void draw_image(int x0, int y0, ImagePtr im);
 void set_fps(uint fps);
 void translate(int x, int y);
 void scale(float x, float y);
+void viewat(int x, int y); 
 void rotate(float angle);
 
 }
