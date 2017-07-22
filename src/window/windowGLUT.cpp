@@ -1,4 +1,8 @@
 #include "windowGLUT.h"
+#include "RealEngine/keyboard.h"
+#include "RealEngine/base_app.h"
+#include "../main_app.h"
+
 
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -21,10 +25,48 @@ void glutCallbackReshape( int w, int h )
     glOrtho(-w/2.0,w/2.0,-h/2.0,h/2.0,-1.0,1.0);
 }
 
+void glutCallbackKeyDown( unsigned char c, int a, int b )
+{
+    std::cout << c << '\n';
+    globalWindow->appPtr->on_key_pressed( (re::Key)c );
+}
+
+void glutCallbackKeyUp( unsigned char c, int a, int b )
+{
+    globalWindow->appPtr->on_key_released( (re::Key)c );
+}
+
+void glutCallbackMouseMove(int button,int state,int x, int y)
+{
+    GLint viewport[4];
+    GLdouble mvmatrix[16], projmatrix[16];
+
+    GLdouble wx,wy,wz;
+
+    glGetIntegerv(GL_VIEWPORT,viewport);
+    glGetDoublev(GL_MODELVIEW_MATRIX,mvmatrix);
+    glGetDoublev(GL_PROJECTION_MATRIX,projmatrix);
+
+            //viewport[3] - высоте окна в пикселях
+    //realy=viewport[3]-(GLint)y-1;
+    printf("Координаты в позиции курсора (%4d,%4d)\n",x,0);
+    //gluUnProject((GLdouble)x,(GLdouble)0,0.0,mvmatrix,projmatrix,viewport,&wx,&wy,&wz);
+}
+
+void glutCallbackIDLE()
+{
+    static bool init = false;
+    if(!init)
+        base_app_init(globalWindow->BaseApp, globalWindow );
+    base_app_tick( globalWindow->BaseApp );
+}
+
 namespace re
 {
-    WindowGLUT::WindowGLUT( uint w, uint h )
+    WindowGLUT::WindowGLUT( uint w, uint h, re::IBaseApp* baseApp )
     {
+        this->BaseApp = baseApp;
+
         this->w = w;
         this->h = h;
 
@@ -32,6 +74,9 @@ namespace re
 
         //OpenGL code
         int argumentCount = 0;
+
+        
+
         glutInit( &argumentCount, nullptr );
         glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
 
@@ -58,6 +103,10 @@ namespace re
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+
+        glutIdleFunc( glutCallbackIDLE );
+
+        glutMainLoop();
     }
 
     WindowGLUT::~WindowGLUT()
@@ -91,11 +140,12 @@ namespace re
     
     void WindowGLUT::draw_line(int x0, int y0, int x1, int y1, Color color)
     {
-        glColor3f( color.r / 255.0, color.g / 255.0, color.b / 255.0 );
-        
-        glBegin(GL_LINE);
-            glVertex2i(x0,y0);
-            glVertex2i(x1,y1);
+        glColor4f( color.r / 255.0, color.g / 255.0, color.b / 255.0, color.t / 255.0 );
+
+        glLineWidth(5.0);
+        glBegin(GL_LINES);
+            glVertex2i(x0,-y0);
+            glVertex2i(x1,-y1);
         glEnd();
     }
         
@@ -167,7 +217,10 @@ namespace re
     {}
 
     void WindowGLUT::register_event_handler(IBaseAppPtr e)
-    {}
+    {
+        appPtr = e;
+
+    }
 
     uint WindowGLUT::get_width()
     {

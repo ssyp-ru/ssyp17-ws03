@@ -1,7 +1,7 @@
 #include <RealEngine/base_app.h>
 #include <RealEngine/graphic.h>
 
-
+#include <iostream>
 
 class MainApp : public re::IBaseApp{
 public:
@@ -9,7 +9,9 @@ public:
 
     void setup() override {
         re::set_fps(60);
+        std::cout << "test 0\n";
         imgptr = std::make_shared<re::Image>( "test.png" );
+        std::cout << "test 1\n";
         x = 0;
     }
 
@@ -24,7 +26,7 @@ public:
         re::draw_rectangle(200, 200, 50, 50, re::RED);
         re::draw_circle(100, 100, 50, re::GREEN);
         re::draw_image( 0, 0, imgptr );
-        re::draw_line( x, 50, 200, 200, re::BLUE );
+        re::draw_line( x, 50, 200, 200, re::BLACK );
     }
 
     void on_key_pressed(re::Key key){
@@ -37,7 +39,6 @@ private:
 };
 
 int main(){
-    re::init_graphics(re::GraphicalBackend::OPENGL, 400, 400);
-    re::run_base_app(new MainApp());
+    re::runApp( 400, 400, new MainApp );
     return 0;
 }

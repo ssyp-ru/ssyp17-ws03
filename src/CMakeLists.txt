@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(real_engine)
 
-set(SOURCE_LIB  window/windowXCB.cpp
-                window/windowGLUT.cpp
+set(SOURCE_LIB  window/windowGLUT.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
                 utils/logger.cpp

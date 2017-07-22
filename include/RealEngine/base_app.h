@@ -1,6 +1,7 @@
 #pragma once
 
 #include "keyboard.h"
+#include "../src/window/window_interface.h"
 #include <memory>
 
 namespace re{
@@ -25,7 +26,6 @@ enum class GraphicalBackend{
     OPENGL
 };
 
-void init_graphics(GraphicalBackend backend_type, int window_width, int window_height);
-void run_base_app(IBaseApp* base_app_ptr);
+void runApp(int window_width, int window_height, IBaseApp* BaseApp);
 
 }

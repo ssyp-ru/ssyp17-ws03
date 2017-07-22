@@ -1,5 +1,6 @@
 #include "RealEngine/graphic.h"
 #include "../main_app.h"
+#include <iostream>
 
 namespace re{
 
@@ -24,6 +25,7 @@ void draw_image(int x0, int y0, ImagePtr im){
 }
 
 void set_fps(uint fps){
+    std::cout << "test -1\n";
     get_window()->set_fps(fps);
 }
 

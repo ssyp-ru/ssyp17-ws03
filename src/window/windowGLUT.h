@@ -10,7 +10,7 @@ namespace re
     {
         public: 
 
-        WindowGLUT( uint w, uint h );
+        WindowGLUT( uint w, uint h, IBaseApp *BaseApp );
         virtual ~WindowGLUT();
 
         virtual void background(Color color)                                override;
@@ -31,6 +31,9 @@ namespace re
         virtual uint get_fps() override ;
         virtual uint get_width() override ;
         virtual uint get_height() override ;
+
+        IBaseAppPtr appPtr;
+        IBaseApp* BaseApp;
 
         private:
 
