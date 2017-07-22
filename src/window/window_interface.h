@@ -24,7 +24,7 @@ public:
     virtual void run_events()               = 0;
     virtual void register_event_handler(IBaseAppPtr e) = 0;
     
-    virtual void set_fps(int fps_count)     = 0;
+    virtual void set_fps(uint fps_count)     = 0;
     virtual uint get_fps()                  = 0;
     virtual uint get_width()                = 0;
     virtual uint get_height()               = 0;

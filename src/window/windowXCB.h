@@ -18,7 +18,7 @@ class WindowXCB
     : public IWindow
 {
 public:
-    WindowXCB(int width, int height);
+    WindowXCB(uint width, uint height);
     virtual ~WindowXCB();
     
     // Render
@@ -35,7 +35,7 @@ public:
     virtual void display();
     virtual void run_events();
     virtual void register_event_handler(IBaseAppPtr e) override;
-    virtual void set_fps(int fps_count) override ;
+    virtual void set_fps(uint fps_count) override ;
     virtual uint get_fps() override ;
     virtual uint get_width() override ;
     virtual uint get_height() override ;
