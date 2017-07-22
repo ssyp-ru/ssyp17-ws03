@@ -1,0 +1,8 @@
+*.o
+*.d
+*.so
+.vscode/
+out/
+obj/
+build/
+plan.todo
