@@ -87,7 +87,7 @@ xcb_image_t *CreateTrueColorImage(xcb_connection_t *c, int width, int height){
     image32);
 }
 
-WindowXCB::WindowXCB(int w, int h)
+WindowXCB::WindowXCB(uint w, uint h)
     // : event_handler(nullptr)
 {
     width = w;
@@ -338,7 +338,7 @@ void WindowXCB::register_event_handler(IBaseAppPtr e){
     event_handler = e;
 }
 
-void WindowXCB::set_fps(int fps_count){
+void WindowXCB::set_fps(uint fps_count){
 
 }
 
