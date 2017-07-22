@@ -21,28 +21,6 @@ void glutCallbackReshape( int w, int h )
     glOrtho(-w/2.0,w/2.0,-h/2.0,h/2.0,-1.0,1.0);
 }
 
-#define checkImageWidth 128
-#define checkImageHeight 128
-
-GLubyte checkImage[checkImageHeight][checkImageWidth][4];
-
-void makeCheckImage()
-{
-   int i,j,c;
-
-   for (i=0;i<checkImageHeight;i++)
-   {
-      for (j=0;j<checkImageWidth;j++)
-      {
-         c=(((i&0x08)==0)^((j&0x8)==0))*255;
-         checkImage[i][j][0]=(GLubyte)c;
-         checkImage[i][j][1]=(GLubyte)c;
-         checkImage[i][j][2]=(GLubyte)c;
-         checkImage[i][j][3]=128;
-      }
-   }
-}
-
 namespace re
 {
     WindowGLUT::WindowGLUT( uint w, uint h )
@@ -63,7 +41,7 @@ namespace re
         glClearColor( 1, 1, 1, 1 );
 
         glEnable( GL_ALPHA );
-        glEnable(GL_BLEND);
+        glEnable( GL_BLEND );
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         glShadeModel(GL_FLAT);
 
@@ -73,7 +51,13 @@ namespace re
         glOrtho(0,w,-(int)h,0,-1,1);
 
         glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-        makeCheckImage();
+
+        glEnable(GL_DEPTH_TEST);
+
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     }
 
     WindowGLUT::~WindowGLUT()
@@ -106,7 +90,14 @@ namespace re
     }
     
     void WindowGLUT::draw_line(int x0, int y0, int x1, int y1, Color color)
-    {}
+    {
+        glColor3f( color.r / 255.0, color.g / 255.0, color.b / 255.0 );
+        
+        glBegin(GL_LINE);
+            glVertex2i(x0,y0);
+            glVertex2i(x1,y1);
+        glEnd();
+    }
         
     void WindowGLUT::draw_circle(int x0, int y0, int r, Color color)
     {
@@ -117,17 +108,47 @@ namespace re
     
     void WindowGLUT::draw_image(int x0, int y0, ImagePtr im)
     {
-        im->preapreForGL();
-        glPushMatrix();
-        glRasterPos2i( x0, -y0 - (im->h) );
-        glDrawPixels( im->w, im->h, GL_RGBA, GL_UNSIGNED_BYTE, im->get_buffer() );
-        glPopMatrix();
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
+        glBindTexture(GL_TEXTURE_2D,im->preapreForGL());
+
+        glBegin(GL_QUADS);
+            glTexCoord2f(0.0,0.0); glVertex3f(x0,-y0,0.0);
+            glTexCoord2f(0.0,1.0); glVertex3f(x0,-y0-im->h,0.0);
+            glTexCoord2f(1.0,1.0); glVertex3f(x0+im->w,-y0-im->h,0.0);
+            glTexCoord2f(1.0,0.0); glVertex3f(x0+im->w,-y0,0.0);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
+        /*glPushMatrix();
+
+        glEnable(GL_TEXTURE_2D);
+
+        GLuint tex = im->preapreForGL();
+
+        //glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
+        glBindTexture(GL_TEXTURE_2D,tex);
+
+        glBegin(GL_QUADS);
+            glTexCoord2i(0,0); glVertex2i(0,0);
+            glTexCoord2i(0,1); glVertex2i(0,100);
+            glTexCoord2i(1,1); glVertex2i(100,100);
+            glTexCoord2i(1,0); glVertex2i(100,0);
+        glEnd();
         
+        glDisable(GL_TEXTURE_2D);
+
+        glPopMatrix();*/
     }
         
     void WindowGLUT::translate(int x, int y) 
     {
-        glOrtho(0,w + x,(-(int)h) - y,0,-1,1);
+        glTranslatef( x, y, 0 );
+    }
+
+    void WindowGLUT::viewat(int x, int y) 
+    {
+        glViewport(-x,y, w, h);
     }
     
     void WindowGLUT::scale(float x, float y) 

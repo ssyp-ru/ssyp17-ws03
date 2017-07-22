@@ -31,6 +31,11 @@ void translate(int x, int y){
     get_window()->translate(x, y);
 }
 
+void viewat(int x, int y)
+{
+    get_window()->viewat( x, y );
+}
+
 void scale(float x, float y){
 
 }

@@ -19,6 +19,7 @@ public:
     virtual void translate(int x, int y)                                    = 0;
     virtual void scale(float x, float y)                                    = 0;
     virtual void rotate(float angle)                                        = 0;
+    virtual void viewat(int x, int y) {}
 
     virtual void display()                  = 0;
     virtual void run_events()               = 0;

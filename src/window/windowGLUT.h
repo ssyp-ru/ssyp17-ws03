@@ -22,6 +22,7 @@ namespace re
         virtual void translate(int x, int y) override;
         virtual void scale(float x, float y) override;
         virtual void rotate(float angle) override;
+        virtual void viewat(int x, int y) override; 
 
         virtual void display();
         virtual void run_events();
