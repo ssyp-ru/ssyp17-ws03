@@ -45,16 +45,30 @@ void init_graphics(GraphicalBackend backend_type_, int window_width, int window_
 void run_base_app(IBaseApp* base_app_ptr){
     base_app.reset(base_app_ptr);
 
-    switch(backend_type){
+    base_app->setup();
+    window_backend->register_event_handler(base_app);
+
+    while(1){
+        window_backend->run_events();
+
+        base_app->update();
+        base_app->display();
+
+        window_backend->display();
+    }
+    /*switch(backend_type){
         case GraphicalBackend::XCB : {
             run_xcb_backend();
             break;
+
+        case GraphicalBackend::OPENGL :
+            
         }
-    }
+    }*/
     
 }
 
-
+/*
 void run_xcb_backend(){
     base_app->setup();
     window_backend->register_event_handler(base_app);
@@ -68,5 +82,5 @@ void run_xcb_backend(){
         window_backend->display();
     }
 }
-
+*/
 }
