@@ -5,6 +5,8 @@
 #include "window/windowGLUT.h"
 #include "utils/logger.h"
 
+#include "recource_manager/xml_parser.h"
+
 #include <unistd.h>
 #include <iostream>
 
@@ -29,18 +31,22 @@ void base_app_init(IBaseApp* base_app_ptr, IWindowPtr window_ptr)
     window_backend = window_ptr;
 
     base_app.reset(base_app_ptr);
-    
+
     base_app->setup();
 }
 
+<<<<<<< HEAD
 void base_app_tick(IBaseApp* base_app_ptr)
 {
     window_backend->run_events();
+
+    log.track();
 
     base_app->update();
     base_app->display();
 
     window_backend->display();
+    log.msg("frame took " + std::to_string(log.track_elapsed()) + " ns.");
 }
 
 }

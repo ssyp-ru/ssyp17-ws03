@@ -6,6 +6,7 @@ set(SOURCE_LIB  window/windowGLUT.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
                 utils/logger.cpp
+                recource_manager/xml_parser.cpp
                 main_app.cpp
 )
 
