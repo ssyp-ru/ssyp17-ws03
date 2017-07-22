@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(CMAKE_CXX_COMPILER g++-7)
 
 project(main)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_files")
