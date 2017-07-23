@@ -14,16 +14,6 @@
 namespace re
 {
 
-uint OpenGL::h;
-uint OpenGL::w;
-
-std::string OpenGL::windowName;
-
-IBaseAppPtr OpenGL::baseApp;
-
-void (*OpenGL::callbackPostInit)();
-void (*OpenGL::callbackIdle)();
-
 void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
 {
     w = width;
@@ -62,9 +52,10 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
     glutIdleFunc( OpenGL::callbackIdle );
     glutKeyboardFunc( OpenGL::keyboardDown );
     glutKeyboardUpFunc( OpenGL::keyboardUp );
-    glutMouseFunc( OpenGL::mouseMove );
+    glutMouseFunc( OpenGL::mousePress );
+    glutMotionFunc( OpenGL::mouseMove );
 
-    OpenGL::callbackPostInit();
+    callbackPostInit();
 }
 
 void OpenGL::run()
@@ -152,16 +143,20 @@ void OpenGL::draw()
 
 void OpenGL::keyboardDown( unsigned char c, int a, int b )
 {
-    baseApp->on_key_pressed( (Key)c );
-    std::cout << c;
+    GL.baseApp->on_key_pressed( (Key)c );
 }
 
 void OpenGL::keyboardUp( unsigned char c, int a, int b )
 {
-    baseApp->on_key_released( (Key)c );
+    GL.baseApp->on_key_released( (Key)c );
 }
 
-void OpenGL::mouseMove( int button, int state, int x, int y )
+void OpenGL::mouseMove( int x, int y )
+{
+    OpenGL::mousePress( 0, 0, x, y );
+}
+
+void OpenGL::mousePress( int button, int state, int x, int y )
 {
     GLint viewport[4];
     GLdouble mvmatrix[16], projmatrix[16];
@@ -176,10 +171,9 @@ void OpenGL::mouseMove( int button, int state, int x, int y )
     realy=viewport[3]-(GLint)y-1;
 
     gluUnProject((GLdouble)x,(GLdouble)realy,0.0,mvmatrix,projmatrix,viewport,&wx,&wy,&wz);
-    printf("Объектные координаты при z=0 (%f,%f,%f)\n",wx,wy,wz); 
 
-    baseApp->on_mouse_move( wx, wy );
-    if(state){ baseApp->on_button_pressed( button ); }
+    GL.baseApp->on_mouse_move( wx, -wy );
+    if(state){ GL.baseApp->on_button_pressed( button ); }
 }
 
 uint OpenGL::getWidth()

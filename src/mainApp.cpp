@@ -13,12 +13,12 @@ IBaseAppPtr MainApp::baseApp;
 void runApp(int window_width, int window_height, IBaseAppPtr BaseApp){
     MainApp::baseApp = BaseApp;
 
-    OpenGL::callbackPostInit = MainApp::init;
-    OpenGL::callbackIdle = MainApp::tick;
+    GL.callbackPostInit = MainApp::init;
+    GL.callbackIdle = MainApp::tick;
 
-    OpenGL::init( window_width, window_height, BaseApp );
+    GL.init( window_width, window_height, BaseApp );
     
-    OpenGL::run();
+    GL.run();
 }
 
 void MainApp::init()
@@ -31,7 +31,7 @@ void MainApp::tick()
     baseApp->update();
     baseApp->display();
 
-    OpenGL::draw();
+    GL.draw();
 }
 
 }
