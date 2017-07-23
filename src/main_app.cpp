@@ -46,10 +46,6 @@ void init_graphics(GraphicalBackend backend_type_, int window_width, int window_
 
 
 void run_base_app(IBaseApp* base_app_ptr){
-    XmlElem xml = parseXmlFile("example.xml");
-    xml.child[0]->child = xml.child[0]->getChildren("object");
-    printXmlElem(xml);
-    /*
     base_app.reset(base_app_ptr);
     base_app->setup();
     window_backend->register_event_handler(base_app);
@@ -64,7 +60,6 @@ void run_base_app(IBaseApp* base_app_ptr){
         window_backend->display();
         log.msg("frame took " + std::to_string(log.track_elapsed()) + " ns.");
     }
-    //*/
 }
 
 }
