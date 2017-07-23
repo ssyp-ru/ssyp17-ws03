@@ -24,12 +24,20 @@ Image::Image(const std::string filename){
     if (image_buffer == nullptr){
         std::cerr << "Image::Image(const std::string filename): fail to load image " << filename << std::endl;
     }
-    gl = false;
+    
+    glGenTextures( 1, &glid );
+    glBindTexture( GL_TEXTURE_2D, glid );
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,w,h,0,GL_RGBA,GL_UNSIGNED_BYTE,image_buffer);
 }
 
 Image::Image(const Image& im){
     std::cerr << "incomplete copy constructor of image\n";
-    gl = false;
 }
 
 Image::Image(int width, int height, int c){
@@ -37,7 +45,16 @@ Image::Image(int width, int height, int c){
     w = width;
     h = height;
     comp = c;
-    gl = false;
+    
+    glGenTextures( 1, &glid );
+    glBindTexture( GL_TEXTURE_2D, glid );
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,w,h,0,GL_RGBA,GL_UNSIGNED_BYTE,image_buffer);
 }
 
 Image::~Image(){
@@ -74,24 +91,8 @@ void Image::set_pix_color(int x, int y, Color c){
         image_buffer[(((w * comp) * y) + x * comp) + 3] = c.t;
 }
 
-int Image::preapreForGL()
+int Image::getTex()
 {
-    if(gl)
-    {
-        return this->glid;
-    }
-    gl = true;
-
-    glGenTextures( 1, &glid );
-    glBindTexture( GL_TEXTURE_2D, glid );
-
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,w,h,0,GL_RGBA,GL_UNSIGNED_BYTE,image_buffer);
-
     return glid;
 }
 

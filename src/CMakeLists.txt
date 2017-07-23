@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 2.8)
 
 project(real_engine)
 
-set(SOURCE_LIB  window/windowGLUT.cpp
+set(SOURCE_LIB  opengl/opengl.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
                 utils/logger.cpp
                 recource_manager/xml_parser.cpp
-                main_app.cpp
+                mainApp.cpp
 )
 
 set_source_files_properties(graphics/Image.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)

@@ -1,9 +1,7 @@
 #pragma once
 
 #include "keyboard.h"
-#include "../src/window/window_interface.h"
 #include <memory>
-
 namespace re{
 
 class IBaseApp{
@@ -21,11 +19,6 @@ public:
 };
 typedef std::shared_ptr<IBaseApp> IBaseAppPtr;
 
-enum class GraphicalBackend{
-    XCB,
-    OPENGL
-};
-
-void runApp(int window_width, int window_height, IBaseApp* BaseApp);
+void runApp(int window_width, int window_height, IBaseAppPtr BaseApp);
 
 }

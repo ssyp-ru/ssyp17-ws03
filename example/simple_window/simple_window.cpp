@@ -1,4 +1,4 @@
-#include <RealEngine/base_app.h>
+#include <RealEngine/baseApp.h>
 #include <RealEngine/graphic.h>
 
 #include <iostream>
@@ -8,10 +8,8 @@ public:
     re::ImagePtr imgptr;
 
     void setup() override {
-        re::set_fps(60);
-        std::cout << "test 0\n";
+        re::graphic::set_fps(60);
         imgptr = std::make_shared<re::Image>( "test.png" );
-        std::cout << "test 1\n";
         x = 0;
     }
 
@@ -21,12 +19,11 @@ public:
     }
 
     void display() override {
-        re::background(re::WHITE);
-        re::draw_rectangle(x, 50, 50, 50, re::RED);
-        re::draw_rectangle(200, 200, 50, 50, re::RED);
-        re::draw_circle(100, 100, 50, re::GREEN);
-        re::draw_image( 0, 0, imgptr );
-        re::draw_line( x, 50, 200, 200, re::BLACK );
+        re::graphic::background(re::WHITE);
+        re::graphic::draw_rectangle(x, 50, 50, 50, re::RED);
+        re::graphic::draw_rectangle(200, 200, 50, 50, re::RED);
+        re::graphic::draw_image( 0, 0, imgptr );
+        re::graphic::draw_line( x, 50, 200, 200, re::BLACK );
     }
 
     void on_key_pressed(re::Key key){
@@ -39,6 +36,6 @@ private:
 };
 
 int main(){
-    re::runApp( 400, 400, new MainApp );
+    re::runApp( 400, 400, std::make_shared<MainApp>() );
     return 0;
 }

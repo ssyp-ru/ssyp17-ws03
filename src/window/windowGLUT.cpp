@@ -75,8 +75,6 @@ namespace re
         //OpenGL code
         int argumentCount = 0;
 
-        
-
         glutInit( &argumentCount, nullptr );
         glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
 

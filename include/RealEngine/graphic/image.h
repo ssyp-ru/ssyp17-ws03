@@ -20,7 +20,7 @@ public:
 
     std::shared_ptr<Image> get_subimage(int x, int y, int size_x, int size_y);
 
-    int preapreForGL();
+    int getTex();
 
     Color get_pix_color(int x, int y);
     void set_pix_color(int x, int y, Color c);
