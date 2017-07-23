@@ -8,6 +8,8 @@ set(SOURCE_LIB  window/windowXCB.cpp
                 graphics/graphic.cpp
                 utils/logger.cpp
                 math/math.cpp
+                utils/stop_watch.cpp
+                recource_manager/xml_parser.cpp
                 main_app.cpp
 )
 
