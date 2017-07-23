@@ -6,6 +6,7 @@ set(SOURCE_LIB  window/windowXCB.cpp
                 window/windowGLUT.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
+                utils/logger.cpp
                 main_app.cpp
 )
 

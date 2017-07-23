@@ -3,6 +3,7 @@
 
 #include "window/windowXCB.h"
 #include "window/windowGLUT.h"
+#include "utils/logger.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -70,6 +71,8 @@ void run_base_app(IBaseApp* base_app_ptr){
 
 /*
 void run_xcb_backend(){
+    Log log;
+    log.l1() << "foo" << '\n';
     base_app->setup();
     window_backend->register_event_handler(base_app);
 
@@ -82,5 +85,5 @@ void run_xcb_backend(){
         window_backend->display();
     }
 }
-*/
+// */
 }
