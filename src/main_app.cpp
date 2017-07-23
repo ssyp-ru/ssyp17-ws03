@@ -46,46 +46,22 @@ void init_graphics(GraphicalBackend backend_type_, int window_width, int window_
 
 
 void run_base_app(IBaseApp* base_app_ptr){
+    Log log("l1.txt");
+    log.msg("Hello world!");
     base_app.reset(base_app_ptr);
-
     base_app->setup();
     window_backend->register_event_handler(base_app);
 
     while(1){
+        log.track();
         window_backend->run_events();
 
         base_app->update();
         base_app->display();
 
         window_backend->display();
-    }
-    /*switch(backend_type){
-        case GraphicalBackend::XCB : {
-            run_xcb_backend();
-            break;
-
-        case GraphicalBackend::OPENGL :
-            
-        }
-    }*/
-    
-}
-
-/*
-void run_xcb_backend(){
-    Log log;
-    log.l1() << "foo" << '\n';
-    base_app->setup();
-    window_backend->register_event_handler(base_app);
-
-    while(1){
-        window_backend->run_events();
-
-        base_app->update();
-        base_app->display();
-
-        window_backend->display();
+        log.msg("frame took " + std::to_string(log.track_elapsed()) + " ns.");
     }
 }
-// */
+
 }

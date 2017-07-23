@@ -5,6 +5,7 @@
 
 class MainApp : public re::IBaseApp{
 public:
+
     void setup() override {
         re::set_fps(60);
         x = 0;
@@ -19,7 +20,6 @@ public:
         re::background(re::WHITE);
         re::draw_rectangle(x, 50, 50, 50, re::RED);
         re::draw_rectangle(200, 200, 50, 50, re::RED);
-        re::draw_circle(100, 100, 50, re::GREEN);
     }
 
     void on_key_pressed(re::Key key){
