@@ -7,6 +7,9 @@
 
 #include <iostream>
 
+void swap( unsigned char &a, unsigned char &b )
+{a^=b^=a^=b;}
+
 namespace re{
 
 Image::Image(const std::string filename){
@@ -14,10 +17,12 @@ Image::Image(const std::string filename){
     if (image_buffer == nullptr){
         std::cerr << "Image::Image(const std::string filename): fail to load image " << filename << std::endl;
     }
+    gl = false;
 }
 
 Image::Image(const Image& im){
     std::cerr << "incomplete copy constructor of image\n";
+    gl = false;
 }
 
 Image::Image(int width, int height, int c){
@@ -25,6 +30,7 @@ Image::Image(int width, int height, int c){
     w = width;
     h = height;
     comp = c;
+    gl = false;
 }
 
 Image::~Image(){
@@ -59,6 +65,26 @@ void Image::set_pix_color(int x, int y, Color c){
     image_buffer[(((w * comp) * y) + x * comp) + 2] = c.b;
     if (comp > 3)
         image_buffer[(((w * comp) * y) + x * comp) + 3] = c.t;
+}
+
+void Image::preapreForGL()
+{
+    if(gl)
+    {
+        return;
+    }
+    gl = true;
+    for( int i = 0; i < h/2; i++ )
+    {
+        for( int j = 0; j < w; j++ )
+        {
+            swap( image_buffer[ ( i * w * comp ) + ( j * comp ) ], image_buffer[ ( (h-i) * w * comp ) + ( j * comp ) ] );
+            swap( image_buffer[ ( i * w * comp ) + ( j * comp ) + 1 ], image_buffer[ ( (h-i) * w * comp ) + ( j * comp ) + 1 ] );
+            swap( image_buffer[ ( i * w * comp ) + ( j * comp ) + 2 ], image_buffer[ ( (h-i) * w * comp ) + ( j * comp ) + 2 ] );
+            if( comp > 3 )
+                swap( image_buffer[ ( i * w * comp ) + ( j * comp ) + 3 ], image_buffer[ ( (h-i) * w * comp ) + ( j * comp ) + 3 ] );
+        }
+    }
 }
 
 

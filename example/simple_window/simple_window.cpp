@@ -5,9 +5,11 @@
 
 class MainApp : public re::IBaseApp{
 public:
+    re::ImagePtr imgptr;
 
     void setup() override {
         re::set_fps(60);
+        imgptr = std::make_shared<re::Image>( "test.png" );
         x = 0;
     }
 
@@ -20,6 +22,9 @@ public:
         re::background(re::WHITE);
         re::draw_rectangle(x, 50, 50, 50, re::RED);
         re::draw_rectangle(200, 200, 50, 50, re::RED);
+        re::draw_circle(100, 100, 50, re::GREEN);
+
+        re::draw_image( 0, 0, imgptr );
     }
 
     void on_key_pressed(re::Key key){
@@ -32,7 +37,7 @@ private:
 };
 
 int main(){
-    re::init_graphics(re::GraphicalBackend::XCB, 400, 400);
+    re::init_graphics(re::GraphicalBackend::OPENGL, 400, 400);
     re::run_base_app(new MainApp());
     return 0;
 }
