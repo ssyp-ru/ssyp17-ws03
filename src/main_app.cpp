@@ -87,7 +87,6 @@ void run_xcb_backend(){
 
         window_backend->display();
     }
-    //*/
 }
-*/
+//*/
 }
