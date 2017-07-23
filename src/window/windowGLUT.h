@@ -35,5 +35,7 @@ namespace re
 
         uint fps;
         uint w, h;
+
+        uint startList;
     };
 }
