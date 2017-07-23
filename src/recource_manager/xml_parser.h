@@ -15,9 +15,16 @@ namespace re {
         std::string name;
         std::vector<std::string> fieldName;
         std::vector<std::string> fieldData;
-        std::vector<XmlElem> child;
+        std::vector<XmlElem*> child;
         std::vector<std::string> data;
+        XmlElem* parent;
+        
+        XmlElem();
+
+        // Asquires every XmlElem from child with given name
+        std::vector<XmlElem*> getChildren(std::string);
     };
 
-    std::vector<XmlElem> parseXmlFile(std::string filename);
+    XmlElem parseXmlFile(std::string filename);
+    void printXmlElem(XmlElem);
 }
