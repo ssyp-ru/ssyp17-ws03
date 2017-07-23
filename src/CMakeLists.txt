@@ -7,6 +7,7 @@ set(SOURCE_LIB  window/windowXCB.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
                 utils/logger.cpp
+                math/math.cpp
                 main_app.cpp
 )
 
