@@ -1,6 +1,11 @@
 #include "RealEngine/base_app.h"
 #include "main_app.h"
+
 #include "window/windowXCB.h"
+#include "window/windowGLUT.h"
+#include "utils/logger.h"
+
+#include "recource_manager/xml_parser.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -29,6 +34,10 @@ void init_graphics(GraphicalBackend backend_type_, int window_width, int window_
 
         // make same case for openGL
 
+        case GraphicalBackend::OPENGL :
+            window_backend = std::make_shared<WindowGLUT>( window_width, window_height );
+            break;
+
         default:
             std::cerr << "init_graphics: Unknown graphical backend type. Abort\n";
             exit(1);
@@ -37,29 +46,20 @@ void init_graphics(GraphicalBackend backend_type_, int window_width, int window_
 
 
 void run_base_app(IBaseApp* base_app_ptr){
+    Log log("logs/base_app.txt");
     base_app.reset(base_app_ptr);
-
-    switch(backend_type){
-        case GraphicalBackend::XCB : {
-            run_xcb_backend();
-            break;
-        }
-    }
-    
-}
-
-
-void run_xcb_backend(){
     base_app->setup();
     window_backend->register_event_handler(base_app);
 
     while(1){
+        StopWatch frameTime;
         window_backend->run_events();
 
         base_app->update();
         base_app->display();
 
         window_backend->display();
+        log.msg("Frame took "+std::to_string(frameTime.stop_watch()/1000000)+" ms.");
     }
 }
 

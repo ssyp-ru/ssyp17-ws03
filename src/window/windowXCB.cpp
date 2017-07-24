@@ -87,7 +87,7 @@ xcb_image_t *CreateTrueColorImage(xcb_connection_t *c, int width, int height){
     image32);
 }
 
-WindowXCB::WindowXCB(int w, int h)
+WindowXCB::WindowXCB(uint w, uint h)
     // : event_handler(nullptr)
 {
     width = w;
@@ -304,12 +304,15 @@ void WindowXCB::draw_rectangle(int x0, int y0, int w, int h, Color color){
 }
 
 void WindowXCB::draw_circle(int x0, int y0, int r, Color color){
-    for (int i = y0; i < y0 + r*2; i++){
-        for (int j = x0; j < x0 + r*2; j++){
+    for (int i = y0 - r; i < y0 + r; i++){
+        for (int j = x0 - r; j < x0 + r; j++){
             if (i < 0 || i >= height || j < 0 || j >= width){ 
                 continue;
             }
             // TODO make it circle...
+            if ((i - y0)*(i - y0) + (j - x0)*(j - x0) > r*r){
+                continue;
+            }
             xcb_image_put_pixel(back_image, j, i, color.to_int());
         }
     }
@@ -338,7 +341,7 @@ void WindowXCB::register_event_handler(IBaseAppPtr e){
     event_handler = e;
 }
 
-void WindowXCB::set_fps(int fps_count){
+void WindowXCB::set_fps(uint fps_count){
 
 }
 

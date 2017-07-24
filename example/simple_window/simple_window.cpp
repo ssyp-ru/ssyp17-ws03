@@ -9,7 +9,8 @@
 class MainApp : public re::IBaseApp{
 public:
     MainApp() : testanimCustom(0, true){}
-    void setup(){
+
+    void setup() override {
         re::set_fps(60);
         x = 0;
         y = 0;

@@ -3,9 +3,13 @@ cmake_minimum_required(VERSION 2.8)
 project(real_engine)
 
 set(SOURCE_LIB  window/windowXCB.cpp
+                window/windowGLUT.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
-		graphics/animation.cpp
+                graphics/animation.cpp
+                utils/logger.cpp
+                utils/stop_watch.cpp
+                recource_manager/xml_parser.cpp
                 main_app.cpp
 )
 
