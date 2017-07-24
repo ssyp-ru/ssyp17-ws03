@@ -5,6 +5,7 @@ project(real_engine)
 set(SOURCE_LIB  window/windowXCB.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
+		graphics/animation.cpp
                 main_app.cpp
 )
 
