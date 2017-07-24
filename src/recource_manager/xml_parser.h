@@ -4,15 +4,9 @@
 
 namespace re {
     struct XmlElem {
-        /*
-            <name fieldName=fieldData>
-                <child>
-                data
-                <child>
-                data
-            </name>
-        */
-        std::string name;
+        // Logs are written to logs/xml_parser.txt
+
+        std::vector<std::string> tag; // tag[0] == name, probably
         std::vector<std::string> fieldName;
         std::vector<std::string> fieldData;
         std::vector<XmlElem*> child;
@@ -21,10 +15,26 @@ namespace re {
         
         XmlElem();
 
+        // returns if elem has tag
+        bool hasTag(std::string);
+
         // Asquires every XmlElem from child with given name
         std::vector<XmlElem*> getChildren(std::string);
+        void print(std::string outputFile);
     };
 
-    XmlElem parseXmlFile(std::string filename);
+    // return XmlElem with name of file and with every elements found inside
+    XmlElem parseXml(std::string inputFile);
+    /* The struct example that parser can read with  
+        <name fieldName = fieldData
+                fieldName = fieldData>
+            < child fieldName=fieldData >
+            data
+            <child  fieldName = fieldData>
+            data
+        </name>
+    */
+
     void printXmlElem(XmlElem);
+
 }
