@@ -25,14 +25,14 @@ public:
     void update() override {
       //  x += 0;
         y += 5;
-        x = x + customAnimSpeed*30;
+        if (isMovingForward) x += testanimCustom.getSpeed()*10;
+        else x -= testanimCustom.getSpeed()*10;
         //customAnimSpeed += 0.05;
         //if (customAnimSpeed > 3) customAnimSpeed = 0;
-        if (y > 600) y = 0;
-        if (x > 600) x = 0;
-        
+        if (y > 380) y = 0;
+        if (x > 380) x = -100;
+        if (x < -100) x = 380;
     }
-
     void display() override {
         re::background(re::WHITE);
         /*re::draw_rectangle(x, 50, 50, 50, re::RED);
@@ -58,6 +58,7 @@ public:
             exit(0);
         }
         if (key == re::Key::Right){
+            isMovingForward = true;
             testanimCustom.setSpeed(0.8);
        //     x+= 10;
         //    if(x == 350){ 
@@ -65,11 +66,12 @@ public:
             //}
         }
         if (key == re::Key::Left){
+            isMovingForward = false;
             testanimCustom.setSpeed(0.8);
-            x-=10;
+            /*x-=10;
             if(x == -100){
                 x = 350;
-            }
+            }*/
         }
     }
 private:
@@ -78,6 +80,7 @@ private:
     float customAnimSpeed;
     re::Animation testanimCustom;
     const int keyDelay = 5;
+    bool isMovingForward = true;
 };
 
 int main(){
