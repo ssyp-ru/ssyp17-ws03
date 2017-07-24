@@ -6,7 +6,7 @@ namespace re {
     class StopWatch {
         std::chrono::high_resolution_clock::time_point start_time;
     public:
-        // initializes 
+        // initializes start_time with 'now'
         StopWatch();
 
         // returns time elapsed in nanoseconds since 'this' construction
