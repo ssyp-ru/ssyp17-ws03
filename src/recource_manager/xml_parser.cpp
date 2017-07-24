@@ -1,5 +1,6 @@
 #include "xml_parser.h"
 #include "../utils/logger.h"
+#include "../utils/stop_watch.h"
 
 re::Log log("logs/xmlLog.txt");
 
@@ -10,13 +11,14 @@ re::XmlElem::XmlElem()
 
 std::vector<re::XmlElem*> re::XmlElem::getChildren(std::string name) {
     std::vector<re::XmlElem*> arr;
-    log.track();
+    StopWatch stopwatch;
     for(auto it = child.begin(); it != child.end(); it++) {
         if((*it)->name == name) {
             arr.push_back(*it);
         }
     }
-    log.msg(".getChildren on \"" + this->name + "\" took " + std::to_string(log.track_elapsed()) + " ns.");
+    log.msg(".getChildren on \""+this->name+"\" took "
+        +std::to_string(stopwatch.stop_watch())+" ns.");
     return arr;
 }
 
@@ -44,9 +46,9 @@ void printXmlElemRec(re::XmlElem* elem, re::Log* out, int depth) {
 
 void re::printXmlElem(XmlElem elem) {
     Log* outlog = new Log("outXml.txt");
-    log.track();
+    StopWatch stopwatch;
     printXmlElemRec(&elem, outlog, 0);
-    log.msg("Printing \"" + elem.name + "\" took " + std::to_string(log.track_elapsed()) + " ns.");
+    log.msg("Printing \""+elem.name+"\" took "+std::to_string(stopwatch.stop_watch()/1000000)+" ms.");
     delete outlog;
 }
 
@@ -56,7 +58,7 @@ enum READ_MODE {
 
 re::XmlElem re::parseXmlFile(std::string filename) {
     std::ifstream in(filename);
-    log.track();
+    StopWatch stopwatch;
     int lineN = 0;
     std::string buffer = "";
     READ_MODE rm = READ_NONE;
@@ -69,7 +71,7 @@ re::XmlElem re::parseXmlFile(std::string filename) {
             lineN++;
             std::string line;
             getline(in, line);
-            log.msg("Read: \"" + line + "\"");
+            log.msg("Read: \""+line+"\"");
             bool hasMetEqualSign = false;
             for(int i = 0; i < line.length(); i++) {
                 switch (rm) {
@@ -114,7 +116,8 @@ re::XmlElem re::parseXmlFile(std::string filename) {
                             case '>':
                                 if(buffer.length() > 0) {
                                     if(curr->name.length() > 0) {
-                                        log.msg("On (" + std::to_string(lineN) + ", " + std::to_string(i) + "): renamed XmlElem.");
+                                        log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
+                                            +"): renamed XmlElem.");
                                     }
                                     curr->name = buffer;
                                     buffer = "";
@@ -142,7 +145,8 @@ re::XmlElem re::parseXmlFile(std::string filename) {
                                     curr->fieldName.push_back(buffer);
                                     buffer = "";
                                 } else {
-                                    log.msg("On (" + std::to_string(lineN) + ", " + std::to_string(i) + "): empty field name found.");
+                                    log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+
+                                        "): empty field name found.");
                                 }
                                 rm = READ_VALUE;
                             break;
@@ -154,7 +158,8 @@ re::XmlElem re::parseXmlFile(std::string filename) {
                     case READ_WAIT_VALUE:
                         switch(line[i]) {
                             case '>':
-                                log.msg("On (" + std::to_string(lineN) + ", " + std::to_string(i) + "): expected a value.");
+                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
+                                    +"): expected a value.");
                             break;
                             case ' ':
                             case '\t':
@@ -175,7 +180,8 @@ re::XmlElem re::parseXmlFile(std::string filename) {
                                     curr->fieldData.push_back(buffer);
                                     buffer = "";
                                 } else {
-                                    log.msg("On (" + std::to_string(lineN) + ", " + std::to_string(i) + "): empty field value found.");
+                                    log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
+                                        +"): empty field value found.");
                                 }
                             case ' ':
                             case '\t':
@@ -191,7 +197,9 @@ re::XmlElem re::parseXmlFile(std::string filename) {
                         if(line[i] != ' ' && line[i] != '\t' && line[i] != '\n'){
                             if(line[i] == '>') {
                                 if(curr->parent->name != buffer) {
-                                    log.msg("On (" + std::to_string(lineN) + ", " + std::to_string(i) + "): incorrect closing caret (comparing names "+curr->parent->name+" and "+buffer+").");
+                                    log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
+                                        +"): incorrect closing caret (comparing names "
+                                        +curr->parent->name+" and "+buffer+").");
                                 }
                                 buffer = "";
                                 XmlElem* t = curr;
@@ -217,6 +225,6 @@ re::XmlElem re::parseXmlFile(std::string filename) {
     } else {
         log.msg("Could not open the file!");
     }
-    log.msg("Parsing took " + std::to_string(log.track_elapsed()) + " ns.");
+    log.msg("Parsing took "+std::to_string(stopwatch.stop_watch()/1000000)+" ms.");
     return origin;
 }
