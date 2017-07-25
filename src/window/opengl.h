@@ -8,8 +8,6 @@
 
 #include <string>
 
-#define GL OpenGL::instance()
-
 namespace re
 {
 
@@ -46,6 +44,13 @@ class OpenGL
     void rotate( float angle );
 
     void setWindowName( std::string name );
+    void goFullScreen();
+
+    void draw_blew( int x0, int y0, int we, int he, int power );
+    void blewAll();
+    void setLay( int lay );
+
+    bool getKeyState( unsigned char c );
 
     void (*callbackPostInit)();
     void (*callbackIdle)();
@@ -54,6 +59,8 @@ class OpenGL
     uint getWidth();
     uint getHeight();
 
+    bool key[256];
+
     private:
 
     static void keyboardDown(unsigned char c, int a, int b);
@@ -61,6 +68,11 @@ class OpenGL
 
     static void mousePress(int button,int state,int x, int y);
     static void mouseMove(int x, int y);
+
+    static void keyboardSpecial( int c, int a, int b );
+    static void keyboardUpSpecial( int c, int a, int b );
+
+    int curLay;
 
     IBaseAppPtr baseApp;
     std::string windowName;

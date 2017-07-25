@@ -17,6 +17,8 @@ namespace graphic
     void scale(float x, float y);
     void viewat(int x, int y); 
     void rotate(float angle);
+    void goFullScreen();
+    void setDrawLay( int lay );
 }
 
 }

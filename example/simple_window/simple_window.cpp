@@ -21,14 +21,17 @@ public:
         re::graphic::background(re::WHITE);
         re::graphic::draw_rectangle(x, y, 50, 50, re::RED);
         re::graphic::draw_rectangle(200, 200, 50, 50, re::RED);
-        re::graphic::draw_image( 0, 0, imgptr );
         re::graphic::draw_line( x, 50, 200, 200, re::BLACK );
+        re::graphic::draw_image( 0, 0, imgptr );
     }
 
     void on_key_pressed(re::Key key){
         if (key == re::Key::Escape){
             exit(0);
+        } else if(key == (re::Key)112) {
+            //re::graphic::goFullScreen();
         }
+        std::cout << (int)key;
     }
 
     void on_mouse_move( int x0, int y0 )
@@ -42,6 +45,8 @@ private:
 };
 
 int main(){
-    re::runApp( 400, 400, std::make_shared<MainApp>() );
+    re::setWindowName( "RealEngine" );
+    re::runApp( 640, 480, std::make_shared<MainApp>() );
     return 0;
 }
+

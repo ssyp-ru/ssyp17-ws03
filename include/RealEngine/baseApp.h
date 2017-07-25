@@ -2,6 +2,7 @@
 
 #include "keyboard.h"
 #include <memory>
+#include <string>
 namespace re{
 
 class IBaseApp{
@@ -20,5 +21,6 @@ public:
 typedef std::shared_ptr<IBaseApp> IBaseAppPtr;
 
 void runApp(int window_width, int window_height, IBaseAppPtr BaseApp);
+void setWindowName( std::string name );
 
 }

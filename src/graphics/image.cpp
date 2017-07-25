@@ -13,9 +13,7 @@
 // #include "stb_image_write.h"
 
 #include <iostream>
-
-void swap( unsigned char &a, unsigned char &b )
-{a^=b^=a^=b;}
+//#include <swap>
 
 namespace re{
 
@@ -40,6 +38,24 @@ Image::Image(const Image& im){
     std::cerr << "incomplete copy constructor of image\n";
 }
 
+Image::Image( void *buffer, int width, int height, int c )
+{
+    image_buffer = (unsigned char *)buffer;
+    w = width;
+    h = height;
+    comp = c;
+
+    glGenTextures( 1, &glid );
+    glBindTexture( GL_TEXTURE_2D, glid );
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,w,h,0,GL_RGBA,GL_UNSIGNED_BYTE,image_buffer);
+}
+
 Image::Image(int width, int height, int c){
     image_buffer = (unsigned char *) malloc(width*height*c);
     w = width;
@@ -58,6 +74,8 @@ Image::Image(int width, int height, int c){
 }
 
 Image::~Image(){
+    GLuint tex = glid;
+    glDeleteTextures( 2, &tex );
     free(image_buffer);
 }
 

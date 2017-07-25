@@ -14,6 +14,7 @@ public:
     Image(std::string filename);
     Image(const Image& im);
     Image(int width, int height, int c);
+    Image( void *buffer, int width, int height, int c );
     ~Image();
 
     unsigned char* get_buffer() { return image_buffer; } // TODO. TMP debug!

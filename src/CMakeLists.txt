@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(real_engine)
 
-set(SOURCE_LIB  opengl/opengl.cpp
+set(SOURCE_LIB  window/opengl.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
                 utils/logger.cpp
