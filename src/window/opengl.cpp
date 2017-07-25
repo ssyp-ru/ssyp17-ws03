@@ -17,33 +17,6 @@
 namespace re
 {
 
-
-void accFrustum(GLdouble left,GLdouble right,
-                GLdouble bottom,GLdouble top,
-                GLdouble zNear,GLdouble zFar,
-                GLdouble pixdx,GLdouble pixdy,
-                GLdouble eyedx, GLdouble eyedy,
-                GLdouble focus)
-
-{
-      GLdouble xwsize, ywsize;
-      GLdouble dx, dy;
-      GLint viewport[4];
-
-      glGetIntegerv(GL_VIEWPORT,viewport);
-
-      xwsize=right-left;
-      ywsize=top-bottom;
-      dx=-(pixdx*xwsize/(GLdouble)viewport[2] + eyedx*zNear/focus);
-      dy=-(pixdy*ywsize/(GLdouble)viewport[3] + eyedy*zNear/focus);
-
-      glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
-      glFrustum(left+dx,right+dx,bottom+dy,top+dy,zNear,zFar);
-      glMatrixMode(GL_MODELVIEW);
-      glTranslatef(-eyedx,-eyedy,0.0);
-}
-
 void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
 {
     w = width;
@@ -133,7 +106,7 @@ void OpenGL::draw_line( int x0, int y0, int x1, int y1, Color color )
                 color.b / 255.0, 
                 color.t / 255.0 );
 
-    glLineWidth(5.0);
+    glLineWidth(1.0);
     glBegin(GL_LINES);
         glVertex2i(x0,-y0);
         glVertex2i(x1,-y1);
@@ -142,7 +115,6 @@ void OpenGL::draw_line( int x0, int y0, int x1, int y1, Color color )
 
 void OpenGL::draw_circle( int x0, int y0, int r, Color color )
 {
-    //TODO
 }
 
 void OpenGL::setLay( int lay )
@@ -280,9 +252,6 @@ void OpenGL::draw_image( int x0, int y0, ImagePtr img )
     glEnd();
 
     glDisable(GL_TEXTURE_2D);
-
-    blewAll();
-    //draw_blew( 0,0, 640,480, 1 );
 }
 
 void OpenGL::translate( int x, int y )
