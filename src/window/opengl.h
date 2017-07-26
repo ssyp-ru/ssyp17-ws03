@@ -40,6 +40,7 @@ class OpenGL
     //NOT WORK
     void draw_circle( int x0, int y0, int t, Color color );
     void draw_image( int x0, int y0, ImagePtr img );
+    void draw_image_part( int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr img );
     
     void translate( int x, int y );
     void viewAt( int x, int y );
@@ -74,6 +75,8 @@ class OpenGL
 
     static void keyboardSpecial( int c, int a, int b );
     static void keyboardUpSpecial( int c, int a, int b );
+
+    static Key key_to_key(char key_code);
 
     int curLay;
 
