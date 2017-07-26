@@ -6,7 +6,7 @@
 namespace re
 {
     void draw_rectangle(int x0, int y0, int w, int h, Color color){
-        OpenGL::instance().draw_rectangle( x0, -y0, w, h, color );
+        OpenGL::instance().draw_rectangle( x0, -y0, w, -h, color );
     }
 
     void background(Color color){

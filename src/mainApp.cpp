@@ -26,6 +26,11 @@ void runApp(int window_width, int window_height, IBaseAppPtr BaseApp){
     OpenGL::instance().run();
 }
 
+void exitApp()
+{
+    OpenGL::instance().close();
+}
+
 void MainApp::init()
 {
     baseApp->setup();

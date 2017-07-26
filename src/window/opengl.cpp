@@ -18,7 +18,7 @@ namespace re
 {
 
 void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
-{
+{   
     w = width;
     h = height;
     
@@ -31,7 +31,7 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
     glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_ACCUM );
 
     glutInitWindowSize( w, h );
-    glutCreateWindow( windowName.c_str() );
+    windowId = glutCreateWindow( windowName.c_str() );
         
     glClearColor( 1, 1, 1, 1 );
 
@@ -60,11 +60,16 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
     glutSpecialUpFunc( OpenGL::keyboardUpSpecial );
 
     glClearColor( 0.5, 0.5, 0.5, 1.0 );
-    glClearAccum( 0, 0, 0, 0 );
+    glClearAccum( 0, 0, 0, 0 ); 
     
     curLay = 0;
-    
+
     callbackPostInit();
+}
+
+void OpenGL::close()
+{
+    glutDestroyWindow( windowId );
 }
 
 void OpenGL::run()

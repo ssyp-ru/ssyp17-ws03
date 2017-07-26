@@ -30,6 +30,7 @@ class OpenGL
 
     void init( uint width, uint height, IBaseAppPtr BaseApp );
     void run();
+    void close();
 
     void background( Color color );
 
@@ -82,6 +83,7 @@ class OpenGL
 
     IBaseAppPtr baseApp;
     std::string windowName;
+    int windowId;
     uint w, h;
 };
 
