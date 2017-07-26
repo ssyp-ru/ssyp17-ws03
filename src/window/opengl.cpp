@@ -245,6 +245,7 @@ void OpenGL::blewAll()
 
 void OpenGL::draw_image( int x0, int y0, ImagePtr img )
 {
+
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
     glBindTexture(GL_TEXTURE_2D,img->getTex());

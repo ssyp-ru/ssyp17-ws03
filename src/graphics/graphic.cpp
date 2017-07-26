@@ -18,11 +18,11 @@ namespace re
     }
 
     void draw_circle(int x0, int y0, int r, Color color){
-        OpenGL::instance().draw_circle( x0, -y0, r, color );
+        OpenGL::instance().draw_circle( x0, y0, r, color );
     }
 
     void draw_image(int x0, int y0, ImagePtr im){
-        OpenGL::instance().draw_image( x0, -y0, im );
+        OpenGL::instance().draw_image( x0, y0, im );
     }
 
     void draw_image_part(int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr im){
