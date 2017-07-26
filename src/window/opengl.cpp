@@ -285,7 +285,7 @@ void OpenGL::keyboardDown( unsigned char c, int a, int b )
     if( !OpenGL::instance().key[c] )
     {
         OpenGL::instance().key[c] = true;
-        OpenGL::instance().baseApp->on_key_pressed( (Key)c );
+        OpenGL::instance().baseApp->on_key_pressed( openGL_key_to_key(c) );
     }
 }
 
@@ -294,7 +294,7 @@ void OpenGL::keyboardUp( unsigned char c, int a, int b )
     if( OpenGL::instance().key[c] )
     {
         OpenGL::instance().key[c] = false;
-        OpenGL::instance().baseApp->on_key_released( (Key)c );
+        OpenGL::instance().baseApp->on_key_released( openGL_special_key_to_key(c) );
     }
 }
 
@@ -354,6 +354,26 @@ uint OpenGL::getWidth()
 uint OpenGL::getHeight()
 {
     return h;
+}
+
+
+Key openGL_key_to_key(char key_code){
+    switch(key_code){
+        case 27:                    return Key::Escape;
+    }
+
+    return Key::Unknown;
+}
+
+Key openGL_special_key_to_key(int key_code){
+    switch(key_code){
+        case GLUT_KEY_RIGHT:        return Key::Right;
+        case GLUT_KEY_LEFT:         return Key::Left;
+        case GLUT_KEY_UP:           return Key::Up;
+        case GLUT_KEY_DOWN:         return Key::Down;
+    }
+
+    return Key::Unknown;
 }
 
 }

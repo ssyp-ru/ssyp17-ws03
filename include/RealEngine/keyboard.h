@@ -41,7 +41,7 @@ enum class Key
     Num7,         ///< The 7 key
     Num8,         ///< The 8 key
     Num9,         ///< The 9 key
-    Escape = 27,       ///< The Escape key
+    Escape,       ///< The Escape key
     LControl,     ///< The left Control key
     LShift,       ///< The left Shift key
     LAlt,         ///< The left Alt key

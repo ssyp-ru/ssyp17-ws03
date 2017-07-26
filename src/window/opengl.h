@@ -11,6 +11,9 @@
 namespace re
 {
 
+Key openGL_key_to_key(char key_code);
+Key openGL_special_key_to_key(int key_code);
+
 class OpenGL
 {
     private:
