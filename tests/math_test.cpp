@@ -4,7 +4,7 @@
 #include "RealEngine/math.h"
 
 bool test1(){
-    re::Point2f result(0,0);
+    re::Point2f result;
     re::Point2f first(1,2); re::Point2f second(3,3);
     re::Point2f third(3,2); re::Point2f fourth(4,3);
     result = re::intersectionofstraights(first, second, third, fourth);
@@ -13,7 +13,7 @@ bool test1(){
 }
 
 bool test2(){
-    re::Point2f result(0,0);
+    re::Point2f result;
     re::Point2f first(-2,1); re::Point2f second(0,-3);
     re::Point2f third(5,1); re::Point2f fourth(-1,-1);
     result = re::intersectionofstraights(first, second, third, fourth);
@@ -22,7 +22,7 @@ bool test2(){
 }
 
 bool test3(){
-    re::Point2f result(0,0);
+    re::Point2f result;
     re::Point2f first(1,-1); re::Point2f second(5,3);
     re::Point2f third(5,0); re::Point2f fourth(1,4);
     result = re::intersectionofstraights(first, second, third, fourth);
@@ -31,7 +31,7 @@ bool test3(){
 }
 
 bool test4(){
-    re::Point2f result(1,0);
+    re::Point2f result;
     re::Point2f answer(std::numeric_limits<float>::infinity(),std::numeric_limits<float>::infinity());
     re::Point2f first(1,1); re::Point2f second(2,2);
     re::Point2f third(1,2); re::Point2f fourth(2,3);
@@ -40,11 +40,11 @@ bool test4(){
 }
 
 bool test5(){
-    re::Point2f result(1,0);
+    re::Point2f result;
     re::Point2f first(1,1); re::Point2f second(2,2);
     re::Point2f third(-1,1); re::Point2f fourth(-2,2);
     result = re::intersectionofstraights(first, second, third, fourth);
-    re::Point2f answer(0,0);
+    re::Point2f answer;
     return (answer == result);
 }
 
@@ -58,7 +58,7 @@ bool test6(){
 }
 
 bool test7(){
-    re::Point2f result(0,0);
+    re::Point2f result;
     re::Point2f first(1,3); re::Point2f second(2,4);
     re::Point2f third(1,1); re::Point2f fourth(2,0);
     result = re::intersectionofstraights(first, second, third, fourth);
@@ -76,6 +76,16 @@ bool test9(){
     return (point.isValid() == false);
 }
 
+bool test10(){
+    re::Point2f point;
+    return (point.isNull() == true);
+}
+
+bool test11(){
+    re::Point2f point(3,0);
+    return (point.isNull() == false);
+}
+
 int main(){
     std::cout << "hooy" << std::endl;
     assert(test1()); //simple test with natural numbers       
@@ -87,7 +97,8 @@ int main(){
     assert(test7()); //point of intersection is on Y straight
     assert(test8()); //validation of valid point
     assert(test9()); //validation of invalid point
-
+    assert(test10()); //isNull of null point
+    assert(test11()); //isNull of not null point
     
     return 0;
 }
