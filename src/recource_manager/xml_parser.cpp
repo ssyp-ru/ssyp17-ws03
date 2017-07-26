@@ -1,390 +1,267 @@
 #include "xml_parser.h"
 #include "../utils/logger.h"
 #include "../utils/stop_watch.h"
+#include <sstream>
+#include <fstream>
 
 re::Log log("logs/xml_parser.txt");
 
-re::XmlElem::XmlElem()
-{
+re::XmlElem::XmlElem() {
     parent = nullptr;
 }
 
-bool re::XmlElem::hasTag(std::string name) {
-    for(std::string str : tag) {
-        if(str == name) return true;
-    }
-    return false;
-}
-std::vector<re::XmlElem*> re::XmlElem::getChildren(std::string name) {
+
+std::vector<re::XmlElem*> re::XmlElem::get_children(std::string name) {
     std::vector<re::XmlElem*> arr;
     StopWatch stopwatch;
     for(auto it = child.begin(); it != child.end(); it++) {
-        if((*it)->hasTag(name)) arr.push_back(*it);
+        if((*it)->name == name) arr.push_back(*it);
     }
-    log.msg(".getChildren on \""+this->tag[0]+"\" took "
+    log.msg(".getChildren on \""+this->name+"\" took "
         +std::to_string(stopwatch.stop_watch())+" ns.");
     return arr;
 }
 
-void printXmlElemRec(re::XmlElem* elem, re::Log* out, int depth) {
-    for(int i = 0; i < depth; i++) out->stream() << '\t';
-    out->stream() << "< ";
-    
-    for(std::string str : elem->tag) out->stream() << str << ' ';
-    auto itName = elem->fieldName.begin();
-    auto itData = elem->fieldData.begin();
-    while(itName != elem->fieldName.end() && itData != elem->fieldData.end()) {
-        out->stream() << *itName << " = " << *itData << ' ';
-        ++itName;
-        ++itData;
+void xml_elem_print_rec(re::XmlElem* elem, std::ofstream& out, int depth) {
+    for(int i = 0; i < depth; i++) {
+        out << '\t';
     }
-    out->stream() << '>' << std::endl;
-    for(std::string str : elem->data) {
-        for(int i = 0; i <= depth; i++) out->stream() << '\t';
-        out->stream() << str << std::endl;
+    out << "<" << elem->name;
+    for(auto& field : elem->field) {
+        out << ' ' << field.first << "=\"" << field.second << '"';
     }
-    for(re::XmlElem* e : elem->child) printXmlElemRec(e, out, depth+1);
-    for(int i = 0; i < depth; i++) out->stream() << '\t';
-    out->stream() << "</" << elem->tag[0] << '>' << std::endl;
+    bool has_child = elem->child.size() > 0;
+    bool has_content = elem->content.length() > 0;
+    if(!(has_child || has_content)) {
+        out << '/' << '>' << std::endl;
+        return;
+    }
+    out << '>';
+    if(has_content) {
+        std::string buffer = elem->content;
+        size_t found = buffer.find('\n');
+        has_content = found != buffer.npos;
+        if(has_content) {
+            do {
+                found = buffer.find('\n');
+                out << std::endl;
+                for(int i = 0; i <= depth; i++) {
+                    out << '\t';
+                }
+                out << buffer.substr(0,found);
+                buffer = buffer.substr(found+1,buffer.npos);
+                if(buffer.length() <= 0) break;
+            } while(found != buffer.npos);
+        } else {
+            out << buffer;
+        }
+    }
+    if(has_child||has_content) {
+        out << std::endl;
+    }
+    for(re::XmlElem* e : elem->child) {
+        xml_elem_print_rec(e, out, depth+1);
+    }
+    if(has_child||has_content) for(int i = 0; i < depth; i++) {
+        out << '\t';
+    }
+    out << "</" << elem->name << '>';
+    out << std::endl;
 }
 
-void re::XmlElem::print(std::string outputFile) {
-    Log* outlog = new Log(outputFile);
+void re::XmlElem::print(std::string output_filename) {
+    std::ofstream out(output_filename);
+    if(!out.is_open()) {
+        log.msg("Could not open the file \""+output_filename+"\"!");
+        return;
+    }
     StopWatch stopwatch;
-    printXmlElemRec(this, outlog, 0);
-    log.msg("Printing \""+tag[0]+"\" took "+std::to_string(stopwatch.stop_watch()/1000000)+" ms.");
-    delete outlog;
+    xml_elem_print_rec(this, out, 0);
+    log.msg("Printing \""+name+"\" took "+std::to_string(stopwatch.stop_watch()/1000000)+" ms.");
 }
 
-enum READ_MODE {
-    READ_NONE, READ_NAME, READ_WAIT_VALUE, READ_VALUE, READ_CLOSE
-};
-
-re::XmlElem re::parseXml(std::string filename) {
-    std::ifstream in(filename);
+re::XmlElem re::parse_xml(std::string input_filename) {
+    std::ifstream in(input_filename);
     
     XmlElem origin;
-    origin.tag.push_back(filename);
+    origin.name = input_filename;
+    origin.parent = nullptr;
     if(!in.is_open()) {
-        log.msg("Could not open the file!");
+        log.msg("Could not open the file \""+input_filename+"\"!");
         return origin;
     }
-    log.msg("File \""+filename+"\" found!");
-    StopWatch stopwatch; // recording the time for 'now'
+    log.msg("File \""+input_filename+"\" found!");
+    StopWatch stopwatch; // recording the time for this cpp
     XmlElem* current = &origin; // current object reading now
-    READ_MODE read_mode = READ_NONE; 
-    std::string buffer = "";
     int lineN = 0; // Counter for lines used only for logging
+    int is_comment = false; // support for commented xml 
     while(!in.eof()) {
-        std::string line;
-        getline(in, line);
-        log.msg("Read line #"+std::to_string(++lineN)+": \""+line+"\"");
-        for(int i = 0; i < line.length(); i++) {
-            switch (read_mode) {
-                case READ_NONE:
-                    if(line[i] == '<') {
-                        if(buffer.length() > 0) {
-                            current->data.push_back(buffer);
-                            buffer = "";
-                        }
-                        XmlElem* n = new XmlElem();
-                        n->parent = current;
-                        current->child.push_back(n);
-                        current = n;
-                        read_mode = READ_NAME;
-                    } else if(buffer.length() > 0 ||
-                        (line[i] != ' ' && line[i] != '\t' && line[i] != '\n'))
-                            buffer += line[i];
-                    break;
-                case READ_NAME:
-                    switch(line[i]) {
-                        case '/':
-                            if(buffer.length() <= 0)
-                                read_mode = READ_CLOSE;
-                            break;
-                        case '=':
-                            current->fieldName.push_back(buffer);
-                            if(buffer.length() > 0) {
-                                buffer = "";
-                            } else {
-                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+"): "
-                                    +"unexpected sign '='.");
-                            }
-                            read_mode = READ_VALUE;
-                            break;
-                        case '>':
-                            if(buffer.length() <= 0 && current->tag.size() <= 0) {
-                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+"): "
-                                    +"element without name.");
-                            }
-                            current->tag.push_back(buffer);
-                            buffer = "";
-                            read_mode = READ_NONE;
-                            break;
-                        case ' ':
-                        case '\t':
-                        case '\n':
-                            if(buffer.length() > 0) {
-                                read_mode = READ_WAIT_VALUE;
-                            }
-                            break;
-                        default:
-                            buffer += line[i];
-                            break;
+        // read next line
+        std::string buffer;
+        getline(in, buffer);
+        log.msg("Read line #"+std::to_string(++lineN)+": \""+buffer+"\"");
+
+        // remove any spaces before and after content of buffer
+        size_t found = buffer.find_first_not_of(" \t");
+        size_t found_closure;        
+        if(found != buffer.npos) {
+            buffer = buffer.substr(found, buffer.npos);
+        }
+        found = buffer.find_last_not_of(" \t");
+        if(found != buffer.npos) {
+            buffer = buffer.substr(0, found+1);
+        }
+
+        while(buffer.length() > 0) {
+
+            // find any comments presented in line
+            found = buffer.find("<!--");
+            if(found != buffer.npos) {
+                is_comment = true;
+            } // if comment is multi-lined
+            if(is_comment) {
+                found_closure = buffer.find("-->");
+                if(found_closure != buffer.npos) {
+                    if(found != buffer.npos) {
+                        buffer.erase(found, found_closure-found+3);
+                    } else {
+                        buffer.erase(0, found_closure+3);   
                     }
-                    break;
-                case READ_WAIT_VALUE:
-                    switch(line[i]) {
-                        case '=':
-                            current->fieldName.push_back(buffer);
-                            buffer = "";
-                            read_mode = READ_VALUE;
-                            break;
-                        case '>':
-                            if(current->tag.size() <= 0) {
-                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+"): "
-                                    +"element without name.");
-                            }
-                            current->tag.push_back(buffer);
-                            buffer = "";
-                            read_mode = READ_NONE;
-                            break;
-                        case ' ':
-                        case '\t':
-                        case '\n':
-                            break;
-                        default:
-                            current->tag.push_back(buffer);
-                            buffer = "";
-                            buffer += line[i];
-                            read_mode = READ_NAME;
-                            break;
+                    is_comment = false;
+                } else {
+                    if(found != buffer.npos) {
+                        buffer.erase(found, found_closure);
+                    } else {
+                        break; 
                     }
-                    break;
-                case READ_VALUE:
-                    switch(line[i]) {
-                        case '=':
-                            log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+"): "
-                                +"unexpected sign '='.");
-                            break;
-                        case '>':
-                            if(current->tag.size() <= 0) {
-                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+"): "
-                                    +"element without name.");
-                            }
-                            current->fieldData.push_back(buffer);
-                            buffer = "";
-                            read_mode = READ_NONE;
-                            break;
-                        case ' ':
-                        case '\t':
-                        case '\n':
-                            if(buffer.length() > 0) {
-                                current->fieldData.push_back(buffer);
-                                buffer = "";
-                                read_mode = READ_NAME;
-                            }
-                            break;
-                        default:
-                            buffer += line[i];
-                            break;
-                    }
-                    break;
-                case READ_CLOSE:
-                    if(line[i] != ' ' && line[i] != '\t' && line[i] != '\n'){
-                        if(line[i] == '>') {
-                            if(current->parent->tag[0] != buffer) {
-                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+"): "
-                                    +"incorrect closing caret (comparing names "
-                                    +current->parent->tag[0]+" and "+buffer+").");
-                            }
-                            buffer = "";
-                            XmlElem* t = current;
-                            current = current->parent;
-                            current->child.pop_back();
-                            current = current->parent;
-                            delete t;
-                            read_mode = READ_NONE;
-                        } else buffer += line[i];
-                    }
-                    break;
-                default:
-                    log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+"): "+"read char without read_mode.");
-                    break;
+                }
             }
-        }
-        if(read_mode == READ_NONE && buffer.length() > 0) {
-            current->data.push_back(buffer);
-            buffer = "";
-        }
-    }
-    in.close();
-    log.msg("File closed successfully.");
-    log.msg("Parsing took "+std::to_string(stopwatch.stop_watch()/1000000)+" ms.");
-    return origin;
-}
-                /*
-                case READ_NONE: // previous char read isn't from any < > closure
-                    if(buffer.length() <= 0 &&
-                        (line[i] == '\t' || line[i] == ' ' || line[i] == '\n')) break;
-                        // Don't save any tabs, spaces or line brakes before line contains anything
-                    if(line[i] == '<') {
-                        if(buffer.length() > 0) {
-                            current->data.push_back(buffer);
-                            buffer = "";
+
+            // find any object-related marks
+            found = buffer.find("<");
+            if(found > 0) {
+                // add non-object part of the string to current XmlElem
+                if(current->content.length() > 0) {
+                    current->content += '\n';
+                }
+                current->content += buffer.substr(0,found);
+
+                if(found == buffer.npos) { // if no objects left in string
+                    break;
+                } else { // else continue reading the string
+                    buffer.erase(0,found);
+                    found = 0;
+                }
+            }
+
+            // check if object has closing caret
+            found_closure = buffer.find(">");
+            if(found_closure == buffer.npos) {
+                log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                    +"Not found '>' on line.");
+                break;
+            } else {
+                std::string closure = buffer.substr(1,found_closure-found-1);
+                // case </NAME>
+                // case <?...?>
+                switch(closure[0]) {
+                    case '/':
+                        closure.erase(0,1);
+                        if(closure == current->name) {
+                            if(current->parent == nullptr) {
+                                log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                                    +"Can't exit main object.");
+                            }
+                            current = current->parent;
+                        } else {
+                            log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                                +"Wrong name in closing brackets.");
                         }
-                        read_mode = READ_INSIDE;
-                        XmlElem* n = new XmlElem();
-                        n->parent = current;
-                        current->child.push_back(n);
-                        current = n;
-                    } else buffer += line[i];
                     break;
-                case READ_INSIDE: // previous char read is from < > closure but not met any name
-                    switch(line[i]) {
-                        case '/':
-                            read_mode = READ_CLOSE;
+                    case '?':
+                        closure.erase(0,1);
+                        if(closure[closure.length()-1] == '?') break;
+                    default:
+                        XmlElem* elem = new XmlElem();
+                        elem->parent = current;
+                        
+                        // case <.../>
+                        bool is_closed = closure[closure.length()-1] == '/';
+                        if(is_closed) {
+                            closure.erase(closure.length()-1, 1);
+                        }
+                        
+                        std::stringstream line_stream(closure);
+                        std::string str;
+                        line_stream >> str;
+                        if(str.length() <= 0) {
+                            log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                                +"Couldn't find name.");
                             break;
-                        case '>':
-                            read_mode = READ_NONE;
-                            break;
-                        case '=':
-                            read_mode = READ_VALUE;
-                            break;
-                        case ' ':
-                        case '\t':
-                        case '\n':
-                            break;
-                        default:
-                            buffer += line[i];
-                            read_mode = READ_NAME;
-                            break;
-                    }
-                    break;
-                case READ_NAME: // previous char read was from name (of elem or field of elem)
-                    switch(line[i]) {
-                        case '>': // met ending of closure
-                            if(buffer.length() > 0) {
-                                if(current->name.length() > 0) {
-                                    log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
-                                        +"): renamed XmlElem.");
+                        }
+                        // <NAME ...>
+                        elem->name = str;
+                        current->child.push_back(elem);
+                        if(!is_closed) { // We don't need to enter in already closed object
+                            current = elem;
+                        }
+
+                        // <... {name=value}>
+                        std::string name;
+                        std::string value;
+                        bool is_string = false; // case name="value" ("s are saved)
+                        while(!line_stream.eof()) {
+                            line_stream >> str;
+                            if(!is_string) {
+                                size_t f = str.find("=");
+                                if(f == str.npos) {
+                                    log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                                        +"A field without value.");
+                                    break;
                                 }
-                                current->name = buffer;
-                                buffer = "";
-                            }
-                            read_mode = READ_NONE;
-                            break;
-                        case ' ':
-                        case '\t': // met ending of name
-                        case '\n':
-                            if(current->name.length() > 0) { // case name was already defined...
-                                read_mode = READ_WAIT_VALUE; // we guess fieldData will be further.
-                                // error messages about this will log when we will find no fieldData.
-                            } else { // else we think it is the name
-                                current->name = buffer;
-                                buffer = "";
-                                read_mode = READ_INSIDE;
-                            }
-                            break;
-                        case '=': // met ending of fieldName
-                            current->fieldName.push_back(buffer);
-                            if(buffer.length() > 0) {
-                                buffer = "";
+                                if(f <= 0) {
+                                    log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                                        +"Couldn't find field name.");
+                                    break;
+                                }
+                                name = str.substr(0,f);
+                                value = str.substr(f+1,str.npos);
+                                if(value.length() <= 0) {
+                                    log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                                        +"Empty field value.");
+                                    break;
+                                }
+                                if(value[0] != '"') {
+                                    log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                                        +"Where is '\"'?");
+                                    break;
+                                }
+                                value.erase(0,1);
+                                if(value[value.length() - 1] != '"') {
+                                    is_string = true;
+                                } else {
+                                    value.erase(value.length() - 1, 1);
+                                    elem->field[name] = value;
+                                }
                             } else {
-                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)+
-                                    "): empty field name found.");
+                                value += ' ';
+                                value += str;
+                                if(str.rfind('"') == str.length() - 1) {
+                                    value.erase(value.length() - 1, 1);
+                                    elem->field[name] = value;
+                                    is_string = false;
+                                }
                             }
-                            read_mode = READ_VALUE; // and now waiting for input
-                            break;
-                            // so if a field should be declared in elem before its name,
-                            // '=' should be placed RIGHT after the name.
-                        default:
-                            buffer += line[i];
-                            break;
-                    }
+                        }
                     break;
-                case READ_WAIT_VALUE: // previously we met name, but not '=', so we're waiting for 
-                    switch(line[i]) {
-                        case '>':
-                            log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
-                                +"): expected a value.");
-                            current->fieldData.push_back("");
-                            read_mode = READ_NONE;
-                            break;
-                        case ' ':
-                        case '\t':
-                        case '\n':
-                            break;
-                        case '=':
-                            current->fieldName.push_back(buffer);
-                            buffer = "";
-                            read_mode = READ_VALUE;
-                            break;
-                        default:
-                            log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
-                                +"): double name in object.");
-                            current->name = buffer;
-                            buffer = "";
-                            buffer += line[i];
-                            read_mode = READ_NAME;
-                            break;
-                    }
-                    break;
-                case READ_VALUE:
-                    switch(line[i]) {
-                        case '>':
-                            if(buffer.length() <= 0) {
-                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
-                                    +"): empty field value found.");
-                            }
-                            current->fieldData.push_back(buffer);
-                            buffer = "";
-                            read_mode = READ_NONE;
-                            break;
-                        case ' ':
-                        case '\t':
-                        case '\n':
-                            if(buffer.length() > 0) {
-                                current->fieldData.push_back(buffer);
-                                buffer = "";
-                                read_mode = READ_INSIDE;
-                            }
-                            break;
-                        default:
-                            buffer += line[i];
-                            break;
-                    }
-                    break;
-                case READ_CLOSE:
-                    if(line[i] != ' ' && line[i] != '\t' && line[i] != '\n'){
-                        if(line[i] == '>') {
-                            if(current->parent->name != buffer) {
-                                log.msg("On ("+std::to_string(lineN)+", "+std::to_string(i)
-                                    +"): incorrect closing caret (comparing names "
-                                    +current->parent->name+" and "+buffer+").");
-                            }
-                            buffer = "";
-                            XmlElem* t = current;
-                            current = current->parent;
-                            current->child.pop_back();
-                            current = current->parent;
-                            delete t;
-                            read_mode = READ_NONE;
-                        } else buffer += line[i];
-                    }
-                    break;
-                default:
-                    break;
+                }
             }
-        }
-        if(read_mode == READ_NONE && buffer.length() > 0) {
-            current->data.push_back(buffer);
-            buffer = "";
+            // remove found closure
+            buffer.erase(found,found_closure-found+1);
         }
     }
     in.close();
     log.msg("File closed successfully.");
-    log.msg("Parsing took "+std::to_string(stopwatch.stop_watch()/1000000)+" ms.");
+    log.msg("Parsing took "+std::to_string(stopwatch.stop_watch()/1000)+" micros.");
     return origin;
 }
-//*/
