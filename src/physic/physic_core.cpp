@@ -201,6 +201,14 @@ double GameObject::getRotationSpeed() { return rotationSpeed; }
 void GameObject::setRotationSpeed(double value) { rotationSpeed = value; }
 Vector2f GameObject::getPosition() { return position; }
 void GameObject::setPosition(Vector2f pos) { position = pos; }
+Vector2f GameObject::getVelocity()
+{
+    return velocity;
+}
+void GameObject::setVelocity(Vector2f vec)
+{
+    velocity = vec;
+}
 void GameObject::countMassCenter() {
     double x = 0, y = 0;
     for (int i = 0; i < vertexes.size(); i++)

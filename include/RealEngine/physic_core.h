@@ -60,13 +60,15 @@ public:
 	double getBounciness(); // Returns current bounciness of gameobject
 	void setBounciness(double value); // Sets bounciness of gameobject(must be >= 0, recommends also <= 1)
 	double getFriction(); // Returns current friction of gameobject
-	void setFriction(double value); // Sets friction of gameobject(recommends >= 0 and must be <= 1)
-	bool getRigidbodySimulated(); // Returns true if gameobject is dinamic, false if static
-	void setRigidbodySimulated(bool value); // Sets gameobject to be dinamic(true) or static(false)
+	void setFriction(double value); // Sets friction of gameobject(recommended >= 0 and must be <= 1)
+	bool getRigidbodySimulated(); // Returns true if gameobject is dynamic, false if static
+	void setRigidbodySimulated(bool value); // Sets gameobject to be dynamic(true) or static(false)
 	double getRotationSpeed(); // Returns rotation speed of gameobject
 	void setRotationSpeed(double value); // Sets rotation speed of gameobject
 	Vector2f getPosition(); // Returns current gameobject position
     void setPosition(Vector2f pos); // Sets position to gameobject
+	Vector2f getVelocity();
+	void setVelocity(Vector2f vec);
 	friend class Game;
 private:
     // just don't touch it.
