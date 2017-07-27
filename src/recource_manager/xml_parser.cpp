@@ -28,7 +28,7 @@ void xml_elem_print_rec(re::XmlElem* elem, std::ofstream& out, int depth) {
     }
     out << "<" << elem->name;
     for(auto& field : elem->field) {
-        out << ' ' << field.first << '=' << field.second;
+        out << ' ' << field.first << "=\"" << field.second << '"';
     }
     bool has_child = elem->child.size() > 0;
     bool has_content = elem->content.length() > 0;
@@ -231,15 +231,23 @@ re::XmlElem re::parse_xml(std::string input_filename) {
                                         +"Empty field value.");
                                     break;
                                 }
-                                if(value[0] == '"' && value[value.length() - 1] != '"') {
+                                if(value[0] != '"') {
+                                    log.msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
+                                        +"Where is '\"'?");
+                                    break;
+                                }
+                                value.erase(0,1);
+                                if(value[value.length() - 1] != '"') {
                                     is_string = true;
                                 } else {
+                                    value.erase(value.length() - 1, 1);
                                     elem->field[name] = value;
                                 }
                             } else {
                                 value += ' ';
                                 value += str;
                                 if(str.rfind('"') == str.length() - 1) {
+                                    value.erase(value.length() - 1, 1);
                                     elem->field[name] = value;
                                     is_string = false;
                                 }
