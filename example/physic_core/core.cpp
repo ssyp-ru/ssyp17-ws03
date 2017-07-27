@@ -24,7 +24,6 @@ public:
 		obj1->addPoint(re::Vector2f(1, -1));
 		obj1->addPoint(re::Vector2f(-1, -1));
 		obj1->addPoint(re::Vector2f(-1, 1));
-		std::vector<re::Vector2f> *vs1 = obj1->getVertexes();
 		obj1->addEdge(0, 1);
 		obj1->addEdge(1, 2);
 		obj1->addEdge(2, 3);
@@ -41,7 +40,6 @@ public:
 		obj2->addPoint(re::Vector2f(-10, -1));
 		obj2->addPoint(re::Vector2f(10, -1));
 		obj2->addPoint(re::Vector2f(10, 1));
-		std::vector<re::Vector2f> *vs2 = obj2->getVertexes();
 		obj2->addEdge(0, 1);
 		obj2->addEdge(1, 2);
 		obj2->addEdge(2, 3);
