@@ -1,0 +1,47 @@
+#include <RealEngine/baseApp.h>
+#include <RealEngine/graphic.h>
+#include <RealEngine/xml_parser.h>
+#include <RealEngine/resource_manager.h>
+#include <RealEngine/graphic/animation.h>
+#include <RealEngine/graphic/image.h>
+
+#include <iostream>
+#include <string>
+using namespace re;
+
+class MainApp : public IBaseApp{
+    public:
+        ResourceManager rm;
+        ImagePtr screen, mario;
+
+        void setup() override {
+            graphic::set_fps(60);
+            rm.load_file("anims.xml");
+            screen = rm.get_image("screenshot");
+            mario = rm.get_image("mario_sprite_sheet");
+        }
+
+        void update() override {
+        }
+
+        void display() override {
+            graphic::background(re::WHITE);
+            graphic::draw_image(0, 0, screen);
+            graphic::draw_image(0, 0, mario);
+            graphic::draw_image(0, 300, rm.get_animation("mario_sprite")->getNextFrame());
+        }
+
+        void on_key_pressed(Key key) {
+            if (key == Key::Escape) exit(0);
+        }
+
+        void on_mouse_move(int x0, int y0) {
+        }
+};
+
+int main(){
+    setWindowName("RealEngine");
+    runApp(640, 480, std::make_shared<MainApp>());
+    return 0;
+}
+

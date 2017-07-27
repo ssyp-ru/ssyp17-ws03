@@ -6,6 +6,7 @@ project(main)
 # (в дальнейшем система сборки будет немного изменена)
 # set(EXECUTABLE example/simple_platformer/simple_platformer.cpp example/simple_platformer/base_button.cpp example/simple_platformer/player.cpp)
 # set(EXECUTABLE example/simple_window/simple_window.cpp)
+# set(EXECUTABLE example/resource_example/resource_example.cpp)
 
 set(MATH_TEST_EXECUTABLE tests/math_test.cpp)
 
@@ -29,3 +30,4 @@ target_link_libraries(math_test real_engine)
 add_subdirectory(example/simple_window)
 add_subdirectory(example/simple_platformer)
 add_subdirectory(example/parser_example)
+add_subdirectory(example/resource_example)
