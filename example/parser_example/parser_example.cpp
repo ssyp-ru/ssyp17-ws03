@@ -9,6 +9,8 @@ int main(){
         re::Map map = re::parse_tiled(e)[0];
         std::ofstream out("testTiled.txt");
         out << "start: " << std::endl;
+        re::XmlElem aza = *(e.get_children("world")[0]->get_children("map")[0]->get_children("object")[0]->get_children("aza")[0]);
+        out << "found aza: width=" << aza.field["width"] << ", height=" << aza.field["height"] << std::endl;
         out << map.tileset.firstgid << std::endl;
         out << map.tileset.source << std::endl;
         out << map.layer.name << std::endl;
