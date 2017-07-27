@@ -1,28 +1,6 @@
 #include <RealEngine/tiled_parser.h>
 #include <RealEngine/logger.h>
 #include <fstream>
-
-void re::Map::print(std::string output_filename) {
-    std::ofstream out(output_filename);
-    out << "start: " << std::endl;
-    out << tileset.firstgid << std::endl;
-    out << tileset.source << std::endl;
-    out << layer.name << std::endl;
-    out << layer.height << std::endl;
-    out << layer.width << std::endl;
-    for(auto& i : layer.data) {
-        out << i;
-    }
-    out << std::endl;
-    out << objectgroup.name << std::endl;
-    for(auto& i : objectgroup.group) {
-        out << '(' << i.id << ')' << i.name << '(' << i.x << ',' << i.y << ')' << i.width << '/' << i.height;
-        for(auto& j : i.flags) {
-            out << ';' << j;
-        }    
-        out << std::endl;
-    }
-}
 re::Object parse_object(re::XmlElem* parsed_xml) {
     re::Object object;
     try {
