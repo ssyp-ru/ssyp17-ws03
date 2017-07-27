@@ -12,14 +12,11 @@
 #include <chrono>
 #include <vector>
 
-using namespace re::graphic;
-
 class MainApp : public re::IBaseApp{
 public:
 
     //Setup:
     void setup() override {
-        set_fps(60);
         re::Animation testanimCustom(0, true);
         re::Image buttonsource("test.png");
         re::Image spritelist("spritelist.png");

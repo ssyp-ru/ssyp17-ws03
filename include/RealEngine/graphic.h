@@ -2,6 +2,7 @@
 
 #include "graphic/image.h"
 #include "graphic/color.h"
+#include "math.h"
 
 namespace re{
 
@@ -18,5 +19,21 @@ namespace re{
     void rotate(float angle);
     void goFullScreen();
     void setDrawLay( int lay );
+
+
+    struct stParticle
+    {
+        float life;
+        Point2f pos;
+        Point2f vec;
+        Point2f move;
+
+        ImagePtr imge;
+
+        Point2f startImg;
+        Point2f endImg;
+    };
+
+    void launchParticle( stParticle &newParticle );
 
 }

@@ -43,6 +43,6 @@ namespace re{
         actionFunc();
     }
     void BaseButton::display(){
-        graphic::draw_image(x, y, buttonImg);
+        draw_image(x, y, buttonImg);
     }
 } // namespace re

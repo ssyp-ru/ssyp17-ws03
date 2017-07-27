@@ -2,6 +2,7 @@
 
 #include "utils/logger.h"
 #include "window/opengl.h"
+#include "graphics/particle.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -33,6 +34,8 @@ void exitApp()
 
 void MainApp::init()
 {
+    initParticles();
+    
     baseApp->setup();
 }
 
@@ -40,6 +43,8 @@ void MainApp::tick()
 {
     baseApp->update();
     baseApp->display();
+    
+    drawParticles( 0.1 );
 
     OpenGL::instance().draw();
 }
