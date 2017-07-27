@@ -1,43 +1,63 @@
 #include "RealEngine/graphic.h"
-#include "../main_app.h"
+#include <iostream>
 
-namespace re{
+#include "../window/opengl.h"
 
-void draw_rectangle(int x0, int y0, int w, int h, Color color){
-    get_window()->draw_rectangle(x0, y0, w, h, color);
+namespace re
+{
+
+namespace graphic
+{
+    void draw_rectangle(int x0, int y0, int w, int h, Color color){
+        OpenGL::instance().draw_rectangle( x0, -y0, w, h, color );
+    }
+
+    void background(Color color){
+        OpenGL::instance().background( color );
+    }
+
+    void draw_line(int x0, int y0, int x1, int y1, Color color){
+        OpenGL::instance().draw_line( x0, y0, x1, y1, color );
+    }
+
+    void draw_circle(int x0, int y0, int r, Color color){
+        OpenGL::instance().draw_circle( x0, -y0, r, color );
+    }
+
+    void draw_image(int x0, int y0, ImagePtr im){
+        OpenGL::instance().draw_image( x0, -y0, im );
+    }
+
+    void goFullScreen()
+    {
+        OpenGL::instance().goFullScreen();
+    }
+
+    void setDrawLay( int lay )
+    {
+        OpenGL::instance().setLay( lay );
+    }
+
+    void set_fps(uint fps){
+        
+    }
+
+    void translate(int x, int y){
+        OpenGL::instance().translate( -x, y );
+    }
+
+    void viewat(int x, int y)
+    {
+        OpenGL::instance().viewAt( x, y );
+    }
+
+    void scale(float x, float y){
+        OpenGL::instance().scale( x, y );
+    }
+
+    void rotate(float angle){
+        OpenGL::instance().rotate( angle );
+    }
 }
-
-void background(Color color){
-    get_window()->background(color);
-}
-
-void draw_line(int x0, int y0, int x1, int y1, Color color){
-    get_window()->draw_line(x0, y0, x1, y1, color);
-}
-
-void draw_circle(int x0, int y0, int r, Color color){
-    get_window()->draw_circle(x0, y0, r, color);
-}
-
-void draw_image(int x0, int y0, ImagePtr im){
-    get_window()->draw_image(x0, y0, im);
-}
-
-void set_fps(uint fps){
-    get_window()->set_fps(fps);
-}
-
-void translate(int x, int y){
-    get_window()->translate(x, y);
-}
-
-void scale(float x, float y){
-
-}
-
-void rotate(float angle){
-
-}
-
 
 } // namespace re

@@ -15,8 +15,8 @@ namespace re {
         ~Log(); // closes the stream automatically
 
         // Opens a file with given name and writes log there.
-        Log(const char* outputFile);
-        Log(const char* outputFile, StopWatch clock);
+        Log(std::string outputFile);
+        Log(std::string outputFile, StopWatch clock);
         
         // returns time since construction in milliseconds
         // (or custom StopWatch given given to constructor)
@@ -27,8 +27,7 @@ namespace re {
         std::ofstream& stream();
         
         // prints message to log, in format "> N: [timer.getTimeString : time()] msg"
-        // returns index of msg printed. 
-        unsigned int msg(const char* msg);
+        // returns index of msg printed.
         unsigned int msg(std::string msg);
     };
 }

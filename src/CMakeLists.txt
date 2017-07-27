@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(real_engine)
 
-set(SOURCE_LIB  window/windowXCB.cpp
-                window/windowGLUT.cpp
+set(SOURCE_LIB  window/opengl.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
                 graphics/animation.cpp
@@ -13,7 +12,7 @@ set(SOURCE_LIB  window/windowXCB.cpp
                 utils/stop_watch.cpp
                 ../example/simple_platformer/player.cpp
                 recource_manager/xml_parser.cpp
-                main_app.cpp
+                mainApp.cpp
 )
 
 set_source_files_properties(graphics/Image.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)
