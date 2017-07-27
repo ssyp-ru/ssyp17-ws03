@@ -53,6 +53,15 @@ ImagePtr Image::get_subimage(int x, int y, int size_x, int size_y){
     return result;
 }
 
+void Image::set_subimage(int x, int y, ImagePtr im){
+    if (x + im->w > w || y + im->h > h)
+        std::cout << "check sizes" << std::endl;
+    else
+        for (int i = x; i < x + im->w; i++)
+            for (int j = y; j < y + im->h; j++)
+                set_pix_color(i, j, im->get_pix_color(i - x, j - y));   
+}
+
 void Image::set_pix_color(int x, int y, Color c){
     image_buffer[(((w * comp) * y) + x * comp) + 0] = c.r;
     image_buffer[(((w * comp) * y) + x * comp) + 1] = c.g;
