@@ -1,1 +1,0 @@
-/usr/bin/c++      CMakeFiles/resource_example.dir/resource_example.cpp.o  -o resource_example -rdynamic ../../lib/libreal_engine.so -lgcc -lgcc_s -lglut -lGLU -lGL -lstdc++fs -Wl,-rpath,/home/ws03/ws03/lib 
