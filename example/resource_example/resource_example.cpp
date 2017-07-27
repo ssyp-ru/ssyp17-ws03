@@ -15,7 +15,7 @@ class MainApp : public IBaseApp{
         ImagePtr screen, mario;
 
         void setup() override {
-            graphic::set_fps(60);
+            set_fps(60);
             rm.load_file("anims.xml");
             screen = rm.get_image("screenshot");
             mario = rm.get_image("mario_sprite_sheet");
@@ -25,10 +25,10 @@ class MainApp : public IBaseApp{
         }
 
         void display() override {
-            graphic::background(re::WHITE);
-            graphic::draw_image(0, 0, screen);
-            graphic::draw_image(0, 0, mario);
-            graphic::draw_image(0, 300, rm.get_animation("mario_sprite")->getNextFrame());
+            background(re::WHITE);
+            draw_image(0, 0, screen);
+            draw_image(0, 0, mario);
+            draw_image(0, 300, rm.get_animation("mario_sprite")->getNextFrame());
         }
 
         void on_key_pressed(Key key) {

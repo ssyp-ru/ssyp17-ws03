@@ -18,7 +18,7 @@ namespace re
 {
 
 void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
-{
+{   
     w = width;
     h = height;
     
@@ -31,7 +31,7 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
     glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_ACCUM );
 
     glutInitWindowSize( w, h );
-    glutCreateWindow( windowName.c_str() );
+    windowId = glutCreateWindow( windowName.c_str() );
         
     glClearColor( 1, 1, 1, 1 );
 
@@ -60,11 +60,16 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
     glutSpecialUpFunc( OpenGL::keyboardUpSpecial );
 
     glClearColor( 0.5, 0.5, 0.5, 1.0 );
-    glClearAccum( 0, 0, 0, 0 );
+    glClearAccum( 0, 0, 0, 0 ); 
     
     curLay = 0;
-    
+
     callbackPostInit();
+}
+
+void OpenGL::close()
+{
+    glutDestroyWindow( windowId );
 }
 
 void OpenGL::run()
@@ -255,6 +260,22 @@ void OpenGL::draw_image( int x0, int y0, ImagePtr img )
     glDisable(GL_TEXTURE_2D);
 }
 
+void OpenGL::draw_image_part( int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr img )
+{
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
+    glBindTexture(GL_TEXTURE_2D,img->getTex());
+
+    glBegin(GL_QUADS);
+        glTexCoord2f(w0,h0); glVertex3f( x0, -y0, curLay );
+        glTexCoord2f(w0,h1); glVertex3f( x0, -y1, curLay );
+        glTexCoord2f(w1,h1); glVertex3f( x1, -y1, curLay );
+        glTexCoord2f(w1,h0); glVertex3f( x1, -y0, curLay );
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+}
+
 void OpenGL::translate( int x, int y )
 {
     glTranslatef( x, y, 0 );
@@ -283,19 +304,21 @@ void OpenGL::draw()
 
 void OpenGL::keyboardDown( unsigned char c, int a, int b )
 {
-    if( !OpenGL::instance().key[c] )
+    unsigned char key = (int)key_to_key(c);
+    if( !OpenGL::instance().key[key] )
     {
-        OpenGL::instance().key[c] = true;
-        OpenGL::instance().baseApp->on_key_pressed( openGL_key_to_key(c) );
+        OpenGL::instance().key[key] = true;
+        OpenGL::instance().baseApp->on_key_pressed( (Key)key );
     }
 }
 
 void OpenGL::keyboardUp( unsigned char c, int a, int b )
 {
-    if( OpenGL::instance().key[c] )
+    unsigned char key = (int)key_to_key(c);
+    if( OpenGL::instance().key[key] )
     {
-        OpenGL::instance().key[c] = false;
-        OpenGL::instance().baseApp->on_key_released( openGL_key_to_key(c) );
+        OpenGL::instance().key[key] = false;
+        OpenGL::instance().baseApp->on_key_released( (Key)key );
     }
 }
 
@@ -311,19 +334,21 @@ void OpenGL::mouseMove( int x, int y )
 
 void OpenGL::keyboardSpecial( int c, int a, int b )
 {
-    if( !OpenGL::instance().key[c] )
+    unsigned char key = (int)key_to_key(c);
+    if( !OpenGL::instance().key[key] )
     {
-        OpenGL::instance().key[c] = true;
-        OpenGL::instance().baseApp->on_key_pressed( openGL_special_key_to_key(c) );
+        OpenGL::instance().key[key] = true;
+        OpenGL::instance().baseApp->on_key_pressed( (Key)key );
     }
 }
 
 void OpenGL::keyboardUpSpecial( int c, int a, int b )
 {
-    if( OpenGL::instance().key[c] )
+    unsigned char key = (int)key_to_key(c);
+    if( OpenGL::instance().key[key] )
     {
-        OpenGL::instance().key[c] = false;
-        OpenGL::instance().baseApp->on_key_released( openGL_special_key_to_key(c) );
+        OpenGL::instance().key[key] = false;
+        OpenGL::instance().baseApp->on_key_released( (Key)key );
     }
 }
 
@@ -358,16 +383,19 @@ uint OpenGL::getHeight()
 }
 
 
-Key openGL_key_to_key(char key_code){
-    switch(key_code){
-        case 27:                    return Key::Escape;
+Key OpenGL::key_to_key(char key_code){
+
+    if( key_code >= 'a' && key_code <= 'z' )
+    {
+        return (Key)((int)Key::A + (key_code - 'a'));
+    } else if( key_code >= 'A' && key_code <= 'Z' ) {
+        return (Key)((int)Key::A + (key_code - 'A'));
+    } else if( key_code >= '0' && key_code <= '9' ){
+        return (Key)((int)Key::Num0 + (key_code - '0'));
     }
 
-    return Key::Unknown;
-}
-
-Key openGL_special_key_to_key(int key_code){
     switch(key_code){
+        case 27:                    return Key::Escape;
         case GLUT_KEY_RIGHT:        return Key::Right;
         case GLUT_KEY_LEFT:         return Key::Left;
         case GLUT_KEY_UP:           return Key::Up;

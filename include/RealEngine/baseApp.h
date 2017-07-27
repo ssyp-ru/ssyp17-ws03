@@ -21,6 +21,7 @@ public:
 typedef std::shared_ptr<IBaseApp> IBaseAppPtr;
 
 void runApp(int window_width, int window_height, IBaseAppPtr BaseApp);
+void exitApp();
 void setWindowName( std::string name );
 
 }

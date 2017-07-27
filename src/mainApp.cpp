@@ -1,6 +1,7 @@
 #include "mainApp.h"
 
 #include "window/opengl.h"
+#include "graphics/particle.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -25,8 +26,15 @@ void runApp(int window_width, int window_height, IBaseAppPtr BaseApp){
     OpenGL::instance().run();
 }
 
+void exitApp()
+{
+    OpenGL::instance().close();
+}
+
 void MainApp::init()
 {
+    initParticles();
+    
     baseApp->setup();
 }
 
@@ -34,6 +42,8 @@ void MainApp::tick()
 {
     baseApp->update();
     baseApp->display();
+    
+    drawParticles( 0.1 );
 
     OpenGL::instance().draw();
 }

@@ -1,32 +1,32 @@
-> 1: [07/27/17 19:42:24 : 0] Log opened successfully.
-> 2: [07/27/17 19:42:24 : 57] File "anims.xml" found!
-> 3: [07/27/17 19:42:24 : 57] Read line #1: "<resources>"
-> 4: [07/27/17 19:42:24 : 57] Read line #2: "    <images> "
-> 5: [07/27/17 19:42:24 : 57] Read line #3: "        <im id="screenshot" file="test.png"/>"
-> 6: [07/27/17 19:42:24 : 57] Read line #4: "        <im id="mario_sprite_sheet" file="spritelist.png"/>"
-> 7: [07/27/17 19:42:24 : 57] Read line #5: "    </images>"
-> 8: [07/27/17 19:42:24 : 57] Read line #6: "    <sprites>"
-> 9: [07/27/17 19:42:24 : 57] Read line #7: "        <sprite id="mario_sprite" source_id="screenshot" speed="0.1" cycleable="true">"
-> 10: [07/27/17 19:42:24 : 57] Read line #8: "            <sp x="0" y="0" w="260" h="200"/>"
-> 11: [07/27/17 19:42:24 : 57] Read line #9: "            <sp x="10" y="10" w="260" h="200"/>"
-> 12: [07/27/17 19:42:24 : 57] Read line #10: "            <sp x="20" y="20" w="260" h="200"/>"
-> 13: [07/27/17 19:42:24 : 57] Read line #11: "            <sp x="30" y="30" w="260" h="200"/>"
-> 14: [07/27/17 19:42:24 : 57] Read line #12: "            <sp x="40" y="40" w="260" h="200"/>"
-> 15: [07/27/17 19:42:24 : 57] Read line #13: "            <sp x="50" y="50" w="260" h="200"/>"
-> 16: [07/27/17 19:42:24 : 57] Read line #14: "            <sp x="60" y="60" w="260" h="200"/>"
-> 17: [07/27/17 19:42:24 : 57] Read line #15: "            <sp x="70" y="70" w="260" h="200"/>"
-> 18: [07/27/17 19:42:24 : 57] Read line #16: "            <sp x="80" y="80" w="260" h="200"/>"
-> 19: [07/27/17 19:42:24 : 57] Read line #17: "            <sp x="90" y="90" w="260" h="200"/>"
-> 20: [07/27/17 19:42:24 : 57] Read line #18: "        </sprite>"
-> 21: [07/27/17 19:42:24 : 57] Read line #19: "    </sprites>"
-> 22: [07/27/17 19:42:24 : 57] Read line #20: "</resources>"
-> 23: [07/27/17 19:42:24 : 57] File closed successfully.
-> 24: [07/27/17 19:42:24 : 57] Parsing took 301 micros.
-> 25: [07/27/17 19:42:24 : 57] .getChildren on "anims.xml" took 3188 ns.
-> 26: [07/27/17 19:42:24 : 57] .getChildren on "resources" took 713 ns.
-> 27: [07/27/17 19:42:24 : 57] .getChildren on "images" took 1002 ns.
-> 28: [07/27/17 19:42:24 : 57] .getChildren on "anims.xml" took 481 ns.
-> 29: [07/27/17 19:42:24 : 57] .getChildren on "resources" took 545 ns.
-> 30: [07/27/17 19:42:24 : 57] .getChildren on "sprites" took 416 ns.
-> 31: [07/27/17 19:42:24 : 293] .getChildren on "sprite" took 5705 ns.
-> 32: [07/27/17 19:42:26 : 2891] Closing the log.
+> 1: [07/27/17 19:52:37 : 4] Log opened successfully.
+> 2: [07/27/17 19:52:37 : 75] File "anims.xml" found!
+> 3: [07/27/17 19:52:37 : 76] Read line #1: "<resources>"
+> 4: [07/27/17 19:52:37 : 76] Read line #2: "    <images> "
+> 5: [07/27/17 19:52:37 : 76] Read line #3: "        <im id="screenshot" file="test.png"/>"
+> 6: [07/27/17 19:52:37 : 76] Read line #4: "        <im id="mario_sprite_sheet" file="spritelist.png"/>"
+> 7: [07/27/17 19:52:37 : 76] Read line #5: "    </images>"
+> 8: [07/27/17 19:52:37 : 76] Read line #6: "    <sprites>"
+> 9: [07/27/17 19:52:37 : 76] Read line #7: "        <sprite id="mario_sprite" source_id="screenshot" speed="0.1" cycleable="true">"
+> 10: [07/27/17 19:52:37 : 76] Read line #8: "            <sp x="0" y="0" w="260" h="200"/>"
+> 11: [07/27/17 19:52:37 : 76] Read line #9: "            <sp x="10" y="10" w="260" h="200"/>"
+> 12: [07/27/17 19:52:37 : 76] Read line #10: "            <sp x="20" y="20" w="260" h="200"/>"
+> 13: [07/27/17 19:52:37 : 76] Read line #11: "            <sp x="30" y="30" w="260" h="200"/>"
+> 14: [07/27/17 19:52:37 : 76] Read line #12: "            <sp x="40" y="40" w="260" h="200"/>"
+> 15: [07/27/17 19:52:37 : 76] Read line #13: "            <sp x="50" y="50" w="260" h="200"/>"
+> 16: [07/27/17 19:52:37 : 76] Read line #14: "            <sp x="60" y="60" w="260" h="200"/>"
+> 17: [07/27/17 19:52:37 : 76] Read line #15: "            <sp x="70" y="70" w="260" h="200"/>"
+> 18: [07/27/17 19:52:37 : 76] Read line #16: "            <sp x="80" y="80" w="260" h="200"/>"
+> 19: [07/27/17 19:52:37 : 76] Read line #17: "            <sp x="90" y="90" w="260" h="200"/>"
+> 20: [07/27/17 19:52:37 : 76] Read line #18: "        </sprite>"
+> 21: [07/27/17 19:52:37 : 76] Read line #19: "    </sprites>"
+> 22: [07/27/17 19:52:37 : 76] Read line #20: "</resources>"
+> 23: [07/27/17 19:52:37 : 76] File closed successfully.
+> 24: [07/27/17 19:52:37 : 76] Parsing took 335 micros.
+> 25: [07/27/17 19:52:37 : 76] .getChildren on "anims.xml" took 3432 ns.
+> 26: [07/27/17 19:52:37 : 76] .getChildren on "resources" took 691 ns.
+> 27: [07/27/17 19:52:37 : 76] .getChildren on "images" took 1023 ns.
+> 28: [07/27/17 19:52:37 : 76] .getChildren on "anims.xml" took 536 ns.
+> 29: [07/27/17 19:52:37 : 76] .getChildren on "resources" took 538 ns.
+> 30: [07/27/17 19:52:37 : 76] .getChildren on "sprites" took 519 ns.
+> 31: [07/27/17 19:52:37 : 315] .getChildren on "sprite" took 5503 ns.
+> 32: [07/27/17 19:52:39 : 2068] Closing the log.
