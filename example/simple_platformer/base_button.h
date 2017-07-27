@@ -18,11 +18,11 @@
 namespace re{
 
 class BaseButton{
-    private:
+private:
     int x, y, xLength, yLength;
     ImagePtr buttonImg;
     std::function<void()> actionFunc;
-    public:
+public:
     BaseButton(Point2f point, ImagePtr img);
     BaseButton(int xSource, int ySource, ImagePtr img);
     void display();

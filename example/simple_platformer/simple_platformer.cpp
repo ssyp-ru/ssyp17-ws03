@@ -1,4 +1,4 @@
-#include <RealEngine/base_app.h>
+#include <RealEngine/baseApp.h>
 #include <RealEngine/graphic.h>
 #include <RealEngine/graphic/image.h>
 #include <RealEngine/graphic/animation.h>
@@ -12,12 +12,14 @@
 #include <chrono>
 #include <vector>
 
+using namespace re::graphic;
+
 class MainApp : public re::IBaseApp{
 public:
 
     //Setup:
     void setup() override {
-        re::set_fps(60);
+        set_fps(60);
         re::Animation testanimCustom(0, true);
         re::Image buttonsource("test.png");
         re::Image spritelist("spritelist.png");
@@ -30,8 +32,8 @@ public:
         re::BaseButton exit_btn(50, 250, buttonsource.get_subimage(10, 200, 200, 70));
         buttonList.push_back(startgame_btn);
         buttonList.push_back(exit_btn);
-        buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this/*, std::placeholders::_1*/));
-        buttonList[1].register_action(std::bind(&MainApp::setState_exit, this/*, std::placeholders::_1*/));
+        buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
+        buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
         /*for (auto& btn : buttonList){
             btn.register_action(std::bind(&MainApp::state_change, this, std::placeholders::_1));
         }*/
@@ -43,37 +45,29 @@ public:
     }
 
     void update() override {
-      //  x += 0;
-       // y += 5;
-        //if (isMovingForward) x += testanimCustom.getSpeed()*10;
-        //else x -= testanimCustom.getSpeed()*10;
-        //customAnimSpeed += 0.05;
-        //if (customAnimSpeed > 3) customAnimSpeed = 0;
-        //if (y > 380) y = 0;
-        //if (x > 380) x = -100;
-      //  if (x < -100) x = 380;
         switch(curState){
             case AppState::Ingame:
-            testPlayer.updatePosition();
-            break;
+                testPlayer.updatePosition();
+                break;
             case AppState::Exit:
-            exit(0);
-            break;
+                exit(0);
         }  
     }
     void display() override {
         switch(curState){
             //re::draw_image(100+x, 100, testanimCustom.getNextFrame());
             case AppState::Ingame:
-            re::background(re::WHITE); // Clears all, each drawn pic is placed forever.
-            re::draw_rectangle(0, 126, 400, 2, re::BLACK);
-            re::draw_rectangle(curX, curY, 5, 5, re::BLACK);
-            testPlayer.display();
-            break;
+                background(re::WHITE); // Clears all, each drawn pic is placed forever.
+                draw_rectangle(0, 126, 400, 2, re::BLACK);
+                draw_rectangle(curX, curY, 5, 5, re::BLACK);
+                testPlayer.display();
+                break;
+
             case AppState::MainMenu:
-            for (auto& btn : buttonList){
-                btn.display();
-            }
+                background(re::WHITE);
+                for (auto& btn : buttonList){
+                    btn.display();
+                }
             break;
         }
     }
@@ -148,7 +142,6 @@ private:
 };
 
 int main(){
-    re::init_graphics(re::GraphicalBackend::XCB, 400, 400);
-    re::run_base_app(new MainApp());
+    re::runApp( 400, 400, std::make_shared<MainApp>() );
     return 0;
 }

@@ -7,10 +7,8 @@ set(SOURCE_LIB  window/opengl.cpp
                 graphics/graphic.cpp
                 graphics/animation.cpp
                 utils/logger.cpp
-                ../example/simple_platformer/base_button.cpp
                 math/math.cpp
                 utils/stop_watch.cpp
-                ../example/simple_platformer/player.cpp
                 recource_manager/xml_parser.cpp
                 mainApp.cpp
 )
@@ -33,6 +31,6 @@ target_link_libraries(real_engine glut)
 target_link_libraries(real_engine GLU)
 target_link_libraries(real_engine GL)
 
-target_link_libraries(real_engine xkbcommon-x11)
+# target_link_libraries(real_engine xkbcommon-x11)
 target_link_libraries(real_engine stdc++fs)
-target_link_libraries(real_engine xcb-image)
+# target_link_libraries(real_engine xcb-image)

@@ -6,7 +6,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_files")
 
 # для компиляции своего примера нужно будет в эту строчку поставить путь к своему файлу примера 
 # (в дальнейшем система сборки будет немного изменена)
-set(EXECUTABLE example/simple_platformer/simple_platformer.cpp)
+set(EXECUTABLE example/simple_platformer/simple_platformer.cpp example/simple_platformer/base_button.cpp example/simple_platformer/player.cpp)
+# set(EXECUTABLE example/pre_test/pre_test.cpp)
 
 set(MATH_TEST_EXECUTABLE tests/math_test.cpp)
 

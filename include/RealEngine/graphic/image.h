@@ -31,6 +31,8 @@ private:
     unsigned char* image_buffer;
     bool gl;
     uint glid;
+
+    void generate_texture();
 };
 typedef std::shared_ptr<Image> ImagePtr;
 

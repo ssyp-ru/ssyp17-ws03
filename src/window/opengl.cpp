@@ -245,11 +245,7 @@ void OpenGL::draw_image( int x0, int y0, ImagePtr img )
     glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
     glBindTexture(GL_TEXTURE_2D,img->getTex());
 
-    // glColor4f(1, 1, 1, 1);
-
     glBegin(GL_QUADS);
-        // glColor4f(  1, 1, 1, 1);
-
         glTexCoord2f(0.0,0.0); glVertex3f( x0, -y0, curLay );
         glTexCoord2f(0.0,1.0); glVertex3f( x0, -y0 - img->h, curLay );
         glTexCoord2f(1.0,1.0); glVertex3f( x0 + img->w, -y0 - img->h, curLay );

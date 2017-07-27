@@ -27,5 +27,5 @@ re::Point2f Player::getCurPosition(){
     return re::Point2f(playercoords.x, playercoords.y);
 } // returns current position
 void Player::display(){
-    re::draw_image(playercoords.x, playercoords.y, movingAnim.getNextFrame());
+    re::graphic::draw_image(playercoords.x, playercoords.y, movingAnim.getNextFrame());
 }
