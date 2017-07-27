@@ -32,40 +32,40 @@ void xml_elem_print_rec(re::XmlElem* elem, std::ofstream& out, int depth) {
     }
     bool has_child = elem->child.size() > 0;
     bool has_content = elem->content.length() > 0;
-    bool is_closed = !(has_child || has_content);
-    if(is_closed) {
-        out << '/';
+    if(!(has_child || has_content)) {
+        out << '/' << '>' << std::endl;
+        return;
     }
     out << '>';
-    if(has_child) {
-        out << std::endl;
-    }
     if(has_content) {
-        if(has_child) {
-            std::string buffer = elem->content;
-            size_t found;
+        std::string buffer = elem->content;
+        size_t found = buffer.find('\n');
+        has_content = found != buffer.npos;
+        if(has_content) {
             do {
                 found = buffer.find('\n');
+                out << std::endl;
                 for(int i = 0; i <= depth; i++) {
                     out << '\t';
                 }
-                out << buffer.substr(0,found) << std::endl;
+                out << buffer.substr(0,found);
                 buffer = buffer.substr(found+1,buffer.npos);
                 if(buffer.length() <= 0) break;
             } while(found != buffer.npos);
         } else {
-            out << elem->content;
+            out << buffer;
         }
+    }
+    if(has_child||has_content) {
+        out << std::endl;
     }
     for(re::XmlElem* e : elem->child) {
         xml_elem_print_rec(e, out, depth+1);
     }
-    if(!is_closed) {
-        if(has_child) for(int i = 0; i < depth; i++) {
-            out << '\t';
-        }
-        out << "</" << elem->name << '>';
+    if(has_child||has_content) for(int i = 0; i < depth; i++) {
+        out << '\t';
     }
+    out << "</" << elem->name << '>';
     out << std::endl;
 }
 
@@ -113,13 +113,12 @@ re::XmlElem re::parse_xml(std::string input_filename) {
         }
 
         while(buffer.length() > 0) {
+
+            // find any comments presented in line
             found = buffer.find("<!--");
             if(found != buffer.npos) {
                 is_comment = true;
-            }
-
-            // find any comments presented in line
-            // or 
+            } // if comment is multi-lined
             if(is_comment) {
                 found_closure = buffer.find("-->");
                 if(found_closure != buffer.npos) {
@@ -129,9 +128,14 @@ re::XmlElem re::parse_xml(std::string input_filename) {
                         buffer.erase(0, found_closure+3);   
                     }
                     is_comment = false;
+                } else {
+                    if(found != buffer.npos) {
+                        buffer.erase(found, found_closure);
+                    } else {
+                        break; 
+                    }
                 }
             }
-            if(is_comment) break;
 
             // find any object-related marks
             found = buffer.find("<");
@@ -227,7 +231,7 @@ re::XmlElem re::parse_xml(std::string input_filename) {
                                         +"Empty field value.");
                                     break;
                                 }
-                                if(value[0] == '"') {
+                                if(value[0] == '"' && value[value.length() - 1] != '"') {
                                     is_string = true;
                                 } else {
                                     elem->field[name] = value;
@@ -235,7 +239,7 @@ re::XmlElem re::parse_xml(std::string input_filename) {
                             } else {
                                 value += ' ';
                                 value += str;
-                                if(str.find('"') == str.length() - 1) {
+                                if(str.rfind('"') == str.length() - 1) {
                                     elem->field[name] = value;
                                     is_string = false;
                                 }
@@ -243,10 +247,7 @@ re::XmlElem re::parse_xml(std::string input_filename) {
                         }
                     break;
                 }
-                if(closure[0] == '/') {
-                // case <...>
-                } else {}  // end case <...>
-            } // end if correct closure
+            }
             // remove found closure
             buffer.erase(found,found_closure-found+1);
         }
