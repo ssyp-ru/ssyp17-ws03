@@ -8,8 +8,10 @@ set(SOURCE_LIB  window/windowXCB.cpp
                 graphics/graphic.cpp
                 graphics/animation.cpp
                 utils/logger.cpp
+                ../example/simple_platformer/base_button.cpp
                 math/math.cpp
                 utils/stop_watch.cpp
+                ../example/simple_platformer/player.cpp
                 recource_manager/xml_parser.cpp
                 main_app.cpp
 )
