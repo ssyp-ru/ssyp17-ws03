@@ -5,8 +5,6 @@
 #include <GL/glut.h>
 // #include <GL/glx.h>
 
-
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 // #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -95,12 +93,15 @@ ImagePtr Image::get_subimage(int x, int y, int size_x, int size_y){
 }
 
 void Image::set_subimage(int x, int y, ImagePtr im){
-    if (x + im->w > w || y + im->h > h)
+    if (x + im->w > w || y + im->h > h){
         std::cout << "check sizes" << std::endl;
-    else
-        for (int i = x; i < x + im->w; i++)
-            for (int j = y; j < y + im->h; j++)
-                set_pix_color(i, j, im->get_pix_color(i - x, j - y));   
+        return;
+    }
+    for (int i = x; i < x + im->w; i++){
+        for (int j = y; j < y + im->h; j++){
+            set_pix_color(i, j, im->get_pix_color(i - x, j - y));
+        }
+    }
 }
 
 void Image::set_pix_color(int x, int y, Color c){

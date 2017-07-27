@@ -5,11 +5,8 @@
 
 namespace re
 {
-
-namespace graphic
-{
     void draw_rectangle(int x0, int y0, int w, int h, Color color){
-        OpenGL::instance().draw_rectangle( x0, -y0, w, h, color );
+        OpenGL::instance().draw_rectangle( x0, -y0, w, -h, color );
     }
 
     void background(Color color){
@@ -26,6 +23,10 @@ namespace graphic
 
     void draw_image(int x0, int y0, ImagePtr im){
         OpenGL::instance().draw_image( x0, y0, im );
+    }
+
+    void draw_image_part(int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr im){
+        OpenGL::instance().draw_image_part( x0, y0, x1, y1, w0, h0, w1, h1, im );
     }
 
     void goFullScreen()
@@ -58,6 +59,4 @@ namespace graphic
     void rotate(float angle){
         OpenGL::instance().rotate( angle );
     }
-}
-
 } // namespace re

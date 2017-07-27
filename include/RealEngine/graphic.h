@@ -2,16 +2,16 @@
 
 #include "graphic/image.h"
 #include "graphic/color.h"
+#include "math.h"
 
 namespace re{
 
-namespace graphic
-{
     void background(Color color);
     void draw_rectangle(int x0, int y0, int w, int h, Color color);
     void draw_line(int x0, int y0, int x1, int y1, Color color);
     void draw_circle(int x0, int y0, int r, Color color);
     void draw_image(int x0, int y0, ImagePtr im);
+    void draw_image_part(int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr im);
     void set_fps(uint fps);
     void translate(int x, int y);
     void scale(float x, float y);
@@ -19,6 +19,21 @@ namespace graphic
     void rotate(float angle);
     void goFullScreen();
     void setDrawLay( int lay );
-}
+
+
+    struct stParticle
+    {
+        float life;
+        Point2f pos;
+        Point2f vec;
+        Point2f move;
+
+        ImagePtr imge;
+
+        Point2f startImg;
+        Point2f endImg;
+    };
+
+    void launchParticle( stParticle &newParticle );
 
 }

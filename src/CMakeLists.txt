@@ -11,6 +11,7 @@ set(SOURCE_LIB  window/opengl.cpp
                 utils/stop_watch.cpp
                 recource_manager/xml_parser.cpp
                 recource_manager/tiled_parser.cpp
+                graphics/particle.cpp
                 mainApp.cpp
 )
 
