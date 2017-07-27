@@ -240,11 +240,16 @@ void OpenGL::blewAll()
 
 void OpenGL::draw_image( int x0, int y0, ImagePtr img )
 {
+
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
     glBindTexture(GL_TEXTURE_2D,img->getTex());
 
+    // glColor4f(1, 1, 1, 1);
+
     glBegin(GL_QUADS);
+        // glColor4f(  1, 1, 1, 1);
+
         glTexCoord2f(0.0,0.0); glVertex3f( x0, -y0, curLay );
         glTexCoord2f(0.0,1.0); glVertex3f( x0, -y0 - img->h, curLay );
         glTexCoord2f(1.0,1.0); glVertex3f( x0 + img->w, -y0 - img->h, curLay );
@@ -294,7 +299,7 @@ void OpenGL::keyboardUp( unsigned char c, int a, int b )
     if( OpenGL::instance().key[c] )
     {
         OpenGL::instance().key[c] = false;
-        OpenGL::instance().baseApp->on_key_released( openGL_special_key_to_key(c) );
+        OpenGL::instance().baseApp->on_key_released( openGL_key_to_key(c) );
     }
 }
 
@@ -313,7 +318,7 @@ void OpenGL::keyboardSpecial( int c, int a, int b )
     if( !OpenGL::instance().key[c] )
     {
         OpenGL::instance().key[c] = true;
-        OpenGL::instance().baseApp->on_key_pressed( (Key)c );
+        OpenGL::instance().baseApp->on_key_pressed( openGL_special_key_to_key(c) );
     }
 }
 
@@ -322,7 +327,7 @@ void OpenGL::keyboardUpSpecial( int c, int a, int b )
     if( OpenGL::instance().key[c] )
     {
         OpenGL::instance().key[c] = false;
-        OpenGL::instance().baseApp->on_key_released( (Key)c );
+        OpenGL::instance().baseApp->on_key_released( openGL_special_key_to_key(c) );
     }
 }
 
