@@ -452,7 +452,7 @@ void Game::update()
     }
 }
 int Game::getTicksAlive() { return ticksAlive; }
-std::vector<GameObject*> Game::getWorld()
+std::vector<GameObjectPtr> Game::getWorld()
 {
 	return world;
 }
@@ -464,7 +464,7 @@ void Game::start()
     //t.join();
 	update();
 }
-void Game::addObject(GameObject *obj)
+void Game::addObject(GameObjectPtr obj)
 {
     world.push_back(obj);
 }

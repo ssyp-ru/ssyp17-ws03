@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 
 namespace re {
 
@@ -91,23 +92,24 @@ private:
 	Vector2f removeCollisionWith(GameObject &gm);
 	void updatePos();
 };
+typedef std::shared_ptr<GameObject> GameObjectPtr;
 
 // Main physic core class, contents all real world and makes all physic
 class Game
 {
 private: 
     // just don't touch it.
-    std::vector<GameObject*> world;
+    std::vector<GameObjectPtr> world;
     bool isGame;
     int ticksAlive = 0;
 	void updatePhysics();
     void update();
 public:
 	int getTicksAlive(); // Returns count of ticks world exists
-	std::vector<GameObject*> getWorld(); // Returns copy of array of objects
+	std::vector<GameObjectPtr> getWorld(); // Returns copy of array of objects
 	Game(); // Empty constructor... yep, too lazy to delete it.
     void start(); // Starts game by sending thread(that calles method) in
-    void addObject(GameObject *obj); // Adding object(GameObject) to world
+    void addObject(GameObjectPtr obj); // Adding object(GameObject) to world
     void updateTick(); // Makes one physic tick, use it if you don't want to send thread off by method 'start()'
 };
 
