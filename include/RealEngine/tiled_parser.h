@@ -1,3 +1,4 @@
+#pragma once
 #include "xml_parser.h"
 
 namespace re {
@@ -29,7 +30,6 @@ namespace re {
         Tileset tileset;
         Layer layer;
         ObjectGroup objectgroup;
-        void print(std::string output_filename);
     };
 
     std::vector<Map> parse_tiled(XmlElem parsed_xml);
