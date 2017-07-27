@@ -28,3 +28,4 @@ target_link_libraries(math_test real_engine)
 
 add_subdirectory(example/simple_window)
 add_subdirectory(example/simple_platformer)
+add_subdirectory(example/physic_core)
