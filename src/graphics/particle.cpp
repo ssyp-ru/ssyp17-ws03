@@ -55,7 +55,7 @@ void drawParticles( float delta )
         {
             std::cout << curr.life << std::endl;
             OpenGL::instance().draw_image_part( curr.pos.x, curr.pos.y, 
-                                                curr.pos.x+curr.size.x, curr.pos.y+curr.size.y, 
+                                                curr.pos.x+5, curr.pos.y+5, 
                                                 curr.startImg.x, curr.startImg.y, 
                                                 curr.endImg.x, curr.endImg.y, 
                                                 curr.imge );
