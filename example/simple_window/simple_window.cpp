@@ -16,7 +16,6 @@ public:
 
     void update() override {
     }
-
     void display() override {
         re::graphic::background(re::WHITE);
         re::graphic::draw_rectangle(x, y, 50, 50, re::RED);
@@ -26,6 +25,7 @@ public:
     }
 
     void on_key_pressed(re::Key key){
+        std::cout << "Key pressed\n";
         if (key == re::Key::Escape){
             exit(0);
         } else if(key == (re::Key)112) {

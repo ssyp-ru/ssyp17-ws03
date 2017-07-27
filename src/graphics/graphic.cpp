@@ -21,11 +21,11 @@ namespace graphic
     }
 
     void draw_circle(int x0, int y0, int r, Color color){
-        OpenGL::instance().draw_circle( x0, -y0, r, color );
+        OpenGL::instance().draw_circle( x0, y0, r, color );
     }
 
     void draw_image(int x0, int y0, ImagePtr im){
-        OpenGL::instance().draw_image( x0, -y0, im );
+        OpenGL::instance().draw_image( x0, y0, im );
     }
 
     void goFullScreen()

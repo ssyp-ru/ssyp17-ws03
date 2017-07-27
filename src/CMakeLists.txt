@@ -5,6 +5,7 @@ project(real_engine)
 set(SOURCE_LIB  window/opengl.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
+                graphics/animation.cpp
                 utils/logger.cpp
                 math/math.cpp
                 utils/stop_watch.cpp
@@ -26,4 +27,3 @@ target_link_libraries(real_engine GLU)
 target_link_libraries(real_engine GL)
 
 target_link_libraries(real_engine stdc++fs)
-target_link_libraries(real_engine xcb-image)
