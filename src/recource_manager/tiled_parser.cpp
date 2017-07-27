@@ -1,6 +1,6 @@
-#include "tiled_parser.h"
-#include "../utils/logger.h"
-#include "fstream"
+#include <RealEngine/tiled_parser.h>
+#include <RealEngine/logger.h>
+#include <fstream>
 
 void re::Map::print(std::string output_filename) {
     std::ofstream out(output_filename);
@@ -23,8 +23,6 @@ void re::Map::print(std::string output_filename) {
         out << std::endl;
     }
 }
-
-re::Log tiled_log("logs/tiled_parser.txt");
 re::Object parse_object(re::XmlElem* parsed_xml) {
     re::Object object;
     try {
@@ -38,7 +36,7 @@ re::Object parse_object(re::XmlElem* parsed_xml) {
             object.flags.push_back(obj->name);
         }
     } catch(...) {
-        tiled_log.msg("Error parsing " + parsed_xml->name + " as an object.");
+        re::Log::msg("Error parsing " + parsed_xml->name + " as an object.", re::Log::LEVEL::DEBUG);
     }
     return object;
 }
@@ -50,7 +48,7 @@ re::ObjectGroup parse_objectgroup(re::XmlElem* parsed_xml) {
             objectgroup.group.push_back(parse_object(obj));
         }
     } catch(...) {
-        tiled_log.msg("Error parsing " + parsed_xml->name + " as an objectgroup.");
+        re::Log::msg("Error parsing " + parsed_xml->name + " as an objectgroup.", re::Log::LEVEL::DEBUG);
     }
     return objectgroup;
 }
@@ -65,16 +63,14 @@ re::Layer parse_layer(re::XmlElem* parsed_xml) {
         std::string data = data_xml->content;
         while(data.length() > 0) {
             size_t found = data.find_first_not_of(" ,\n\t");
-            tiled_log.msg("DEL "+data.substr(0,found));                    
             data.erase(0,found);
             if(data.length() <= 0) break;
             found = data.find_first_of(" ,\n\t");
-            tiled_log.msg("ADD "+ data.substr(0,found));           
             layer.data.push_back(std::stoi(data.substr(0,found)));
             data.erase(0,found);
         }
     } catch(...) {
-        tiled_log.msg("Error parsing " + parsed_xml->name + " \""+layer.name+"\" as a layer.");        
+        re::Log::msg("Error parsing " + parsed_xml->name + " \""+layer.name+"\" as a layer.", re::Log::LEVEL::DEBUG);
     }
     return layer;
 }
@@ -84,7 +80,7 @@ re::Tileset parse_tileset(re::XmlElem* parsed_xml) {
         tileset.firstgid = std::stoi(parsed_xml->field.at("firstgid"));
         tileset.source = parsed_xml->field.at("source");
     } catch(...) {
-        tiled_log.msg("Error parsing " + parsed_xml->name + " as a tileset.");        
+        re::Log::msg("Error parsing " + parsed_xml->name + " as a tileset.", re::Log::LEVEL::DEBUG);        
     }
     return tileset;
 }
@@ -96,7 +92,7 @@ re::Map parse_map(re::XmlElem* parsed_xml) {
         map.layer = parse_layer(parsed_xml->get_children("layer").at(0));
         map.objectgroup = parse_objectgroup(parsed_xml->get_children("objectgroup").at(0));
     } catch(...) {
-        tiled_log.msg("Error parsing " + parsed_xml->name + " as a map.");        
+        re::Log::msg("Error parsing " + parsed_xml->name + " as a map.", re::Log::LEVEL::DEBUG);        
     }
     return map;
 }

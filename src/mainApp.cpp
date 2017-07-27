@@ -1,6 +1,5 @@
 #include "mainApp.h"
 
-#include "utils/logger.h"
 #include "window/opengl.h"
 
 #include <unistd.h>
