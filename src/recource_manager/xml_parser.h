@@ -1,40 +1,26 @@
 #pragma once
 #include <vector>
-#include <fstream>
+#include <map>
 
 namespace re {
     struct XmlElem {
         // Logs are written to logs/xml_parser.txt
 
-        std::vector<std::string> tag; // tag[0] == name, probably
-        std::vector<std::string> fieldName;
-        std::vector<std::string> fieldData;
+        std::string name;
+        std::map<std::string, std::string> field;
         std::vector<XmlElem*> child;
-        std::vector<std::string> data;
+        std::string content;
         XmlElem* parent;
         
         XmlElem();
 
-        // returns if elem has tag
-        bool hasTag(std::string);
-
         // Asquires every XmlElem from child with given name
-        std::vector<XmlElem*> getChildren(std::string);
-        void print(std::string outputFile);
+        std::vector<XmlElem*> get_children(std::string);
+        
+        // prints XmlElem with its content to file
+        void print(std::string output_filename);
     };
 
     // return XmlElem with name of file and with every elements found inside
-    XmlElem parseXml(std::string inputFile);
-    /* The struct example that parser can read with  
-        <name fieldName = fieldData
-                fieldName = fieldData>
-            < child fieldName=fieldData >
-            data
-            <child  fieldName = fieldData>
-            data
-        </name>
-    */
-
-    void printXmlElem(XmlElem);
-
+    XmlElem parse_xml(std::string input_filename);
 }

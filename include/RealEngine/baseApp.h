@@ -2,7 +2,7 @@
 
 #include "keyboard.h"
 #include <memory>
-
+#include <string>
 namespace re{
 
 class IBaseApp{
@@ -20,12 +20,7 @@ public:
 };
 typedef std::shared_ptr<IBaseApp> IBaseAppPtr;
 
-enum class GraphicalBackend{
-    XCB,
-    OPENGL
-};
-
-void init_graphics(GraphicalBackend backend_type, int window_width, int window_height);
-void run_base_app(IBaseApp* base_app_ptr);
+void runApp(int window_width, int window_height, IBaseAppPtr BaseApp);
+void setWindowName( std::string name );
 
 }
