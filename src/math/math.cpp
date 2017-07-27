@@ -8,17 +8,21 @@ const float precision = 0.0000001;
 
 namespace re{
 
+Point2f::Point2f(){
+    this->x = 0;
+    this->y = 0;
+}
 
 Point2f::Point2f(float x, float y){
     this->x = x;
     this->y = y;
 }
 
-float Point2f::length0(){  //distance from (0, 0) to point
+float Point2f::length(){  //distance from (0, 0) to point
     return sqrt(x*x + y*y);
 }
 
-float Point2f::length(Point2f right){  //distance from one point to another
+float Point2f::distance_to(Point2f right){  //distance from one point to another
     return sqrt((right.x - x)*(right.x - x) + (right.y - y)*(right.y - y));    
 }
 
@@ -37,28 +41,46 @@ Point2f Point2f::operator*(float alpha){
 Point2f Point2f::operator/(float alpha){
     return Point2f(x / alpha, y / alpha);
 }
+
+void Point2f::operator+=(Point2f right){
+    x += right.x;
+    y += right.y;    
+}
+
+void Point2f::operator-=(Point2f right){
+    x -= right.x;
+    y -= right.y;
+}
+
+void Point2f::operator*=(float alpha){
+    x *= alpha;
+    y *= alpha;
+}
+
+void Point2f::operator/=(float alpha){
+    x /= alpha;
+    y /= alpha;
+}
+
 float Point2f::operator*(Point2f right){  //scalar
     return (x * right.x + y * right.y);
 }
+
 bool Point2f::operator==(Point2f right){
     return (abs(x - right.x) < precision && abs(y - right.y) < precision);
 }
+
 bool Point2f::operator!=(Point2f right){
     return (abs(x - right.x) > precision && abs(y - right.y) > precision);
 }
 
 void Point2f::normalize(){
-    float len = length0();
+    float len = length();
     x = x / len;
     y = y / len;
 }
 
-Point2f Point2f::normalizedp(){
-    float len = length0();
-    return Point2f(x/len, y/len);
-}
-
-bool Point2f::parallel(Point2f first, Point2f second, Point2f third, Point2f fourth){
+bool Point2f::isParallel(Point2f first, Point2f second, Point2f third, Point2f fourth){
     float a1 = first.equation_a(second);
     float a2 = third.equation_a(fourth);
     float b1 = first.equation_b(second);
@@ -68,6 +90,10 @@ bool Point2f::parallel(Point2f first, Point2f second, Point2f third, Point2f fou
 
 bool Point2f::isValid(){
     return (x != std::numeric_limits<float>::infinity() && y != std::numeric_limits<float>::infinity());
+}
+
+bool Point2f::isNull(){
+    return (x == 0 && y == 0);
 }
 
 //straight equation
