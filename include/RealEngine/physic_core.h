@@ -57,6 +57,7 @@ public:
     bool isCollinearTo(Vector2f vec);
 	void rotate(double radians);
 	Vector2f rotated(double radians);
+	double angleBetween(Vector2f vec);
 };
 
 // Connects two points (by pointers) in edge
@@ -81,8 +82,8 @@ public:
 	std::vector<Vector2f>* getVertexes(); // Returns pointer to array with vertexes
 	std::vector<Edge>* getEdges(); // Returns copy of array with edges
 	void rotate(double rotation); // Turns gameobject in counter-clock-wise by 'rotation' radians
-	void addCollisionCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)> callback); // Adds function to onCollision event
-	void addTriggerCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)> callback); // Adds function to onTrigger event
+	void addCollisionCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)> callback); // Adds function to onCollision event (collision from, collision to, normal vector)
+	void addTriggerCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)> callback); // Adds function to onTrigger event (collision from, collision to)
 	//#pragma region getters-and-setters
 	double getMass(); // Returns current mass of object
 	void setMass(double value); // Sets mass of gameobject(must be >= 0 (seriosly))

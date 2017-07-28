@@ -1,5 +1,6 @@
 #include "RealEngine/physic_core.h"
 #include <cmath>
+#include <iostream>
 
 namespace re {
 
@@ -124,6 +125,11 @@ void Vector2f::rotate(double radians)
 Vector2f Vector2f::rotated(double radians)
 {
 	return Vector2f(X * cos(radians) + Y * sin(radians), Y * cos(radians) - X * sin(radians));
+}
+double Vector2f::angleBetween(Vector2f vec){
+	double a = Length(), b = vec.Length(), c = (*this - vec).Length();
+	if ((a == 0) || (b == 0) || (c == 0)) return 0;
+	return acos((a*a + b*b - c*c) / (2*a*b));
 }
 
 
@@ -483,10 +489,14 @@ void Game::updatePhysics()
 							if (world[j]->isRigidbodySimulated)
 								for (int c = 0; c < world[i]->onTriggerEvents.size(); c++)
 									world[i]->onTriggerEvents[c](world[i], world[j]);
-        				if ((world[i]->isRigidbodySimulated) && (!world[j]->isTrigger))
+        				if (world[i]->isRigidbodySimulated)
 						{
 			    			Vector2f reflected = world[i]->velocity.reflectFrom(outOfCollisionVector.getLeftNormal());
-                        	Vector2f frictionProject = reflected.projectOnVector(outOfCollisionVector.getLeftNormal()) * (1 - (world[i]->friction != -1)? (world[i]->friction + world[j]->friction) / 2 : world[j]->friction);
+							Vector2f frictionProject;
+							if (world[i]->friction == -1)
+                        		frictionProject = reflected.projectOnVector(outOfCollisionVector.getLeftNormal()) * (1 - world[j]->friction);
+							else
+								frictionProject = reflected.projectOnVector(outOfCollisionVector.getLeftNormal()) * (1 - (world[i]->friction + world[j]->friction) / 2);
                         	Vector2f bouncinessProject = reflected.projectOnVector(outOfCollisionVector) * (world[i]->bounciness + world[j]->bounciness) / 2;
 							Vector2f impulseVector = Vector2f(0, 0);
                         	impulseVector = frictionProject + bouncinessProject - world[i]->velocity;

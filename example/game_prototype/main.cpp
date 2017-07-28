@@ -56,11 +56,21 @@ public:
                 exit(0);
         }  
     }
-    void display() override {
-
+    void display() override 
+    {
         if (re::getKeyState(re::Key::Right))
             testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
+        if (re::getKeyState(re::Key::Left))
+            testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
 
+        if (re::getKeyState(re::Key::Up))
+        {
+            if (testPlayer->isGrounded)
+            {
+                testPlayer->addImpulse(re::Vector2f(0, -10 * testPlayer->getMass()));
+                testPlayer->isGrounded = false;
+            }
+        }
         mainGame.updateTick();
         testPlayer->display(k);
         for (auto curObject : mainGame.getWorld())
@@ -88,19 +98,6 @@ public:
         std::cout << "Key pressed\n";
         if (key == re::Key::Escape){
             exit(0);
-        }
-        //if (key == re::Key::Right){
-        //    testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
-        //}
-        if (key == re::Key::Left){
-            testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
-        }
-        if (key == re::Key::Up){
-            if (testPlayer->isGrounded)
-            {
-                testPlayer->addImpulse(re::Vector2f(0, -10 * testPlayer->getMass()));
-                testPlayer->isGrounded = false;
-            }
         }
         if (key == re::Key::Down){
             
