@@ -24,7 +24,7 @@ public:
     }
     void onCollision(re::GameObjectPtr from, re::GameObjectPtr to, re::Vector2f vec)
     {
-        if (re::Vector2f(0, -1).angleBetween(vec) < 45.0 / 180.0 * 3.14159) 
+        if (re::Vector2f(0, -1).angleBetween(vec) < 60.0 / 180.0 * 3.14159) 
         { 
             isGrounded = true;
         }

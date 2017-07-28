@@ -11,6 +11,7 @@
 #include <iostream>
 #include <chrono>
 #include <vector>
+#include <cmath>
 #include "RealEngine/physic_core.h"
 
 class MainApp : public re::IBaseApp{
@@ -25,10 +26,10 @@ public:
         for (int i = 0; i < 9; i++){
             testanimCustom.add_frame(spritelist.get_subimage(3 + 17*i, 5, 16, 25));
         }
-        testPlayer = std::make_shared<Player>(re::Vector2f(10, 15), re::Vector2f(1, 1.5));
+        testPlayer = std::make_shared<Player>(re::Vector2f(5, 15), re::Vector2f(1, 1.5));
         testPlayer->movingAnim = testanimCustom;
         testPlayer->setRigidbodySimulated(true);
-        testPlayer->addImpulse(re::Vector2f(4, 0));
+        //testPlayer->addImpulse(re::Vector2f(4, 0));
         testPlayer->setFriction(-1.0);
         testPlayer->setBounciness(0.0);
         testPlayer->addCollisionCallback(testPlayer->getCallback());
@@ -39,7 +40,7 @@ public:
         plat->setFriction(1.0);
         plat->setBounciness(0.0);
 
-        re::GameObjectPtr plat2 = mainGame.addQuadrangle(re::Vector2f(30, 17), re::Vector2f(10, -1), re::Vector2f(10, 1), re::Vector2f(-10, 1), re::Vector2f(-10, -1));
+        re::GameObjectPtr plat2 = mainGame.addQuadrangle(re::Vector2f(16, 17), re::Vector2f(-4.1, 2.1), re::Vector2f(0, -2), re::Vector2f(4, -2), re::Vector2f(4, 2.1));
         plat2->setRigidbodySimulated(false);
         plat2->setFriction(1.0);
         plat2->setBounciness(0.0);
@@ -50,28 +51,37 @@ public:
     void update() override {
         switch(curState){
             case AppState::Ingame:
-                mainGame.getWorld()[0]->addForce(re::Vector2f(0, 10 * mainGame.getWorld()[0]->getMass()));
+                mainGame.getWorld()[0]->addForce(re::Vector2f(0, 20 * mainGame.getWorld()[0]->getMass()));
                 break;
             case AppState::Exit:
                 exit(0);
         }  
     }
+
     void display() override 
     {
-        if (re::getKeyState(re::Key::Right))
+        if (re::getKeyState(re::Key::D))
             testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
-        if (re::getKeyState(re::Key::Left))
+        if (re::getKeyState(re::Key::A))
             testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
 
-        if (re::getKeyState(re::Key::Up))
+        if ((testPlayer->isGrounded) && ((re::getKeyState(re::Key::D)) || (re::getKeyState(re::Key::A))))
+            testPlayer->movingAnim.setSpeed(0.5);
+        else
+            testPlayer->movingAnim.setSpeed(0);
+
+        if (re::getKeyState(re::Key::W))
         {
             if (testPlayer->isGrounded)
             {
-                testPlayer->addImpulse(re::Vector2f(0, -10 * testPlayer->getMass()));
+                testPlayer->addImpulse(re::Vector2f(0, -15 * testPlayer->getMass()));
                 testPlayer->isGrounded = false;
             }
         }
+        if ((testPlayer->getVelocity().Y > 0.1) && (testPlayer->isGrounded)) testPlayer->isGrounded = false;
+
         mainGame.updateTick();
+
         testPlayer->display(k);
         for (auto curObject : mainGame.getWorld())
         {
@@ -88,14 +98,14 @@ public:
     }
     //Events:
     void on_key_released(re::Key key){
-        std::cout << "Key release\n";
+        //std::cout << "Key release\n";
         if(key == re::Key::Right || key == re::Key::Left){
             
         }
     }
 
     void on_key_pressed(re::Key key){
-        std::cout << "Key pressed\n";
+        //std::cout << "Key pressed\n";
         if (key == re::Key::Escape){
             exit(0);
         }
