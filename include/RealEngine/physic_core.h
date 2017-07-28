@@ -61,7 +61,7 @@ public:
 	double getBounciness(); // Returns current bounciness of gameobject
 	void setBounciness(double value); // Sets bounciness of gameobject(must be >= 0, recommends also <= 1)
 	double getFriction(); // Returns current friction of gameobject
-	void setFriction(double value); // Sets friction of gameobject(recommended >= 0 and must be <= 1)
+	void setFriction(double value); // Sets friction of gameobject(recommended >= 0 and must be <= 1), if friction will be -1, will be counted only from other object.
 	bool getRigidbodySimulated(); // Returns true if gameobject is dynamic, false if static
 	void setRigidbodySimulated(bool value); // Sets gameobject to be dynamic(true) or static(false)
 	double getRotationSpeed(); // Returns rotation speed of gameobject
@@ -109,8 +109,20 @@ public:
 	std::vector<GameObjectPtr> getWorld(); // Returns copy of array of objects
 	Game(); // Empty constructor... yep, too lazy to delete it.
     void start(); // Starts game by sending thread(that calles method) in
-    void addObject(GameObjectPtr obj); // Adding object(GameObject) to world
+    void addObject(GameObjectPtr obj); // Adds object(GameObject) to world
     void updateTick(); // Makes one physic tick, use it if you don't want to send thread off by method 'start()'
+	GameObjectPtr addTriangle(Vector2f pos, Vector2f p1, Vector2f p2, Vector2f p3); // Adds a triangle in world, pos - position, p1, p2, p3 - vertexes, returns pointer to this gameobject (vertexes in local space, remember it)
+	GameObjectPtr addQuadrangle(Vector2f pos, Vector2f p1, Vector2f p2, Vector2f p3, Vector2f p4); // same as triangle, but 4 vertexes
 };
 
 } // namespace re
+
+// TODO: 
+// +создание четырехугольникок, пятиугольников, треугольников
+// +разобраться с трением
+// запилить карту метаданных
+// сделать триггеры (bool isTrigger)
+// +переместить отключение обработки у нефизических объектов, что б они могли
+// +вызывать события столкновения
+// +сделать возможным перемещение у нефизических объектов
+// запилить события столкновений
