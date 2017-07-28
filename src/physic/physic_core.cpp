@@ -134,6 +134,54 @@ Edge::Edge(Vector2f *P1, Vector2f *P2)
 }
 
 
+bool Metadata::hasKey(std::string name)
+{
+	if (int_values.find(name) != int_values.end()) return true;
+	if (double_values.find(name) != double_values.end()) return true;
+	if (string_values.find(name) != string_values.end()) return true;
+	if (bool_values.find(name) != bool_values.end()) return true;
+	return false;
+}
+
+void Metadata::setInt(std::string name, int value)
+{
+	int_values[name] = value;
+}
+void Metadata::setDouble(std::string name, double value)
+{
+	double_values[name] = value;
+}
+void Metadata::setString(std::string name, std::string value)
+{
+	string_values[name] = value;
+}
+void Metadata::setBool(std::string name, bool value)
+{
+	bool_values[name] = value;
+}
+
+int Metadata::getInt(std::string name)
+{
+	if (int_values.find(name) == int_values.end()) return 0;
+	return int_values[name];
+}
+double Metadata::getDouble(std::string name)
+{
+	if (double_values.find(name) == double_values.end()) return 0.0;
+	return double_values[name];
+}
+std::string Metadata::getString(std::string name)
+{
+	if (string_values.find(name) == string_values.end()) return "";
+	return string_values[name];
+}
+bool Metadata::getBool(std::string name)
+{
+	if (bool_values.find(name) == bool_values.end()) return false;
+	return bool_values[name];
+}
+
+
 GameObject::GameObject()
 {
 	GameObject(Vector2f(0, 0));

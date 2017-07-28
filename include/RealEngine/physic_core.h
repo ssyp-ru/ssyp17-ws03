@@ -1,8 +1,32 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <string>
+#include <map>
 
 namespace re {
+
+class Metadata
+{
+private:
+	// just don't touch it
+	std::map<std::string, int> int_values;
+	std::map<std::string, double> double_values;
+	std::map<std::string, std::string> string_values;
+	std::map<std::string, bool> bool_values;
+public:
+	bool hasKey(std::string name); // returns true if this object have variable with that name
+
+	void setInt(std::string name, int value); // sets value to variable with that name, if no this variable, creates it
+	void setDouble(std::string name, double value); // sets value to variable with that name, if no this variable, creates it
+	void setString(std::string name, std::string value); // sets value to variable with that name, if no this variable, creates it
+	void setBool(std::string name, bool value); // sets value to variable with that name, if no this variable, creates it
+
+	int getInt(std::string name); // get value from variable with that name, if map haven't this variable - returns 0
+	double getDouble(std::string name); // get value from variable with that name, if map haven't this variable - returns 0.0
+	std::string getString(std::string name); // get value from variable with that name, if map haven't this variable - returns ""
+	bool getBool(std::string name); // get value from variable with that name, if map haven't this variable - returns false
+};
 
 class Vector2f
 {
@@ -46,7 +70,7 @@ public:
 class GameObject
 {
 public:
-	int tag; // Just useful variable, you can use it as you want
+	Metadata metadata; // Just useful variable, read class Metadata
 	GameObject(); // Makes empty gameobject in (0, 0) position
 	GameObject(Vector2f pos); // Makes empty gameobject in your position
 	void addForce(Vector2f force); // Adds a force to this gameobject
@@ -71,7 +95,7 @@ public:
 	Vector2f getVelocity();
 	void setVelocity(Vector2f vec);
 	friend class Game;
-private:
+protected:
     // just don't touch it.
 	double mass;
 	double bounciness, friction;
@@ -120,7 +144,7 @@ public:
 // TODO: 
 // +создание четырехугольникок, пятиугольников, треугольников
 // +разобраться с трением
-// запилить карту метаданных
+// +запилить карту метаданных
 // сделать триггеры (bool isTrigger)
 // +переместить отключение обработки у нефизических объектов, что б они могли
 // +вызывать события столкновения
