@@ -11,10 +11,12 @@
 #include <iostream>
 #include <chrono>
 #include <vector>
+#include "RealEngine/physic_core.h"
 
 class MainApp : public re::IBaseApp{
 public:
-
+    re::Game mainGame;
+    int k = 16; // scale
     //Setup:
     void setup() override {
         re::Animation testanimCustom(0, true);
@@ -22,42 +24,63 @@ public:
         re::Image spritelist("spritelist.png");
         for (int i = 0; i < 9; i++){
             testanimCustom.add_frame(spritelist.get_subimage(3 + 17*i, 5, 16, 25));
-            //imgptr = std::make_shared<re::Image>("test.png")
-            //testanimCustom.add_frame(std::make_shared<re::Image>("anim" + std::to_string(i) + ".png"));
         }
-        Player newPlayer(100, 100, 10, testanimCustom);
-        testPlayer = newPlayer;   
+        testPlayer = std::make_shared<Player>(re::Vector2f(10, 15), re::Vector2f(1, 1.5));
+        testPlayer->movingAnim = testanimCustom;
+        testPlayer->setRigidbodySimulated(true);
+        testPlayer->addImpulse(re::Vector2f(4, 0));
+        testPlayer->setFriction(-1.0);
+        testPlayer->setBounciness(0.0);
+        testPlayer->addCollisionCallback(testPlayer->getCallback());
+        mainGame.addObject(testPlayer);
+
+        re::GameObjectPtr plat = mainGame.addQuadrangle(re::Vector2f(10, 20), re::Vector2f(10, -1), re::Vector2f(10, 1), re::Vector2f(-10, 1), re::Vector2f(-10, -1));
+        plat->setRigidbodySimulated(false);
+        plat->setFriction(1.0);
+        plat->setBounciness(0.0);
+
+        re::GameObjectPtr plat2 = mainGame.addQuadrangle(re::Vector2f(30, 17), re::Vector2f(10, -1), re::Vector2f(10, 1), re::Vector2f(-10, 1), re::Vector2f(-10, -1));
+        plat2->setRigidbodySimulated(false);
+        plat2->setFriction(1.0);
+        plat2->setBounciness(0.0);
+
         curState = AppState::Ingame;
-        curX = 0;
-        curY = 0; 
     }
 
     void update() override {
         switch(curState){
             case AppState::Ingame:
-                testPlayer.updatePosition();
+                mainGame.getWorld()[0]->addForce(re::Vector2f(0, 10 * mainGame.getWorld()[0]->getMass()));
                 break;
             case AppState::Exit:
                 exit(0);
         }  
     }
     void display() override {
-        switch(curState){
-            //re::draw_image(100+x, 100, testanimCustom.getNextFrame());
-            case AppState::Ingame:
-                background(re::WHITE); // Clears all, each drawn pic is placed forever.
-                draw_rectangle(0, 126, 400, 2, re::BLACK);
-                draw_rectangle(curX, curY, 5, 5, re::BLACK);
-                testPlayer.display();
-                break;
 
+        if (re::getKeyState(re::Key::Right))
+            testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
+
+        mainGame.updateTick();
+        testPlayer->display(k);
+        for (auto curObject : mainGame.getWorld())
+        {
+            if (curObject != testPlayer)
+            for (auto curEdge : *curObject->getEdges())
+            {
+                re::draw_line((curEdge.P1->X + curObject->getPosition().X) * k,
+                             (curEdge.P1->Y + curObject->getPosition().Y) * k,
+                             (curEdge.P2->X + curObject->getPosition().X) * k,
+                             (curEdge.P2->Y + curObject->getPosition().Y) * k,
+                             re::BLACK);
+            }
         }
     }
     //Events:
     void on_key_released(re::Key key){
         std::cout << "Key release\n";
         if(key == re::Key::Right || key == re::Key::Left){
-            testPlayer.stop();
+            
         }
     }
 
@@ -66,17 +89,21 @@ public:
         if (key == re::Key::Escape){
             exit(0);
         }
-        if (key == re::Key::Right){
-            isMovingForward = true;
-            testPlayer.move(isMovingForward);
-            re::Point2f curCoords = testPlayer.getCurPosition();
-            std::cout << "x: " << curCoords.x << " y: " << curCoords.y << '\n';
-        }
+        //if (key == re::Key::Right){
+        //    testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
+        //}
         if (key == re::Key::Left){
-            isMovingForward = false;
-            testPlayer.move(isMovingForward);
-            re::Point2f curCoords = testPlayer.getCurPosition();
-            std::cout << "x: " << curCoords.x << " y: " << curCoords.y << '\n';
+            testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
+        }
+        if (key == re::Key::Up){
+            if (testPlayer->isGrounded)
+            {
+                testPlayer->addImpulse(re::Vector2f(0, -10 * testPlayer->getMass()));
+                testPlayer->isGrounded = false;
+            }
+        }
+        if (key == re::Key::Down){
+            
         }
     }
 
@@ -105,7 +132,7 @@ private:
     bool isMovingForward = true;
     int curX;
     int curY;
-    Player testPlayer;
+    std::shared_ptr<Player> testPlayer;
     AppState curState;
     std::vector<re::BaseButton> buttonList;
 };
