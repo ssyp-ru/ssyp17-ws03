@@ -143,7 +143,7 @@ void Image::generate_texture(){
     else if (comp == 3){
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,w,h,0,GL_RGB,GL_UNSIGNED_BYTE,image_buffer);
     } else {
-        std::cerr << "Image::Image comp error" << std::endl;
+        std::cerr << "Image::Image comp error " << comp << std::endl;
     }
 }
 

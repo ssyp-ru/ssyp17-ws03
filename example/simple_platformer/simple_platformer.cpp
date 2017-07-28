@@ -96,13 +96,15 @@ public:
     }
 
     void on_button_pressed(int button){
-        /*magic-shmagic button constants:
-        1: left-mouse click,
-        2: mid button click,
-        3: right-mouse click,
-        4: scroll up,
-        5: scroll down.*/
-        if(button == 1){
+        /*
+         * magic-shmagic button constants:
+         * 0: left-mouse click,
+         * 1: mid button click,
+         * 2: right-mouse click,
+         * 3: scroll up,
+         * 4: scroll down.
+         */
+        if(button == 0){
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);

@@ -9,6 +9,7 @@
 #include <GL/glx.h>
 
 #include <string>
+#include <string.h>
 #include <iostream>
 #include <stdlib.h>
 
@@ -334,7 +335,7 @@ void OpenGL::mouseMove( int x, int y )
 
 void OpenGL::keyboardSpecial( int c, int a, int b )
 {
-    unsigned char key = (int)key_to_key(c);
+    unsigned char key = (int)key_to_key_special(c);
     if( !OpenGL::instance().key[key] )
     {
         OpenGL::instance().key[key] = true;
@@ -344,7 +345,7 @@ void OpenGL::keyboardSpecial( int c, int a, int b )
 
 void OpenGL::keyboardUpSpecial( int c, int a, int b )
 {
-    unsigned char key = (int)key_to_key(c);
+    unsigned char key = (int)key_to_key_special(c);
     if( OpenGL::instance().key[key] )
     {
         OpenGL::instance().key[key] = false;
@@ -394,6 +395,11 @@ Key OpenGL::key_to_key(char key_code){
         return (Key)((int)Key::Num0 + (key_code - '0'));
     }
 
+    return Key::Unknown;
+}
+
+Key OpenGL::key_to_key_special(char key_code)
+{
     switch(key_code){
         case 27:                    return Key::Escape;
         case GLUT_KEY_RIGHT:        return Key::Right;
@@ -401,8 +407,26 @@ Key OpenGL::key_to_key(char key_code){
         case GLUT_KEY_UP:           return Key::Up;
         case GLUT_KEY_DOWN:         return Key::Down;
     }
+}
 
-    return Key::Unknown;
+void OpenGL::draw_text( int x0, int y0, std::string text, Color color )
+{
+    glColor4f(  color.r / 255.0, 
+                color.g / 255.0, 
+                color.b / 255.0, 
+                color.t / 255.0 );
+
+    void *font = GLUT_BITMAP_9_BY_15;
+    char *s = (char *)text.c_str();
+
+    glRasterPos2f( x0, -y0 );
+
+    if (s && strlen(s)) {
+        while (*s) {
+            glutBitmapCharacter(font, *s);
+            s++;
+        }
+    }
 }
 
 }
