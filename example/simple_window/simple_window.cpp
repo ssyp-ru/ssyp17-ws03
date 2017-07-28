@@ -29,7 +29,7 @@ public:
         //re::explodeImage( 100, 100, 200, 200, 4, 4, imgptr );
         re::explodeImage(   re::Point2f( 100, 100 ), 
                             re::Point2f( 200, 200 ), 
-                            re::Point2f( 4, 4 ), 
+                            re::Point2f( 10, 10 ), 
                             imgptr, 
                             re::Point2f( 0.5, -3 ),
                             re::Point2f( 3, -20 ),

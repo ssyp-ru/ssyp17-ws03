@@ -10,12 +10,14 @@ using std::vector;
 namespace re
 {
 
+const uint particleLimit = 5000;
+
 std::vector<stParticle> allParticles;
 int lastParticle = 0;
 
 void findLastParticle()
 {
-    for( int i = lastParticle; i < 500; i++ )
+    for( int i = lastParticle; i < particleLimit; i++ )
     {
         if( allParticles[i].life <= 0 )
         {
@@ -78,7 +80,7 @@ void initParticles()
     nPatricle.endImg = Point2f(0,0);
     nPatricle.startImg = Point2f(0,0);
 
-    for( int i = 0; i < 500; i++ )
+    for( int i = 0; i < particleLimit; i++ )
     {
         allParticles.push_back( nPatricle );
     }
