@@ -22,7 +22,7 @@ public:
         nPartic.endImg = re::Point2f(1,1);
         nPartic.vec = re::Point2f(0.2,0.4);
         nPartic.move = re::Point2f(0,-7);
-        nPartic.size = re::Point2f( 50, 50 );
+        // nPartic.size = re::Point2f( 50, 50 );
 
         re::launchParticle( nPartic );
         

@@ -11,8 +11,10 @@ set(SOURCE_LIB  window/opengl.cpp
                 utils/stop_watch.cpp
                 recource_manager/xml_parser.cpp
                 recource_manager/tiled_parser.cpp
+                recource_manager/resource_manager.cpp
                 graphics/particle.cpp
                 mainApp.cpp
+                physic/physic_core.cpp
 )
 
 set_source_files_properties(graphics/Image.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)
