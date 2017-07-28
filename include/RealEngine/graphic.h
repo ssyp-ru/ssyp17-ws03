@@ -3,6 +3,7 @@
 #include "graphic/image.h"
 #include "graphic/color.h"
 #include "math.h"
+#include "keyboard.h"
 
 namespace re{
 
@@ -20,6 +21,9 @@ namespace re{
     void goFullScreen();
     void setDrawLay( int lay );
 
+    void draw_text( int x0, int y0, std::string text, Color color );
+
+    bool getKeyState( Key key );
 
     struct stParticle
     {

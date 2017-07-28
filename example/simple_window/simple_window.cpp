@@ -29,12 +29,12 @@ public:
         //re::explodeImage( 100, 100, 200, 200, 4, 4, imgptr );
         re::explodeImage(   re::Point2f( 100, 100 ), 
                             re::Point2f( 200, 200 ), 
-                            re::Point2f( 4, 4 ), 
+                            re::Point2f( 200, 200 ), 
                             imgptr, 
                             re::Point2f( 0.5, -3 ),
                             re::Point2f( 3, -20 ),
                             1,
-                            0.25 );
+                            0.1 );
     }
 
     void update() override {
@@ -44,6 +44,7 @@ public:
         re::draw_rectangle(x, y, 50, 50, re::RED);
         re::draw_rectangle(200, 200, 50, 50, re::RED);
         re::draw_line( x, 50, 200, 200, re::BLACK );
+        re::draw_text( 100, 100, "TEST TEXT", re::BLACK );
         //re::draw_image( 0, 0, imgptr );
     }
 
@@ -71,4 +72,3 @@ int main(){
     re::runApp( 640, 480, std::make_shared<MainApp>() );
     return 0;
 }
-
