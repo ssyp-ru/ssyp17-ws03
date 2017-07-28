@@ -47,7 +47,7 @@ class OpenGL
 
     void translate( int x, int y );
     void viewAt( int x, int y );
-    void scale( float x, float y );
+    void scale( float co );
     void rotate( float angle );
 
     void setWindowName( std::string name );
@@ -83,6 +83,8 @@ class OpenGL
     static Key key_to_key_special(char key_code);
 
     int curLay;
+
+    float zoom;
 
     IBaseAppPtr baseApp;
     std::string windowName;

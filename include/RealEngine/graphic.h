@@ -15,7 +15,7 @@ namespace re{
     void draw_image_part(int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr im);
     void set_fps(uint fps);
     void translate(int x, int y);
-    void scale(float x, float y);
+    void scale(float co);
     void viewat(int x, int y); 
     void rotate(float angle);
     void goFullScreen();

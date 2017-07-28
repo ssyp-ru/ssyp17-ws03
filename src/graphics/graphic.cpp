@@ -36,7 +36,7 @@ namespace re
 
     bool getKeyState( Key key )
     {
-        OpenGL::instance().getKeyState( (int)key );
+        return OpenGL::instance().getKeyState( (int)key );
     }
 
     void goFullScreen()
@@ -62,8 +62,8 @@ namespace re
         OpenGL::instance().viewAt( x, y );
     }
 
-    void scale(float x, float y){
-        OpenGL::instance().scale( x, y );
+    void scale(float co){
+        OpenGL::instance().scale( co );
     }
 
     void rotate(float angle){
