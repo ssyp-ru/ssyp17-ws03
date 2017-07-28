@@ -1,8 +1,33 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <string>
+#include <map>
+#include <functional>
 
 namespace re {
+
+class Metadata
+{
+private:
+	// just don't touch it
+	std::map<std::string, int> int_values;
+	std::map<std::string, double> double_values;
+	std::map<std::string, std::string> string_values;
+	std::map<std::string, bool> bool_values;
+public:
+	bool hasKey(std::string name); // returns true if this object have variable with that name
+
+	void setInt(std::string name, int value); // sets value to variable with that name, if no this variable, creates it
+	void setDouble(std::string name, double value); // sets value to variable with that name, if no this variable, creates it
+	void setString(std::string name, std::string value); // sets value to variable with that name, if no this variable, creates it
+	void setBool(std::string name, bool value); // sets value to variable with that name, if no this variable, creates it
+
+	int getInt(std::string name); // get value from variable with that name, if map haven't this variable - returns 0
+	double getDouble(std::string name); // get value from variable with that name, if map haven't this variable - returns 0.0
+	std::string getString(std::string name); // get value from variable with that name, if map haven't this variable - returns ""
+	bool getBool(std::string name); // get value from variable with that name, if map haven't this variable - returns false
+};
 
 class Vector2f
 {
@@ -46,7 +71,7 @@ public:
 class GameObject
 {
 public:
-	int tag; // Just useful variable, you can use it as you want
+	Metadata metadata; // Just useful variable, read class Metadata
 	GameObject(); // Makes empty gameobject in (0, 0) position
 	GameObject(Vector2f pos); // Makes empty gameobject in your position
 	void addForce(Vector2f force); // Adds a force to this gameobject
@@ -56,26 +81,33 @@ public:
 	std::vector<Vector2f>* getVertexes(); // Returns pointer to array with vertexes
 	std::vector<Edge>* getEdges(); // Returns copy of array with edges
 	void rotate(double rotation); // Turns gameobject in counter-clock-wise by 'rotation' radians
+	void addCollisionCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)> callback); // Adds function to onCollision event
+	void addTriggerCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)> callback); // Adds function to onTrigger event
+	//#pragma region getters-and-setters
 	double getMass(); // Returns current mass of object
 	void setMass(double value); // Sets mass of gameobject(must be >= 0 (seriosly))
 	double getBounciness(); // Returns current bounciness of gameobject
 	void setBounciness(double value); // Sets bounciness of gameobject(must be >= 0, recommends also <= 1)
 	double getFriction(); // Returns current friction of gameobject
-	void setFriction(double value); // Sets friction of gameobject(recommended >= 0 and must be <= 1)
+	void setFriction(double value); // Sets friction of gameobject(recommended >= 0 and must be <= 1), if friction will be -1, will be counted only from other object.
 	bool getRigidbodySimulated(); // Returns true if gameobject is dynamic, false if static
 	void setRigidbodySimulated(bool value); // Sets gameobject to be dynamic(true) or static(false)
+	bool getIsTrigger(); // Returns true if gameobject is trigger, false if object
+	void setIsTrigger(bool value); // Sets gameobject to be trigger(true)(means it will not be collided with something) or to be object(false)
 	double getRotationSpeed(); // Returns rotation speed of gameobject
 	void setRotationSpeed(double value); // Sets rotation speed of gameobject
 	Vector2f getPosition(); // Returns current gameobject position
     void setPosition(Vector2f pos); // Sets position to gameobject
 	Vector2f getVelocity();
 	void setVelocity(Vector2f vec);
+	//#pragma endregion
 	friend class Game;
-private:
+protected:
     // just don't touch it.
 	double mass;
 	double bounciness, friction;
     bool isRigidbodySimulated;
+	bool isTrigger;
 	std::vector<Edge> edges;
 	std::vector<Vector2f> vertexes;
 	Vector2f position;
@@ -86,6 +118,8 @@ private:
 	double rotation;
 	double rotationSpeed; // radians per sec
 	double circleRadius;
+	std::vector<std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)>> onTriggerEvents; // GameobjectPtr trigger, GameobjectPtr object
+	std::vector<std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)>> onCollisionEvents;
     void countMassCenter();
     Vector2f getMassCenter();
 	bool needTestWith(GameObject &gm);
@@ -109,8 +143,20 @@ public:
 	std::vector<GameObjectPtr> getWorld(); // Returns copy of array of objects
 	Game(); // Empty constructor... yep, too lazy to delete it.
     void start(); // Starts game by sending thread(that calles method) in
-    void addObject(GameObjectPtr obj); // Adding object(GameObject) to world
+    void addObject(GameObjectPtr obj); // Adds object(GameObject) to world
     void updateTick(); // Makes one physic tick, use it if you don't want to send thread off by method 'start()'
+	GameObjectPtr addTriangle(Vector2f pos, Vector2f p1, Vector2f p2, Vector2f p3); // Adds a triangle in world, pos - position, p1, p2, p3 - vertexes, returns pointer to this gameobject (vertexes in local space, remember it)
+	GameObjectPtr addQuadrangle(Vector2f pos, Vector2f p1, Vector2f p2, Vector2f p3, Vector2f p4); // same as triangle, but 4 vertexes
 };
 
 } // namespace re
+
+// TODO: 
+// +создание четырехугольников, треугольников
+// +разобраться с трением
+// +запилить карту метаданных
+// +сделать триггеры (bool isTrigger)
+// +переместить отключение обработки у нефизических объектов, что б они могли
+// +вызывать события столкновения
+// +сделать возможным перемещение у нефизических объектов
+// +запилить события столкновений
