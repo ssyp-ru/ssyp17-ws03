@@ -6,7 +6,7 @@ namespace re{
 
 class MainApp
 {
-    static StopWatch timer_;
+    static StopWatch previous_time;
     public:
     static long delta_time;
     static void init();
