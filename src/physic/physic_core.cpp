@@ -168,22 +168,38 @@ void Metadata::setBool(std::string name, bool value)
 
 int Metadata::getInt(std::string name)
 {
-	if (int_values.find(name) == int_values.end()) return 0;
+	if (int_values.find(name) == int_values.end()) 
+	{
+		re::log::msg("Getting not-existing value from metadata.", re::log::LEVEL::DEBUG);
+		return 0;
+	}
 	return int_values[name];
 }
 double Metadata::getDouble(std::string name)
 {
-	if (double_values.find(name) == double_values.end()) return 0.0;
+	if (double_values.find(name) == double_values.end())
+	{
+		re::log::msg("Getting not-existing value from metadata.", re::log::LEVEL::DEBUG);
+		return 0.0;
+	}
 	return double_values[name];
 }
 std::string Metadata::getString(std::string name)
 {
-	if (string_values.find(name) == string_values.end()) return "";
+	if (string_values.find(name) == string_values.end())
+	{
+		re::log::msg("Getting not-existing value from metadata.", re::log::LEVEL::DEBUG);
+		return "";
+	}
 	return string_values[name];
 }
 bool Metadata::getBool(std::string name)
 {
-	if (bool_values.find(name) == bool_values.end()) return false;
+	if (bool_values.find(name) == bool_values.end())
+	{
+		re::log::msg("Getting not-existing value from metadata.", re::log::LEVEL::DEBUG);
+		return false;
+	}
 	return bool_values[name];
 }
 
