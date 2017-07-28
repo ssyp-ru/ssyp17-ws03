@@ -78,6 +78,7 @@ class OpenGL
     static void keyboardUpSpecial( int c, int a, int b );
 
     static Key key_to_key(char key_code);
+    static Key key_to_key_special(char key_code);
 
     int curLay;
 

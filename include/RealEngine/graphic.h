@@ -20,6 +20,7 @@ namespace re{
     void goFullScreen();
     void setDrawLay( int lay );
 
+    void drawText( Point2f pos, std::string text );
 
     struct stParticle
     {

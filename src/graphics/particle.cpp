@@ -5,42 +5,72 @@
 #include <iostream>
 #include <vector>
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include <GL/glx.h>
+
 using std::vector;
 
 namespace re
 {
 
-const uint particleLimit = 5000;
+const uint particleLimit = 1000;
+const uint particleSystemLimit = 10;
 
 std::vector<stParticle> allParticles;
-int lastParticle = 0;
+std::vector<stParticleSystem> allSystems;
+//ImagePtr gloImage;
 
-void findLastParticle()
+int findLastParticle()
 {
-    for( int i = lastParticle; i < particleLimit; i++ )
+    /*for( int i = lastParticle; i < particleLimit; i++ )
     {
         if( allParticles[i].life <= 0 )
         {
             lastParticle = i;
             return;
         }
-    }
+    }*/
 
-    for( int i = 0; i < lastParticle; i++ )
+    for( uint i = 0; i < particleLimit; i++ )
     {
         if( allParticles[i].life <= 0 )
         {
-            lastParticle = i;
-            return;
+            return i;
         }
     }
 
-    lastParticle = -1;
+    return -1;
+}
+
+int findLastParticleSystem()
+{
+    for( uint i = 0; i < particleSystemLimit; i++ )
+    {
+        if( allSystems[i].life <= 0 )
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+void launchParticleSystem( stParticleSystem &system )
+{
+    int lastParticleSystem = findLastParticleSystem();
+    if( lastParticleSystem == -1 )
+    {
+        std::cout << "too many particle systems";
+        return;
+    }
+    allSystems.push_back( system );
 }
 
 void launchParticle( stParticle &newParticle )
 {
-    findLastParticle();
+    int lastParticle = findLastParticle();
     if( lastParticle == -1 )
     {
         std::cerr << "too many particle\n";
@@ -49,8 +79,44 @@ void launchParticle( stParticle &newParticle )
     allParticles[lastParticle] = newParticle;
 }
 
+void drawParticleSystem( float delta )
+{
+    for( auto &sys : allSystems )
+    {
+        if( sys.life > 0 )
+        {
+            glEnable(GL_TEXTURE_2D);
+            glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
+            glBindTexture(GL_TEXTURE_2D,sys.imge->getTex());
+
+            glBegin(GL_QUADS);
+
+            for( stParticle &curr : sys.particles )
+            {
+                glTexCoord2f(curr.startImg.x,curr.startImg.y); glVertex3f( curr.pos.x, -curr.pos.y, 10 );
+                glTexCoord2f(curr.startImg.x,curr.endImg.y); glVertex3f( curr.pos.x, -curr.pos.y-curr.size.y, 10 );
+                glTexCoord2f(curr.endImg.x,curr.endImg.y); glVertex3f( curr.pos.x+curr.size.x, -curr.pos.y-curr.size.y, 10 );
+                glTexCoord2f(curr.endImg.x,curr.startImg.y); glVertex3f( curr.pos.x+curr.size.x, -curr.pos.y, 10 );
+
+                curr.move.x += curr.vec.x * delta;
+                curr.move.y += curr.vec.y * delta;
+                
+                curr.pos.x += curr.move.x * delta;
+                curr.pos.y += curr.move.y * delta;
+
+            }
+
+            glEnd();
+            glDisable(GL_TEXTURE_2D);
+
+            sys.life -= delta;
+        }
+    }
+}
+
 void drawParticles( float delta )
 {
+    drawParticleSystem( delta );
     for( stParticle &curr : allParticles )
     {
         if( curr.life > 0 )
@@ -80,19 +146,31 @@ void initParticles()
     nPatricle.endImg = Point2f(0,0);
     nPatricle.startImg = Point2f(0,0);
 
-    for( int i = 0; i < particleLimit; i++ )
+    for( uint i = 0; i < particleLimit; i++ )
     {
         allParticles.push_back( nPatricle );
+    }
+
+    stParticleSystem systems;
+    systems.life = 0;
+    
+    for( uint i = 0; i < particleSystemLimit; i++ )
+    {
+        allSystems.push_back( systems );
     }
 }
 
 void explodeImage( Point2f pos, Point2f size, Point2f part, ImagePtr imge, Point2f center, Point2f impulse, float power, float randF )
 {
     stParticle nPart;
-    nPart.imge = imge;
-    nPart.life = 50;
+    //nPart.imge = imge;
+    //nPart.life = 50;
     nPart.move = Point2f(0,0);
     nPart.vec = Point2f(0,0);
+
+    stParticleSystem nSys;
+    nSys.life = 50;
+    nSys.imge = imge;
 
     for( int i = 0; i < part.x; i++ )
     {
@@ -127,9 +205,12 @@ void explodeImage( Point2f pos, Point2f size, Point2f part, ImagePtr imge, Point
             nPart.vec = Point2f( ((xa + xs*0.5) - center.x) * power,
                                  ((ya + ys*0.5) - center.y) * power );
             
-            launchParticle( nPart );
+            //launchParticle( nPart );
+            nSys.particles.push_back( nPart );
         }
     }
+
+    launchParticleSystem( nSys );
 }
 
 }
