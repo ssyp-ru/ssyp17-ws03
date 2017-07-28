@@ -13,12 +13,19 @@
 #include <vector>
 #include <cmath>
 #include "RealEngine/physic_core.h"
+#include "platform.h"
 
 class MainApp : public re::IBaseApp{
 public:
     re::Game mainGame;
     int k = 16; // scale
     //Setup:
+
+    re::GameObjectPtr getGameObject(re::Vector2f pos, re::Vector2f size)
+    {
+        return std::make_shared<Platform>(pos, size);
+    }
+
     void setup() override {
         re::Animation testanimCustom(0, true);
         re::Image buttonsource("test.png");
@@ -35,15 +42,17 @@ public:
         testPlayer->addCollisionCallback(testPlayer->getCallback());
         mainGame.addObject(testPlayer);
 
-        re::GameObjectPtr plat = mainGame.addQuadrangle(re::Vector2f(10, 20), re::Vector2f(10, -1), re::Vector2f(10, 1), re::Vector2f(-10, 1), re::Vector2f(-10, -1));
+        re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
         plat->setRigidbodySimulated(false);
         plat->setFriction(1.0);
         plat->setBounciness(0.0);
+        mainGame.addObject(plat);
 
-        re::GameObjectPtr plat2 = mainGame.addQuadrangle(re::Vector2f(16, 17), re::Vector2f(-4.1, 2.1), re::Vector2f(0, -2), re::Vector2f(4, -2), re::Vector2f(4, 2.1));
+        re::GameObjectPtr plat2 = std::make_shared<Platform>(re::Vector2f(15, 16), re::Vector2f(2, 2));
         plat2->setRigidbodySimulated(false);
         plat2->setFriction(1.0);
         plat2->setBounciness(0.0);
+        mainGame.addObject(plat2);
 
         curState = AppState::Ingame;
     }
@@ -86,14 +95,7 @@ public:
         for (auto curObject : mainGame.getWorld())
         {
             if (curObject != testPlayer)
-            for (auto curEdge : *curObject->getEdges())
-            {
-                re::draw_line((curEdge.P1->X + curObject->getPosition().X) * k,
-                             (curEdge.P1->Y + curObject->getPosition().Y) * k,
-                             (curEdge.P2->X + curObject->getPosition().X) * k,
-                             (curEdge.P2->Y + curObject->getPosition().Y) * k,
-                             re::BLACK);
-            }
+                (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->display(k);
         }
     }
     //Events:

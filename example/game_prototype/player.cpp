@@ -8,6 +8,3 @@
 /*void Player::move(bool isForward){
     //movingAnim.setSpeed(0.7);
 }*/
-void Player::display(int scale){
-    re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
-}

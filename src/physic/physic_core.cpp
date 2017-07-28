@@ -1,6 +1,7 @@
 #include "RealEngine/physic_core.h"
 #include <cmath>
 #include <iostream>
+#include "RealEngine/logger.h"
 
 namespace re {
 
@@ -170,7 +171,7 @@ int Metadata::getInt(std::string name)
 {
 	if (int_values.find(name) == int_values.end()) 
 	{
-		re::log::msg("Getting not-existing value from metadata.", re::log::LEVEL::DEBUG);
+		re::Log::msg("Getting not-existing value from metadata.", re::Log::LEVEL::DEBUG);
 		return 0;
 	}
 	return int_values[name];
@@ -179,7 +180,7 @@ double Metadata::getDouble(std::string name)
 {
 	if (double_values.find(name) == double_values.end())
 	{
-		re::log::msg("Getting not-existing value from metadata.", re::log::LEVEL::DEBUG);
+		re::Log::msg("Getting not-existing value from metadata.", re::Log::LEVEL::DEBUG);
 		return 0.0;
 	}
 	return double_values[name];
@@ -188,7 +189,7 @@ std::string Metadata::getString(std::string name)
 {
 	if (string_values.find(name) == string_values.end())
 	{
-		re::log::msg("Getting not-existing value from metadata.", re::log::LEVEL::DEBUG);
+		re::Log::msg("Getting not-existing value from metadata.", re::Log::LEVEL::DEBUG);
 		return "";
 	}
 	return string_values[name];
@@ -197,7 +198,7 @@ bool Metadata::getBool(std::string name)
 {
 	if (bool_values.find(name) == bool_values.end())
 	{
-		re::log::msg("Getting not-existing value from metadata.", re::log::LEVEL::DEBUG);
+		re::Log::msg("Getting not-existing value from metadata.", re::Log::LEVEL::DEBUG);
 		return false;
 	}
 	return bool_values[name];
@@ -266,7 +267,7 @@ double GameObject::getBounciness() { return bounciness; }
 void GameObject::setBounciness(double value) { value >= 0? bounciness = value : bounciness = 0.5; }
 double GameObject::getFriction() { return friction; }
 void GameObject::setFriction(double value) { value <= 1? friction = value : friction = 0.5; }
-bool GameObject::getRigidbodySimulated() {return isRigidbodySimulated; };
+bool GameObject::getRigidbodySimulated() {return isRigidbodySimulated; }
 void GameObject::setRigidbodySimulated(bool value) { isRigidbodySimulated = value; }
 bool GameObject::getIsTrigger() { return isTrigger; }
 void GameObject::setIsTrigger(bool value) { isTrigger = value; }
@@ -499,11 +500,11 @@ void Game::updatePhysics()
 						// тута вызывать событие коллизии
 						// вызовется даже если обрабатываемый объект не динамичен
 						if (!world[i]->isTrigger)
-							for (int c = 0; c < world[i]->onCollisionEvents.size(); c++)
+							for (uint c = 0; c < world[i]->onCollisionEvents.size(); c++)
 								world[i]->onCollisionEvents[c](world[i], world[j], outOfCollisionVector);
 						else
 							if (world[j]->isRigidbodySimulated)
-								for (int c = 0; c < world[i]->onTriggerEvents.size(); c++)
+								for (uint c = 0; c < world[i]->onTriggerEvents.size(); c++)
 									world[i]->onTriggerEvents[c](world[i], world[j]);
         				if (world[i]->isRigidbodySimulated)
 						{

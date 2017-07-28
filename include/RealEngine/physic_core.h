@@ -102,6 +102,7 @@ public:
 	Vector2f getVelocity();
 	void setVelocity(Vector2f vec);
 	//#pragma endregion
+	virtual ~GameObject() { }
 	friend class Game;
 protected:
     // just don't touch it.
