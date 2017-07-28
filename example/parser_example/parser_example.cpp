@@ -1,36 +1,40 @@
 #include <RealEngine/xml_parser.h>
 #include <RealEngine/tiled_parser.h>
 #include <RealEngine/logger.h>
+#include <RealEngine/baseApp.h>
+#include <RealEngine/graphic.h>
+
+class MainApp : public re::IBaseApp {
+public:
+    re::Map map;
+    re::ImagePtr bg;
+    uint i;
+    void setup() override {
+        re::Log::log_level(re::Log::LEVEL::DEBUG);
+        re::set_fps(1);
+        map = re::parse_tiled(re::parse_xml("test.tmx"))[0];
+    }
+
+    void update() override {
+    }
+
+    void display() override {
+        re::draw_image( 0, 0, map.layer[0].background );
+        re::background(re::BLACK);
+        //re::draw_image_part( 0,0,1920,1080,0,0,1,1,map.layer[0].background);
+
+    }
+
+    void on_key_pressed(re::Key key){
+        if (key == re::Key::Escape){
+            re::exitApp();
+        } else if(key == (re::Key)112) {
+            //re::graphic::goFullScreen();
+        }
+    }
+};
 
 int main(){
-    re::XmlElem e = re::parse_xml("example.xml");
-    e.print("parsedExample.xml");
-    try {
-        re::Map map = re::parse_tiled(e)[0];
-        std::ofstream out("testTiled.txt");
-        out << "start: " << std::endl;
-        re::XmlElem aza = *(e.get_children("world")[0]->get_children("map")[0]->get_children("object")[0]->get_children("aza")[0]);
-        out << "found aza: width=" << aza.field["width"] << ", height=" << aza.field["height"] << std::endl;
-        out << map.tileset.firstgid << std::endl;
-        out << map.tileset.source << std::endl;
-        out << map.layer.name << std::endl;
-        out << map.layer.height << std::endl;
-        out << map.layer.width << std::endl;
-        for(auto& i : map.layer.data) {
-            out << i;
-        }
-        out << std::endl;
-        out << map.objectgroup.name << std::endl;
-        for(auto& i : map.objectgroup.group) {
-            out << '(' << i.id << ')' << i.name << '(' << i.x << ',' << i.y << ')' << i.width << '/' << i.height;
-            for(auto& j : i.flags) {
-                out << ';' << j;
-            }    
-            out << std::endl;
-        }
-
-    } catch(...) {
-        re::Log::msg("Could not print test!", re::Log::LEVEL::DEBUG);
-        // INFO and TRACE levels are also avaiable
-    }
+    re::setWindowName( "RealEngine" );
+    re::runApp( 1920, 1080, std::make_shared<MainApp>() );
 }

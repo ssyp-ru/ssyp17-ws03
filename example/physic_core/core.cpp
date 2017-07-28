@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 
+#include <map>
+
 ///////////////////////////////////////////////////////////////////////////////
 re::Game mainGame;
 
@@ -14,38 +16,28 @@ public:
 	re::Game mainGame;
     re::ImagePtr imgptr;
 
+    static void onTrigger(re::GameObjectPtr trigger, re::GameObjectPtr object)
+    {
+        std::cout << "YAY! trigger!\n";
+    }
+
+    static void onCollision(re::GameObjectPtr trigger, re::GameObjectPtr object, re::Vector2f vec)
+    {
+        std::cout << "YAY! collision!\n";
+    }
+
     void setup() override 
     {
-		re::GameObjectPtr obj1 = std::make_shared<re::GameObject>(re::Vector2f(2, 4));
-    	obj1->setMass(10);
-    	obj1->setFriction(0.0);
-    	obj1->setBounciness(0.5);
-    	obj1->addImpulse(re::Vector2f(10, 0));
-		obj1->addPoint(re::Vector2f(1, 1));
-		obj1->addPoint(re::Vector2f(1, -1));
-		obj1->addPoint(re::Vector2f(-1, -1));
-		obj1->addPoint(re::Vector2f(-1, 1));
-		obj1->addEdge(0, 1);
-		obj1->addEdge(1, 2);
-		obj1->addEdge(2, 3);
-		obj1->addEdge(3, 0);
-		mainGame.addObject(obj1);
-
-		re::GameObjectPtr obj2 = std::make_shared<re::GameObject>(re::Vector2f(10, 15));
-		obj2->setRigidbodySimulated(false);
-    	obj2->setMass(10);
-    	obj2->setFriction(0.2);
-    	obj2->setBounciness(0.5);
-    	obj2->addImpulse(re::Vector2f(10, 0));
-		obj2->addPoint(re::Vector2f(-10, 1));
-		obj2->addPoint(re::Vector2f(-10, -1));
-		obj2->addPoint(re::Vector2f(10, -1));
-		obj2->addPoint(re::Vector2f(10, 1));
-		obj2->addEdge(0, 1);
-		obj2->addEdge(1, 2);
-		obj2->addEdge(2, 3);
-		obj2->addEdge(3, 0);
-		mainGame.addObject(obj2);
+        auto obj = mainGame.addTriangle(re::Vector2f(10, 10), re::Vector2f(0, 1), re::Vector2f(1, -1), re::Vector2f(-1, -1));
+        //obj->setRigidbodySimulated(false);
+        //obj->setIsTrigger(true);
+        obj->setVelocity(re::Vector2f(3, 0));
+        auto obj2 = mainGame.addQuadrangle(re::Vector2f(10, 15), re::Vector2f(5, 1), re::Vector2f(5, -1), re::Vector2f(-5, -1), re::Vector2f(-5, 1));
+        obj2->setRigidbodySimulated(false);
+        auto obj3 = mainGame.addQuadrangle(re::Vector2f(15, 14), re::Vector2f(1, 1), re::Vector2f(1, -1), re::Vector2f(-1, -1), re::Vector2f(-1, 1));
+        obj3->setRigidbodySimulated(false);
+        obj3->setIsTrigger(true);
+        obj3->addTriggerCallback(&MainApp::onTrigger);
     }
 
     void update() override {

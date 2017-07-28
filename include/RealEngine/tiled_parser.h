@@ -1,5 +1,6 @@
 #pragma once
 #include "xml_parser.h"
+#include <RealEngine/graphic/image.h>
 
 namespace re {
 
@@ -19,17 +20,27 @@ namespace re {
     struct Tileset {
         uint firstgid;
         std::string source;
+        std::string name;
+        uint tilewidth;
+        uint tileheight;
+        uint tilecount;
+        uint columns;
+        std::string img_source;
+        uint img_width;
+        uint img_height;
+        std::vector<ImagePtr> tiles;
     };
     struct Layer {
         uint height;
         uint width;
         std::string name;
         std::vector<uint> data;
+        ImagePtr background;
     };
     struct Map {
-        Tileset tileset;
-        Layer layer;
-        ObjectGroup objectgroup;
+        std::vector<Tileset> tileset;
+        std::vector<Layer> layer;
+        std::vector<ObjectGroup> objectgroup;
     };
 
     std::vector<Map> parse_tiled(XmlElem parsed_xml);
