@@ -14,6 +14,7 @@
 #include <cmath>
 #include "RealEngine/physic_core.h"
 #include "platform.h"
+#include "movingPlatform.h"
 
 class MainApp : public re::IBaseApp{
 public:
@@ -39,6 +40,7 @@ public:
         //testPlayer->addImpulse(re::Vector2f(4, 0));
         testPlayer->setFriction(-1.0);
         testPlayer->setBounciness(0.0);
+        testPlayer->metadata.setInt("ID", 1);
         testPlayer->addCollisionCallback(testPlayer->getCallback());
         mainGame.addObject(testPlayer);
 
@@ -46,12 +48,17 @@ public:
         plat->setRigidbodySimulated(false);
         plat->setFriction(1.0);
         plat->setBounciness(0.0);
+        plat->metadata.setInt("ID", 2);
         mainGame.addObject(plat);
 
-        re::GameObjectPtr plat2 = std::make_shared<Platform>(re::Vector2f(15, 16), re::Vector2f(2, 2));
+        re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
         plat2->setRigidbodySimulated(false);
         plat2->setFriction(1.0);
         plat2->setBounciness(0.0);
+        plat2->metadata.setInt("ID", 3);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->addWaypoint(re::Vector2f(10, 16));
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setCycled(true);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setActivated(true);
         mainGame.addObject(plat2);
 
         curState = AppState::Ingame;
@@ -88,6 +95,11 @@ public:
             }
         }
         if ((testPlayer->getVelocity().Y > 0.1) && (testPlayer->isGrounded)) testPlayer->isGrounded = false;
+
+        for (auto curObject : mainGame.getWorld())
+        {
+            (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();   
+        }
 
         mainGame.updateTick();
 

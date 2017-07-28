@@ -25,6 +25,7 @@ public:
     }
     void onCollision(re::GameObjectPtr from, re::GameObjectPtr to, re::Vector2f vec)
     {
+        //if (to->metadata.getInt("ID") == 3) setVelocity(to->getVelocity());
         if (re::Vector2f(0, -1).angleBetween(vec) < 60.0 / 180.0 * 3.14159) 
         { 
             isGrounded = true;

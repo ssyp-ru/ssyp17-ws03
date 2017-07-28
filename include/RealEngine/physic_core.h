@@ -37,7 +37,7 @@ public:
 	Vector2f(double X, double Y);
 	double Length();
 	void Normilize();
-	Vector2f Normilized();
+	Vector2f Normalized();
 	Vector2f operator+(Vector2f vec);
 	Vector2f operator-(Vector2f vec);
 	Vector2f operator*(double val);

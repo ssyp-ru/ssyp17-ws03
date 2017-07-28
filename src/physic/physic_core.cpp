@@ -20,7 +20,7 @@ double Vector2f::Length()
 	if ((X == 0) && (Y == 0)) return 0;
 	return sqrt(X*X+Y*Y);
 }
-void Vector2f::Normilize()
+void Vector2f::Normalize()
 {
 	double len = Length();
 	X /= len;
@@ -516,7 +516,10 @@ void Game::updatePhysics()
 								frictionProject = reflected.projectOnVector(outOfCollisionVector.getLeftNormal()) * (1 - (world[i]->friction + world[j]->friction) / 2);
                         	Vector2f bouncinessProject = reflected.projectOnVector(outOfCollisionVector) * (world[i]->bounciness + world[j]->bounciness) / 2;
 							Vector2f impulseVector = Vector2f(0, 0);
-                        	impulseVector = frictionProject + bouncinessProject - world[i]->velocity;
+							if (!((world[j]->friction == 1) && (world[i]->friction == -1) && (world[j]->velocity.Length() != 0)))
+                        		impulseVector = frictionProject + bouncinessProject - world[i]->velocity;
+							else
+								impulseVector = (world[j]->velocity - world[i]->velocity) + bouncinessProject;
                         	world[i]->newPosition += outOfCollisionVector;
 							if ((world[j]->isRigidbodySimulated) && (!world[j]->isTrigger))
 							{
