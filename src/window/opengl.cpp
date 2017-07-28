@@ -284,7 +284,10 @@ void OpenGL::translate( int x, int y )
 
 void OpenGL::viewAt( int x, int y )
 {
-    glViewport( x, y, w, h );
+    glViewport( 0, 0, w, h );
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho( x, w+x, (-(int)h)-y, -y, -100, 100 );
 }
 
 void OpenGL::scale( float x, float y )
