@@ -43,6 +43,8 @@ class OpenGL
     void draw_image( int x0, int y0, ImagePtr img );
     void draw_image_part( int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr img );
     
+    void draw_text( int x0, int y0, std::string text, Color color );
+
     void translate( int x, int y );
     void viewAt( int x, int y );
     void scale( float x, float y );
@@ -78,6 +80,7 @@ class OpenGL
     static void keyboardUpSpecial( int c, int a, int b );
 
     static Key key_to_key(char key_code);
+    static Key key_to_key_special(char key_code);
 
     int curLay;
 

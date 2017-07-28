@@ -4,17 +4,9 @@
         <im id="mario_sprite_sheet" file="spritelist.png"/>
     </images>
     <sprites>
-        <sprite id="mario_sprite" source_id="screenshot" speed="0.1" cycleable="true">
+        <sprite id="mario_sprite" source_id="screenshot" speed="0.5" cycleable="true">
             <sp x="0" y="0" w="260" h="200"/>
-            <sp x="10" y="10" w="260" h="200"/>
-            <sp x="20" y="20" w="260" h="200"/>
             <sp x="30" y="30" w="260" h="200"/>
-            <sp x="40" y="40" w="260" h="200"/>
-            <sp x="50" y="50" w="260" h="200"/>
-            <sp x="60" y="60" w="260" h="200"/>
-            <sp x="70" y="70" w="260" h="200"/>
-            <sp x="80" y="80" w="260" h="200"/>
-            <sp x="90" y="90" w="260" h="200"/>
         </sprite>
     </sprites>
 </resources>

@@ -1,6 +1,7 @@
 #include <RealEngine/baseApp.h>
 #include <RealEngine/graphic.h>
 #include <RealEngine/xml_parser.h>
+#include <RealEngine/config_manager.h>
 #include <RealEngine/resource_manager.h>
 #include <RealEngine/graphic/animation.h>
 #include <RealEngine/graphic/image.h>
@@ -9,14 +10,23 @@
 #include <string>
 using namespace re;
 
+using std::cout;
+using std::endl;
+
 class MainApp : public IBaseApp{
     public:
         ResourceManager rm;
+        ConfigManager cm;
         ImagePtr screen, mario;
 
         void setup() override {
             set_fps(60);
             rm.load_file("anims.xml");
+            cm.load_file("config.xml");
+            cout << cm.get_property("player/health") << endl;
+            cout << cm.get_property("player/velocity") << endl;
+            cout << cm.get_property("bototina/damage") << endl;
+            cout << cm.get_property("nazi_bird/health") << endl;
             screen = rm.get_image("screenshot");
             mario = rm.get_image("mario_sprite_sheet");
         }

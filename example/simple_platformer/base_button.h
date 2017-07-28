@@ -10,11 +10,11 @@
 //TODO: Make different states of button (ex. changes color after press)
 //TODO: mouse-hover events?
 /*magic-shmagic button constants:
-        1: left-mouse click,
-        2: mid button click,
-        3: right-mouse click,
-        4: scroll up,
-        5: scroll down.*/
+        0: left-mouse click,
+        1: mid button click,
+        2: right-mouse click,
+        3: scroll up,
+        4: scroll down.*/
 namespace re{
 
 class BaseButton{

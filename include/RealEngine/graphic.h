@@ -3,6 +3,7 @@
 #include "graphic/image.h"
 #include "graphic/color.h"
 #include "math.h"
+#include "keyboard.h"
 
 namespace re{
 
@@ -20,6 +21,9 @@ namespace re{
     void goFullScreen();
     void setDrawLay( int lay );
 
+    void draw_text( int x0, int y0, std::string text, Color color );
+
+    bool getKeyState( Key key );
 
     struct stParticle
     {
@@ -28,6 +32,8 @@ namespace re{
         Point2f vec;
         Point2f move;
 
+        Point2f size;
+
         ImagePtr imge;
 
         Point2f startImg;
@@ -35,5 +41,6 @@ namespace re{
     };
 
     void launchParticle( stParticle &newParticle );
+    void explodeImage( Point2f pos, Point2f size, Point2f part, ImagePtr imge, Point2f center, Point2f impulse, float power, float random );
 
 }

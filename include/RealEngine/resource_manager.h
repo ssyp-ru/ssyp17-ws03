@@ -2,6 +2,8 @@
 #include <RealEngine/graphic/image.h>
 #include <RealEngine/xml_parser.h>
 
+#include <string>
+
 namespace re {
 
     class ResourceManager {
@@ -19,4 +21,4 @@ namespace re {
             std::map<std::string, std::shared_ptr<Animation>> animation_storage;
     };
 
-}
+} // namespace re
