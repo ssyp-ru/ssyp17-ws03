@@ -29,6 +29,16 @@ namespace re
         OpenGL::instance().draw_image_part( x0, y0, x1, y1, w0, h0, w1, h1, im );
     }
 
+    void draw_text( int x0, int y0, std::string text, Color color )
+    {
+        OpenGL::instance().draw_text( x0, y0, text, color );
+    }
+
+    bool getKeyState( Key key )
+    {
+        OpenGL::instance().getKeyState( (int)key );
+    }
+
     void goFullScreen()
     {
         OpenGL::instance().goFullScreen();

@@ -140,11 +140,11 @@ void Image::generate_texture(){
     if (comp == 4){
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,w,h,0,GL_RGBA,GL_UNSIGNED_BYTE,image_buffer);
     }
-    else{// if (comp == 3){
+    else if (comp == 3){
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,w,h,0,GL_RGB,GL_UNSIGNED_BYTE,image_buffer);
-    }// else {
-    //    std::cerr << "Image::Image comp error " << comp << std::endl;
-    //}
+    } else {
+        std::cerr << "Image::Image comp error " << comp << std::endl;
+    }
 }
 
 int Image::getTex()

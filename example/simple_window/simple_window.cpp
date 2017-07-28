@@ -44,7 +44,7 @@ public:
         re::draw_rectangle(x, y, 50, 50, re::RED);
         re::draw_rectangle(200, 200, 50, 50, re::RED);
         re::draw_line( x, 50, 200, 200, re::BLACK );
-        re::drawText( re::Point2f( 100, 0), (std::string( "AC" )) );
+        re::draw_text( 100, 100, "TEST TEXT", re::BLACK );
         //re::draw_image( 0, 0, imgptr );
     }
 
@@ -72,4 +72,3 @@ int main(){
     re::runApp( 640, 480, std::make_shared<MainApp>() );
     return 0;
 }
-

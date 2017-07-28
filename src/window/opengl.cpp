@@ -9,6 +9,7 @@
 #include <GL/glx.h>
 
 #include <string>
+#include <string.h>
 #include <iostream>
 #include <stdlib.h>
 
@@ -405,6 +406,26 @@ Key OpenGL::key_to_key_special(char key_code)
         case GLUT_KEY_LEFT:         return Key::Left;
         case GLUT_KEY_UP:           return Key::Up;
         case GLUT_KEY_DOWN:         return Key::Down;
+    }
+}
+
+void OpenGL::draw_text( int x0, int y0, std::string text, Color color )
+{
+    glColor4f(  color.r / 255.0, 
+                color.g / 255.0, 
+                color.b / 255.0, 
+                color.t / 255.0 );
+
+    void *font = GLUT_BITMAP_9_BY_15;
+    char *s = (char *)text.c_str();
+
+    glRasterPos2f( x0, -y0 );
+
+    if (s && strlen(s)) {
+        while (*s) {
+            glutBitmapCharacter(font, *s);
+            s++;
+        }
     }
 }
 

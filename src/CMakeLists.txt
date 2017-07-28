@@ -15,7 +15,6 @@ set(SOURCE_LIB  window/opengl.cpp
                 graphics/particle.cpp
                 mainApp.cpp
                 physic/physic_core.cpp
-                graphics/text.cpp
 )
 
 set_source_files_properties(graphics/Image.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)
