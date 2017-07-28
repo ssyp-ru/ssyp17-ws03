@@ -134,6 +134,54 @@ Edge::Edge(Vector2f *P1, Vector2f *P2)
 }
 
 
+bool Metadata::hasKey(std::string name)
+{
+	if (int_values.find(name) != int_values.end()) return true;
+	if (double_values.find(name) != double_values.end()) return true;
+	if (string_values.find(name) != string_values.end()) return true;
+	if (bool_values.find(name) != bool_values.end()) return true;
+	return false;
+}
+
+void Metadata::setInt(std::string name, int value)
+{
+	int_values[name] = value;
+}
+void Metadata::setDouble(std::string name, double value)
+{
+	double_values[name] = value;
+}
+void Metadata::setString(std::string name, std::string value)
+{
+	string_values[name] = value;
+}
+void Metadata::setBool(std::string name, bool value)
+{
+	bool_values[name] = value;
+}
+
+int Metadata::getInt(std::string name)
+{
+	if (int_values.find(name) == int_values.end()) return 0;
+	return int_values[name];
+}
+double Metadata::getDouble(std::string name)
+{
+	if (double_values.find(name) == double_values.end()) return 0.0;
+	return double_values[name];
+}
+std::string Metadata::getString(std::string name)
+{
+	if (string_values.find(name) == string_values.end()) return "";
+	return string_values[name];
+}
+bool Metadata::getBool(std::string name)
+{
+	if (bool_values.find(name) == bool_values.end()) return false;
+	return bool_values[name];
+}
+
+
 GameObject::GameObject()
 {
 	GameObject(Vector2f(0, 0));
@@ -147,6 +195,7 @@ GameObject::GameObject(Vector2f pos)
 	friction = 0.5;
     newPosition = Vector2f();
     isRigidbodySimulated = true;
+	isTrigger = false;
 	velocity = Vector2f();
 	acceleration = Vector2f();
 	massCenter = Vector2f();
@@ -197,6 +246,8 @@ double GameObject::getFriction() { return friction; }
 void GameObject::setFriction(double value) { value <= 1? friction = value : friction = 0.5; }
 bool GameObject::getRigidbodySimulated() {return isRigidbodySimulated; };
 void GameObject::setRigidbodySimulated(bool value) { isRigidbodySimulated = value; }
+bool GameObject::getIsTrigger() { return isTrigger; }
+void GameObject::setIsTrigger(bool value) { isTrigger = value; }
 double GameObject::getRotationSpeed() { return rotationSpeed; }
 void GameObject::setRotationSpeed(double value) { rotationSpeed = value; }
 Vector2f GameObject::getPosition() { return position; }
@@ -381,20 +432,29 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
 }
 void GameObject::updatePos()
 {
-	if (isRigidbodySimulated) {
-	    double deltaTime = 0.02;
+	double deltaTime = 0.02;
+	if (isRigidbodySimulated) 
+	{
 	    velocity += acceleration * deltaTime;
 	    acceleration.X = 0;
 	    acceleration.Y = 0;
-		position += velocity * deltaTime;
-        newPosition = Vector2f(0, 0);
-		rotate(rotationSpeed * deltaTime);
-    } else {
-		if (velocity.Length() != 0)
-			velocity = Vector2f(0, 0);
+	}
+	position += velocity * deltaTime;
+    newPosition = Vector2f(0, 0);
+	rotate(rotationSpeed * deltaTime);
+    if (!isRigidbodySimulated) 
+	{
 		if (acceleration.Length() != 0)
 			acceleration = Vector2f(0, 0);
 	}
+}
+void GameObject::addCollisionCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)> callback)
+{
+	onCollisionEvents.push_back(callback);
+}
+void GameObject::addTriggerCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)> callback)
+{
+	onTriggerEvents.push_back(callback);
 }
 
 
@@ -405,34 +465,43 @@ void Game::updatePhysics()
 		world[i]->updatePos();
 	for (uint i = 0; i < world.size(); i++)
 	{
-        if (world[i]->isRigidbodySimulated)
-		    for (uint j = 0; j < world.size(); j++)
-		    {
-                if (world[i] != world[j])
-		    	    if (world[i]->needTestWith(*(world[j]))) // is objects near to each other
-		    	    {
-		    	    	Vector2f outOfCollisionVector = world[i]->removeCollisionWith(*(world[j]));
-		    	    	if (outOfCollisionVector.Length() > 1e-5)
-		    	    	{
-		    	    		//std::cout << "Collision detected.\n";
-		    	    		//world[i]->position += outOfCollisionVector;
-                            //usleep(1000000);
-		    	    		Vector2f reflected = world[i]->velocity.reflectFrom(outOfCollisionVector.getLeftNormal());
-                            Vector2f frictionProject = reflected.projectOnVector(outOfCollisionVector.getLeftNormal()) * (1 - (world[i]->friction + world[j]->friction) / 2);
-                            Vector2f bouncinessProject = reflected.projectOnVector(outOfCollisionVector) * (world[i]->bounciness + world[j]->bounciness) / 2;
-                            Vector2f impulseVector = frictionProject + bouncinessProject - world[i]->velocity;
-                            world[i]->newPosition += outOfCollisionVector;
+		for (uint j = 0; j < world.size(); j++)
+		{
+            if (world[i] != world[j])
+			    if (world[i]->needTestWith(*(world[j]))) // is objects near to each other
+			    {
+			    	Vector2f outOfCollisionVector = world[i]->removeCollisionWith(*(world[j]));
+			    	if (outOfCollisionVector.Length() > 1e-5)
+			    	{
+			    		//std::cout << "Collision detected.\n";
+						// тута вызывать событие коллизии
+						// вызовется даже если обрабатываемый объект не динамичен
+						if (!world[i]->isTrigger)
+							for (int c = 0; c < world[i]->onCollisionEvents.size(); c++)
+								world[i]->onCollisionEvents[c](world[i], world[j], outOfCollisionVector);
+						else
 							if (world[j]->isRigidbodySimulated)
+								for (int c = 0; c < world[i]->onTriggerEvents.size(); c++)
+									world[i]->onTriggerEvents[c](world[i], world[j]);
+        				if ((world[i]->isRigidbodySimulated) && (!world[j]->isTrigger))
+						{
+			    			Vector2f reflected = world[i]->velocity.reflectFrom(outOfCollisionVector.getLeftNormal());
+                        	Vector2f frictionProject = reflected.projectOnVector(outOfCollisionVector.getLeftNormal()) * (1 - (world[i]->friction != -1)? (world[i]->friction + world[j]->friction) / 2 : world[j]->friction);
+                        	Vector2f bouncinessProject = reflected.projectOnVector(outOfCollisionVector) * (world[i]->bounciness + world[j]->bounciness) / 2;
+							Vector2f impulseVector = Vector2f(0, 0);
+                        	impulseVector = frictionProject + bouncinessProject - world[i]->velocity;
+                        	world[i]->newPosition += outOfCollisionVector;
+							if ((world[j]->isRigidbodySimulated) && (!world[j]->isTrigger))
 							{
-                            	world[i]->velocity += impulseVector * (world[j]->mass / (world[i]->mass + world[j]->mass));
-                            	world[j]->velocity -= impulseVector * (world[i]->mass / (world[i]->mass + world[j]->mass));
-								//std::cout << "VELOCITY " << world[j]->mass << "/" <<world[i]->mass / (world[i]->mass + world[j]->mass);
+                        		world[i]->velocity += impulseVector * (world[j]->mass / (world[i]->mass + world[j]->mass));
+                        		world[j]->velocity -= impulseVector * (world[i]->mass / (world[i]->mass + world[j]->mass));
 							} else {
 								world[i]->velocity += impulseVector;
 							}
-		    	    	}
-		    	    }
-		    }
+						}
+			    	}
+			    }
+		}
 	}
     for (uint i = 0; i < world.size(); i++)
     {
@@ -477,6 +546,39 @@ void Game::updateTick()
     ticksAlive++;
     //usleep(1000);
     //if (ticksAlive > 1000) isGame = false;
+}
+
+GameObjectPtr Game::addTriangle(Vector2f pos, Vector2f p1, Vector2f p2, Vector2f p3)
+{
+	GameObjectPtr obj = std::make_shared<GameObject>(pos);
+    obj->setMass(1);
+    obj->setFriction(0.5);
+    obj->setBounciness(0.5);
+	obj->addPoint(p1);
+	obj->addPoint(p2);
+	obj->addPoint(p3);
+	obj->addEdge(0, 1);
+	obj->addEdge(1, 2);
+	obj->addEdge(2, 0);
+	addObject(obj);
+	return obj;
+}
+GameObjectPtr Game::addQuadrangle(Vector2f pos, Vector2f p1, Vector2f p2, Vector2f p3, Vector2f p4)
+{
+	GameObjectPtr obj = std::make_shared<GameObject>(pos);
+    obj->setMass(1);
+    obj->setFriction(0.5);
+    obj->setBounciness(0.5);
+	obj->addPoint(p1);
+	obj->addPoint(p2);
+	obj->addPoint(p3);
+	obj->addPoint(p4);
+	obj->addEdge(0, 1);
+	obj->addEdge(1, 2);
+	obj->addEdge(2, 3);
+	obj->addEdge(3, 0);
+	addObject(obj);
+	return obj;
 }
 
 } // namespace re
