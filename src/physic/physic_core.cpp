@@ -195,6 +195,7 @@ GameObject::GameObject(Vector2f pos)
 	friction = 0.5;
     newPosition = Vector2f();
     isRigidbodySimulated = true;
+	isTrigger = false;
 	velocity = Vector2f();
 	acceleration = Vector2f();
 	massCenter = Vector2f();
@@ -245,6 +246,8 @@ double GameObject::getFriction() { return friction; }
 void GameObject::setFriction(double value) { value <= 1? friction = value : friction = 0.5; }
 bool GameObject::getRigidbodySimulated() {return isRigidbodySimulated; };
 void GameObject::setRigidbodySimulated(bool value) { isRigidbodySimulated = value; }
+bool GameObject::getIsTrigger() { return isTrigger; }
+void GameObject::setIsTrigger(bool value) { isTrigger = value; }
 double GameObject::getRotationSpeed() { return rotationSpeed; }
 void GameObject::setRotationSpeed(double value) { rotationSpeed = value; }
 Vector2f GameObject::getPosition() { return position; }
@@ -445,6 +448,14 @@ void GameObject::updatePos()
 			acceleration = Vector2f(0, 0);
 	}
 }
+void GameObject::addCollisionCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)> callback)
+{
+	onCollisionEvents.push_back(callback);
+}
+void GameObject::addTriggerCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)> callback)
+{
+	onTriggerEvents.push_back(callback);
+}
 
 
 void Game::updatePhysics()
@@ -465,14 +476,22 @@ void Game::updatePhysics()
 			    		//std::cout << "Collision detected.\n";
 						// тута вызывать событие коллизии
 						// вызовется даже если обрабатываемый объект не динамичен
-        				if (world[i]->isRigidbodySimulated)
+						if (!world[i]->isTrigger)
+							for (int c = 0; c < world[i]->onCollisionEvents.size(); c++)
+								world[i]->onCollisionEvents[c](world[i], world[j], outOfCollisionVector);
+						else
+							if (world[j]->isRigidbodySimulated)
+								for (int c = 0; c < world[i]->onTriggerEvents.size(); c++)
+									world[i]->onTriggerEvents[c](world[i], world[j]);
+        				if ((world[i]->isRigidbodySimulated) && (!world[j]->isTrigger))
 						{
 			    			Vector2f reflected = world[i]->velocity.reflectFrom(outOfCollisionVector.getLeftNormal());
                         	Vector2f frictionProject = reflected.projectOnVector(outOfCollisionVector.getLeftNormal()) * (1 - (world[i]->friction != -1)? (world[i]->friction + world[j]->friction) / 2 : world[j]->friction);
                         	Vector2f bouncinessProject = reflected.projectOnVector(outOfCollisionVector) * (world[i]->bounciness + world[j]->bounciness) / 2;
-                        	Vector2f impulseVector = frictionProject + bouncinessProject - world[i]->velocity;
+							Vector2f impulseVector = Vector2f(0, 0);
+                        	impulseVector = frictionProject + bouncinessProject - world[i]->velocity;
                         	world[i]->newPosition += outOfCollisionVector;
-							if (world[j]->isRigidbodySimulated)
+							if ((world[j]->isRigidbodySimulated) && (!world[j]->isTrigger))
 							{
                         		world[i]->velocity += impulseVector * (world[j]->mass / (world[i]->mass + world[j]->mass));
                         		world[j]->velocity -= impulseVector * (world[i]->mass / (world[i]->mass + world[j]->mass));

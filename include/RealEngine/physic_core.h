@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <functional>
 
 namespace re {
 
@@ -80,6 +81,9 @@ public:
 	std::vector<Vector2f>* getVertexes(); // Returns pointer to array with vertexes
 	std::vector<Edge>* getEdges(); // Returns copy of array with edges
 	void rotate(double rotation); // Turns gameobject in counter-clock-wise by 'rotation' radians
+	void addCollisionCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)> callback); // Adds function to onCollision event
+	void addTriggerCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)> callback); // Adds function to onTrigger event
+	//#pragma region getters-and-setters
 	double getMass(); // Returns current mass of object
 	void setMass(double value); // Sets mass of gameobject(must be >= 0 (seriosly))
 	double getBounciness(); // Returns current bounciness of gameobject
@@ -88,18 +92,22 @@ public:
 	void setFriction(double value); // Sets friction of gameobject(recommended >= 0 and must be <= 1), if friction will be -1, will be counted only from other object.
 	bool getRigidbodySimulated(); // Returns true if gameobject is dynamic, false if static
 	void setRigidbodySimulated(bool value); // Sets gameobject to be dynamic(true) or static(false)
+	bool getIsTrigger(); // Returns true if gameobject is trigger, false if object
+	void setIsTrigger(bool value); // Sets gameobject to be trigger(true)(means it will not be collided with something) or to be object(false)
 	double getRotationSpeed(); // Returns rotation speed of gameobject
 	void setRotationSpeed(double value); // Sets rotation speed of gameobject
 	Vector2f getPosition(); // Returns current gameobject position
     void setPosition(Vector2f pos); // Sets position to gameobject
 	Vector2f getVelocity();
 	void setVelocity(Vector2f vec);
+	//#pragma endregion
 	friend class Game;
 protected:
     // just don't touch it.
 	double mass;
 	double bounciness, friction;
     bool isRigidbodySimulated;
+	bool isTrigger;
 	std::vector<Edge> edges;
 	std::vector<Vector2f> vertexes;
 	Vector2f position;
@@ -110,6 +118,8 @@ protected:
 	double rotation;
 	double rotationSpeed; // radians per sec
 	double circleRadius;
+	std::vector<std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)>> onTriggerEvents; // GameobjectPtr trigger, GameobjectPtr object
+	std::vector<std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)>> onCollisionEvents;
     void countMassCenter();
     Vector2f getMassCenter();
 	bool needTestWith(GameObject &gm);
@@ -142,11 +152,11 @@ public:
 } // namespace re
 
 // TODO: 
-// +создание четырехугольникок, пятиугольников, треугольников
+// +создание четырехугольников, треугольников
 // +разобраться с трением
 // +запилить карту метаданных
-// сделать триггеры (bool isTrigger)
+// +сделать триггеры (bool isTrigger)
 // +переместить отключение обработки у нефизических объектов, что б они могли
 // +вызывать события столкновения
 // +сделать возможным перемещение у нефизических объектов
-// запилить события столкновений
+// +запилить события столкновений

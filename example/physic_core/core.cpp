@@ -16,11 +16,28 @@ public:
 	re::Game mainGame;
     re::ImagePtr imgptr;
 
+    static void onTrigger(re::GameObjectPtr trigger, re::GameObjectPtr object)
+    {
+        std::cout << "YAY! trigger!\n";
+    }
+
+    static void onCollision(re::GameObjectPtr trigger, re::GameObjectPtr object, re::Vector2f vec)
+    {
+        std::cout << "YAY! collision!\n";
+    }
+
     void setup() override 
     {
         auto obj = mainGame.addTriangle(re::Vector2f(10, 10), re::Vector2f(0, 1), re::Vector2f(1, -1), re::Vector2f(-1, -1));
-        obj->setRigidbodySimulated(false);
-        obj->setVelocity(re::Vector2f(1, 0));
+        //obj->setRigidbodySimulated(false);
+        //obj->setIsTrigger(true);
+        obj->setVelocity(re::Vector2f(3, 0));
+        auto obj2 = mainGame.addQuadrangle(re::Vector2f(10, 15), re::Vector2f(5, 1), re::Vector2f(5, -1), re::Vector2f(-5, -1), re::Vector2f(-5, 1));
+        obj2->setRigidbodySimulated(false);
+        auto obj3 = mainGame.addQuadrangle(re::Vector2f(15, 14), re::Vector2f(1, 1), re::Vector2f(1, -1), re::Vector2f(-1, -1), re::Vector2f(-1, 1));
+        obj3->setRigidbodySimulated(false);
+        obj3->setIsTrigger(true);
+        obj3->addTriggerCallback(&MainApp::onTrigger);
     }
 
     void update() override {
