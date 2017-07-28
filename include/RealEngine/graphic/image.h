@@ -12,12 +12,9 @@ class Image
 {
 public:
     Image(std::string filename);
-    Image(const Image& im);
     Image(int width, int height, int c);
     Image( void *buffer, int width, int height, int c );
     ~Image();
-
-    unsigned char* get_buffer() { return image_buffer; } // TODO. TMP debug!
 
     std::shared_ptr<Image> get_subimage(int x, int y, int size_x, int size_y);
 
