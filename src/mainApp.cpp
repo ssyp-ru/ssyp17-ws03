@@ -2,6 +2,7 @@
 
 #include "window/opengl.h"
 #include "graphics/particle.h"
+#include "utils/stop_watch.h"
 
 #include <unistd.h>
 #include <iostream>
@@ -34,18 +35,20 @@ void exitApp()
 void MainApp::init()
 {
     initParticles();
-    
     baseApp->setup();
 }
 
 void MainApp::tick()
 {
+    StopWatch now;
+    delta_time = previous_time.diff(now);
+    previous_time = now;
     baseApp->update();
     baseApp->display();
     
     drawParticles( 0.1 );
 
     OpenGL::instance().draw();
-}
+}5
 
 }
