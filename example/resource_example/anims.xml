@@ -1,0 +1,12 @@
+<resources>
+    <images> 
+        <im id="screenshot" file="test.png"/>
+        <im id="mario_sprite_sheet" file="spritelist.png"/>
+    </images>
+    <sprites>
+        <sprite id="mario_sprite" source_id="screenshot" speed="0.5" cycleable="true">
+            <sp x="0" y="0" w="260" h="200"/>
+            <sp x="30" y="30" w="260" h="200"/>
+        </sprite>
+    </sprites>
+</resources>
