@@ -563,6 +563,7 @@ void Game::start()
 }
 void Game::addObject(GameObjectPtr obj)
 {
+	obj->worldContainer = &world;
     world.push_back(obj);
 }
 void Game::updateTick()

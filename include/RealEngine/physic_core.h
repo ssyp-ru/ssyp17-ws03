@@ -73,6 +73,7 @@ class GameObject
 {
 public:
 	Metadata metadata; // Just useful variable, read class Metadata
+	std::vector<std::shared_ptr<GameObject>> *worldContainer;
 	GameObject(); // Makes empty gameobject in (0, 0) position
 	GameObject(Vector2f pos); // Makes empty gameobject in your position
 	void addForce(Vector2f force); // Adds a force to this gameobject
@@ -102,9 +103,7 @@ public:
 	//#pragma endregion
 	void destroy();
 	virtual void onCollisionStay(std::shared_ptr<GameObject> to, Vector2f vec) { }
-	virtual void onTriggerExit(std::shared_ptr<GameObject> obj) { }
 	virtual void onTriggerStay(std::shared_ptr<GameObject> obj) { }
-	virtual void onTriggerEnter(std::shared_ptr<GameObject> obj) { }
 	virtual ~GameObject() { }
 	friend class Game;
 protected:
