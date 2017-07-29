@@ -14,6 +14,8 @@
 #include <cmath>
 #include "RealEngine/physic_core.h"
 #include "platform.h"
+#include "movingPlatform.h"
+#include "weakPlatform.h"
 
 class MainApp : public re::IBaseApp{
 public:
@@ -41,11 +43,8 @@ public:
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
         testPlayer = std::make_shared<Player>(re::Vector2f(5, 15), re::Vector2f(1, 1.5));
         testPlayer->movingAnim = testanimCustom;
-        testPlayer->setRigidbodySimulated(true);
-        //testPlayer->addImpulse(re::Vector2f(4, 0));
         testPlayer->setFriction(-1.0);
         testPlayer->setBounciness(0.0);
-        testPlayer->addCollisionCallback(testPlayer->getCallback());
         mainGame.addObject(testPlayer);
 
         re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
@@ -54,12 +53,13 @@ public:
         plat->setBounciness(0.0);
         mainGame.addObject(plat);
 
-        re::GameObjectPtr plat2 = std::make_shared<Platform>(re::Vector2f(15, 16), re::Vector2f(2, 2));
-        plat2->setRigidbodySimulated(false);
-        plat2->setFriction(1.0);
-        plat2->setBounciness(0.0);
+        re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->addWaypoint(re::Vector2f(20, 16));
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setCycled(true);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setActivated(true);
         mainGame.addObject(plat2);
 
+<<<<<<< HEAD
         re::GameObjectPtr plat3 = std::make_shared<Platform>(re::Vector2f(5, 12), re::Vector2f(8, 3));
         plat3->setRigidbodySimulated(false);
         plat3->setFriction(1.0);
@@ -67,6 +67,12 @@ public:
         mainGame.addObject(plat3);
 
         curState = AppState::MainMenu;
+=======
+        re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(3, 0.5), 1.0);
+        mainGame.addObject(plat3);
+
+        curState = AppState::Ingame;
+>>>>>>> 16937082a0c6d6721d5bf10f7dd53c2d19d04181
     }
 
     void update() override {
@@ -80,6 +86,7 @@ public:
     }
 
     void display() override 
+<<<<<<< HEAD
     {   
         switch(curState){
         case AppState::Ingame:
@@ -103,6 +110,13 @@ public:
                 }
             }
             if ((testPlayer->getVelocity().Y > 0.1) && (testPlayer->isGrounded)) testPlayer->isGrounded = false;
+=======
+    {
+        for (auto curObject : mainGame.getWorld())
+        {
+            (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();   
+        }
+>>>>>>> 16937082a0c6d6721d5bf10f7dd53c2d19d04181
 
             mainGame.updateTick();
 
@@ -137,7 +151,7 @@ public:
 
     void on_key_pressed(re::Key key){
         //std::cout << "Key pressed\n";
-        if (key == re::Key::Escape || (int) key == 255){ //255 = escape, and also "delete", dat opengl :(
+        if (key == re::Key::Escape){ //255 = escape, and also "delete", dat opengl :(
             if(curState == AppState::Ingame){
                 std::cout << "pause setter triggered" << std::endl;
                 setState_pause();

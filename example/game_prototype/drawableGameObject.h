@@ -15,7 +15,10 @@ public:
     {
 
     }
-
+    virtual void update()
+    {
+        
+    }
     virtual void display(int scale)
     {
         for (auto curEdge : *getEdges())

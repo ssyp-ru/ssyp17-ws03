@@ -10,6 +10,9 @@ class Platform : public DrawableGameObject{
 public:
     Platform(re::Vector2f pos, re::Vector2f size) : DrawableGameObject::DrawableGameObject(pos) 
     {
+        setRigidbodySimulated(false);
+        setFriction(1.0);
+        setBounciness(0.0);
         addPoint(re::Vector2f(0, 0));
         addPoint(re::Vector2f(0, size.Y));
         addPoint(re::Vector2f(size.X, size.Y));

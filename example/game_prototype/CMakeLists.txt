@@ -1,8 +1,9 @@
 project(game_prototype)
 
 set(EXECUTABLE  main.cpp 
-                base_button.cpp 
-                player.cpp)
+                base_button.cpp
+                damageTrigger.cpp
+                )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
