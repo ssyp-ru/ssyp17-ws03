@@ -501,6 +501,7 @@ void Game::updatePhysics()
 						{
 							if (!world[j]->isTrigger && ((world[j]->isRigidbodySimulated) || (world[i]->isRigidbodySimulated)))
 								world[i]->onCollisionStay(world[j], outOfCollisionVector);
+						}
 						else
 							if (world[j]->isRigidbodySimulated)
 								world[i]->onTriggerStay(world[j]);
