@@ -32,7 +32,7 @@ public:
     void attack() override
     {
         re::GameObjectPtr ptr;
-        for (int i = 0; i < (*worldContainer).size(); i++)
+        for (uint i = 0; i < (*worldContainer).size(); i++)
         {
             if ((*worldContainer)[i].get() == this)
             {
@@ -45,8 +45,8 @@ public:
             trig = std::make_shared<DamageTrigger>(position + vertexes[3] + vertexes[1] / 4,
              re::Vector2f(vertexes[3].X * 2, vertexes[1].Y / 2), attackDamage, ptr);
         else
-            trig = std::make_shared<DamageTrigger>(position - vertexes[3] + vertexes[1] / 4,
-             re::Vector2f(vertexes[3].X * 2, vertexes[1].Y / 2), attackDamage, ptr);
+            trig = std::make_shared<DamageTrigger>(position + vertexes[1] / 4,
+             re::Vector2f(vertexes[3].X * -2, vertexes[1].Y / 2), attackDamage, ptr);
         worldContainer->push_back(trig);
     }
     void update() override
