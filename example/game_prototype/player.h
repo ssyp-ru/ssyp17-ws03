@@ -30,4 +30,8 @@ public:
             isGrounded = true;
         }
     }
+    void display(int scale) override
+    {
+        re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
+    }
 };
