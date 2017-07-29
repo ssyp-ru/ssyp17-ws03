@@ -12,7 +12,7 @@ public:
     }
     virtual void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec) override
     { }
-    virtual void onDeath() override { }
+    virtual void onDeath(re::GameObjectPtr sender) override { }
     virtual void attack() override { }
     virtual void update() override { Unit::update(); }
 };

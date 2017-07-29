@@ -18,6 +18,8 @@
 #include "weakPlatform.h"
 #include "evilBird.h"
 #include "icePlatform.h"
+#include "spikes.h"
+#include "deathTrigger.h"
 
 class MainApp : public re::IBaseApp{
 public:
@@ -54,10 +56,10 @@ public:
         mainGame.addObject(plat);
 
         re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->addWaypoint(re::Vector2f(20, 16));
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setCycled(true);
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setActivated(true);
         mainGame.addObject(plat2);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->addWaypoint(re::Vector2f(20, 16));
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->setCycled(true);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->setActivated(true);
 
         re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(3, 0.5), 1.0);
         mainGame.addObject(plat3);
@@ -68,8 +70,18 @@ public:
         re::GameObjectPtr plat5 = std::make_shared<Platform>(re::Vector2f(30, 21), re::Vector2f(5, 1));
         mainGame.addObject(plat5);
 
-        re::GameObjectPtr bird = std::make_shared<EvilBird>(re::Vector2f(12, 18));
+        re::GameObjectPtr bird = std::make_shared<EvilBird>(re::Vector2f(10, 17), 2);
         mainGame.addObject(bird);
+        (std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(re::Vector2f(12, 18));
+        (std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(re::Vector2f(14, 17));        
+        (std::dynamic_pointer_cast<EvilBird>(bird))->path->setCycled(false);
+        (std::dynamic_pointer_cast<EvilBird>(bird))->path->setActivated(true);
+
+        re::GameObjectPtr spikes = std::make_shared<Spikes>(re::Vector2f(32, 20), re::Vector2f(1, 1), 50.0, 1.0);
+        mainGame.addObject(spikes);
+
+        re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(re::Vector2f(-5, 30), re::Vector2f(50, 1));
+        mainGame.addObject(deathTrig);
 
         curState = AppState::Ingame;
     }
@@ -77,7 +89,6 @@ public:
     void update() override {
         switch(curState){
             case AppState::Ingame:
-                mainGame.getWorld()[0]->addForce(re::Vector2f(0, 20 * mainGame.getWorld()[0]->getMass()));
                 break;
             case AppState::Exit:
                 exit(0);

@@ -10,14 +10,12 @@
 #include "damageTrigger.h"
 
 class Player : public Unit{
-private:
-    int direction;
 public:
     bool isGrounded = false;
     re::Animation movingAnim; // moving animation
     Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(1, 1.5)) 
     {
-        hp = 10;
+        hp = 100;
         attackDelay = 0.3;
         attackDamage = 2;
         direction = 1;
@@ -51,6 +49,7 @@ public:
     }
     void update() override
     {
+        addForce(re::Vector2f(0, 20 * getMass()));
         if (re::get_key_state(re::Key::D))
         {
             direction = 1;

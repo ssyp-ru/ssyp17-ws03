@@ -3,6 +3,7 @@ project(game_prototype)
 set(EXECUTABLE  main.cpp 
                 base_button.cpp
                 damageTrigger.cpp
+                deathTrigger.cpp
                 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})

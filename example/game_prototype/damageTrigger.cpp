@@ -14,12 +14,12 @@ void DamageTrigger::onTriggerStay(re::GameObjectPtr obj)
 {
     if ((std::dynamic_pointer_cast<Enemy>(obj) != 0) && (std::dynamic_pointer_cast<Player>(sender) != 0))
     {
-        (std::dynamic_pointer_cast<Unit>(obj))->dealDamage(damage);
+        (std::dynamic_pointer_cast<Unit>(obj))->dealDamage(damage, sender);
         destroy();
     }
     if ((std::dynamic_pointer_cast<Player>(obj) != 0) && (std::dynamic_pointer_cast<Enemy>(sender) != 0))
     {
-        (std::dynamic_pointer_cast<Unit>(obj))->dealDamage(damage);
+        (std::dynamic_pointer_cast<Unit>(obj))->dealDamage(damage, sender);
         destroy();
     }
 }

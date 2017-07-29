@@ -5,6 +5,7 @@
 
 class Unit : public DrawableGameObject {
 protected:
+    int direction;
     Unit(re::Vector2f pos, re::Vector2f size) : DrawableGameObject::DrawableGameObject(pos) {
         addPoint(re::Vector2f(0, 0));
         addPoint(re::Vector2f(0, size.Y));
@@ -27,7 +28,7 @@ protected:
     virtual void onCollisionStay(re::GameObjectPtr obj, re::Vector2f vec) { }
     virtual void update() { DrawableGameObject::update(); }
 public:
-    virtual void onDeath()
+    virtual void onDeath(re::GameObjectPtr lastAttacker)
     {
         
     }
@@ -39,11 +40,11 @@ public:
             attack();
         }
     }
-    virtual void dealDamage(double dmg) {
+    virtual void dealDamage(double dmg, re::GameObjectPtr sender) {
         hp -= dmg;
         if(hp <= 0.0) 
         {
-            onDeath();
+            onDeath(sender);
             destroy();
         }
     }
