@@ -91,7 +91,7 @@ re::Tileset parse_tileset(re::XmlElem* parsed_xml) {
         auto tileset_src = std::make_shared<re::Image>(tileset.img_source);
         for(uint j = 0; j < tileset.tilecount*tileset.columns; j++) {
             for(uint i = 0; i < tileset.columns; i++) {
-                tileset.tiles.push_back(tileset_src->get_subimage(i*tileset.tilewidth,j*tileset.tileheight,tileset.tilewidth,tileset.tileheight));
+                tileset.tiles.push_back(tileset_src);//->get_subimage(i*tileset.tilewidth,j*tileset.tileheight,tileset.tilewidth,tileset.tileheight));
             }
         }
     } catch(...) {
@@ -121,6 +121,7 @@ re::Map parse_map(re::XmlElem* parsed_xml) {
             auto width = map.tileset[0].tilewidth;
             auto height = map.tileset[0].tileheight;
             layer.background = std::make_shared<re::Image>(layer.width*width,layer.height*height, 4);
+
             for(uint y = 0; y < layer.height; y++)
                 for(uint x = 0; x < layer.width; x++) {
                     auto a = map.layer[0].data[y*layer.width + x];
