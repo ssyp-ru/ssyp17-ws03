@@ -16,6 +16,7 @@
 #include "platform.h"
 #include "movingPlatform.h"
 #include "weakPlatform.h"
+#include "evilBird.h"
 
 class MainApp : public re::IBaseApp{
 public:
@@ -41,7 +42,8 @@ public:
         buttonList.push_back(exit_btn);
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
-        testPlayer = std::make_shared<Player>(re::Vector2f(5, 15), re::Vector2f(1, 1.5));
+
+        testPlayer = std::make_shared<Player>(re::Vector2f(5, 15));
         testPlayer->movingAnim = testanimCustom;
         testPlayer->setFriction(-1.0);
         testPlayer->setBounciness(0.0);
@@ -61,6 +63,9 @@ public:
 
         re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(3, 0.5), 1.0);
         mainGame.addObject(plat3);
+
+        re::GameObjectPtr bird = std::make_shared<EvilBird>(re::Vector2f(12, 18));
+        mainGame.addObject(bird);
 
         curState = AppState::Ingame;
     }

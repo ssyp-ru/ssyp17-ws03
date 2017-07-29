@@ -15,11 +15,11 @@ private:
 public:
     bool isGrounded = false;
     re::Animation movingAnim; // moving animation
-    Player(re::Vector2f pos, re::Vector2f size) : Unit::Unit(pos, size) 
+    Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(1, 1.5)) 
     {
         hp = 10;
         attackDelay = 0.3;
-        attackDamage = 100;
+        attackDamage = 2;
         direction = 1;
     }
     void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec) override

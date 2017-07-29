@@ -27,9 +27,6 @@ class Unit : public DrawableGameObject {
         virtual void onCollisionStay(re::GameObjectPtr obj, re::Vector2f vec) { }
         virtual void update() { }
     public:
-        virtual void onDeath() {
-            // Play sad theme
-        }
         void tryAttack()
         {
             if (lastAttackTime.stop_watch() / 1e9 > attackDelay)
@@ -40,8 +37,6 @@ class Unit : public DrawableGameObject {
         }
         virtual void dealDamage(double dmg) {
             hp -= dmg;
-            if(hp <= 0.0) {
-                onDeath();
-            }
+            if(hp <= 0.0) destroy();
         }
 };
