@@ -500,10 +500,10 @@ void Game::updatePhysics()
 						// вызовется даже если обрабатываемый объект не динамичен
 						if (!world[i]->isTrigger)
 							if (!world[j]->isTrigger && ((world[j]->isRigidbodySimulated) || (world[i]->isRigidbodySimulated)))
-								world[i]->onCollision(world[j], outOfCollisionVector);
+								world[i]->onCollisionStay(world[j], outOfCollisionVector);
 						else
 							if (world[j]->isRigidbodySimulated)
-								world[i]->onTrigger(world[j]);
+								world[i]->onTriggerStay(world[j]);
         				if (world[i]->isRigidbodySimulated && !world[j]->isTrigger)
 						{
 			    			Vector2f reflected = world[i]->velocity.reflectFrom(outOfCollisionVector.getLeftNormal());

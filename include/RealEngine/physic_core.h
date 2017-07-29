@@ -101,8 +101,10 @@ public:
 	void setVelocity(Vector2f vec);
 	//#pragma endregion
 	void destroy();
-	virtual void onCollision(std::shared_ptr<GameObject> to, Vector2f vec) { }
-	virtual void onTrigger(std::shared_ptr<GameObject> obj) { }
+	virtual void onCollisionStay(std::shared_ptr<GameObject> to, Vector2f vec) { }
+	virtual void onTriggerExit(std::shared_ptr<GameObject> obj) { }
+	virtual void onTriggerStay(std::shared_ptr<GameObject> obj) { }
+	virtual void onTriggerEnter(std::shared_ptr<GameObject> obj) { }
 	virtual ~GameObject() { }
 	friend class Game;
 protected:
