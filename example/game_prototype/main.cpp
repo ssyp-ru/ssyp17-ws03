@@ -17,6 +17,7 @@
 #include "movingPlatform.h"
 #include "weakPlatform.h"
 #include "evilBird.h"
+#include "icePlatform.h"
 
 class MainApp : public re::IBaseApp{
 public:
@@ -50,9 +51,6 @@ public:
         mainGame.addObject(testPlayer);
 
         re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
-        plat->setRigidbodySimulated(false);
-        plat->setFriction(1.0);
-        plat->setBounciness(0.0);
         mainGame.addObject(plat);
 
         re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
@@ -63,6 +61,12 @@ public:
 
         re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(3, 0.5), 1.0);
         mainGame.addObject(plat3);
+
+        re::GameObjectPtr plat4 = std::make_shared<IcePlatform>(re::Vector2f(20, 21), re::Vector2f(10, 1));
+        mainGame.addObject(plat4);
+
+        re::GameObjectPtr plat5 = std::make_shared<Platform>(re::Vector2f(30, 21), re::Vector2f(5, 1));
+        mainGame.addObject(plat5);
 
         re::GameObjectPtr bird = std::make_shared<EvilBird>(re::Vector2f(12, 18));
         mainGame.addObject(bird);

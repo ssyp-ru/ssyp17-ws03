@@ -17,7 +17,7 @@ public:
     }
     virtual void update()
     {
-        
+        setCanChangeSpeed(true);
     }
     virtual void display(int scale)
     {

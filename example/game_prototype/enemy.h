@@ -8,18 +8,11 @@ public:
     re::Animation movingAnim; // moving animation
     Enemy(re::Vector2f pos, re::Vector2f size) : Unit::Unit(pos, size) 
     {
-        
+        setFriction(0.5);
     }
     virtual void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec) override
-    {
-
-    }
-    virtual void attack() override
-    {
-        
-    }
-    virtual void update() override
-    {
-        
-    }
+    { }
+    virtual void onDeath() override { }
+    virtual void attack() override { }
+    virtual void update() override { Unit::update(); }
 };
