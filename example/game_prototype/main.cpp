@@ -2,17 +2,21 @@
 #include <RealEngine/graphic.h>
 #include <RealEngine/graphic/image.h>
 #include <RealEngine/graphic/animation.h>
-#include "player.h"
-#include "app_state.h"
-#include "base_button.h"
+#include <RealEngine/tiled_parser.h>
+#include <RealEngine/xml_parser.h>
 #include <RealEngine/math.h>
+#include "RealEngine/physic_core.h"
+
 #include <functional>
 #include <string>
 #include <iostream>
 #include <chrono>
 #include <vector>
 #include <cmath>
-#include "RealEngine/physic_core.h"
+
+#include "player.h"
+#include "app_state.h"
+#include "base_button.h"
 #include "platform.h"
 #include "movingPlatform.h"
 #include "weakPlatform.h"
@@ -25,6 +29,7 @@ class MainApp : public re::IBaseApp{
 public:
     re::Game mainGame;
     int k = 16; // scale
+    re::Map map;
     //Setup:
 
     re::GameObjectPtr getGameObject(re::Vector2f pos, re::Vector2f size)
@@ -46,10 +51,25 @@ public:
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
-        testPlayer = std::make_shared<Player>(re::Vector2f(5, 15));
-        testPlayer->movingAnim = testanimCustom;
-        testPlayer->setFriction(-1.0);
-        testPlayer->setBounciness(0.0);
+        map = (re::parse_tiled( re::parse_xml( "map/untitled.tmx" ) ))[0];
+
+        for( auto object : map.objectgroup[0].group )
+        {
+            if( object.name == "grass" )
+            {
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f(object.x / 200, object.y / 200), 
+                        re::Vector2f((float)object.width / 200, (float)object.height / 200)));
+
+                std::cout << object.x / 200 << ' ' << object.y / 200 << ' ' << (float)object.height / 200 << object.width / 200 << '\n';
+            } else if ( object.name == "yojus" ) {
+                testPlayer = std::make_shared<Player>(re::Vector2f(5, 18));
+                testPlayer->movingAnim = testanimCustom;
+                testPlayer->setFriction(-1.0);
+                testPlayer->setBounciness(0.0);
+            }
+        }
+
         mainGame.addObject(testPlayer);
 
         re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
@@ -100,6 +120,14 @@ public:
         switch(curState){
         case AppState::Ingame:
             mainGame.updateTick();
+
+            re::view_at( testPlayer->getPosition().X * 16 - 500,
+                         testPlayer->getPosition().Y * 16 - 300 );
+            re::draw_image_part(0,0, 
+                            1280,
+                            1280, 
+                            0,0, 1,1, 
+                            map.layer[0].background);
 
             for (auto curObject : mainGame.getWorld())
                 (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();
@@ -196,6 +224,6 @@ private:
 };
 
 int main(){
-    re::runApp( 1200, 800, std::make_shared<MainApp>() );
+    re::runApp( 1024, 576, std::make_shared<MainApp>() );
     return 0;
 }
