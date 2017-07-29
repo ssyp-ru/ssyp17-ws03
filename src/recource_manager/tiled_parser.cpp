@@ -2,6 +2,8 @@
 #include <RealEngine/logger.h>
 #include <RealEngine/graphic/image.h>
 
+#include <iostream>
+
 re::Object parse_object(re::XmlElem* parsed_xml) {
     re::Log::msg("parsing to object " + parsed_xml->name, re::Log::LEVEL::TRACE);    
     re::Object object;
@@ -40,7 +42,6 @@ re::Layer parse_layer(re::XmlElem* parsed_xml) {
         layer.height = std::stoi(parsed_xml->field.at("height"));
         layer.width = std::stoi(parsed_xml->field.at("width"));
         layer.name = parsed_xml->field.at("name");
-
         re::XmlElem* data_xml = parsed_xml->child.at(0);
         std::string endcoding = data_xml->field.at("encoding");
         std::string data = data_xml->content;
@@ -53,7 +54,14 @@ re::Layer parse_layer(re::XmlElem* parsed_xml) {
             if(data.length() <= 0) break;
             found = data.find_first_of("\r ,\n\t");
             layer.data.push_back(std::stoi(data.substr(0,found)));
-            data.erase(0,found);
+            if(data.length() > 2)
+            {
+                data.erase(0,found);
+            }
+            else
+            {
+                break;
+            }
         }
         re::Log::stream() << std::endl;
     } catch(...) {
@@ -115,14 +123,19 @@ re::Map parse_map(re::XmlElem* parsed_xml) {
             layer.background = std::make_shared<re::Image>(layer.width*width,layer.height*height, 4);
             for(uint y = 0; y < layer.height; y++)
                 for(uint x = 0; x < layer.width; x++) {
-                    layer.background->set_subimage(x*width,y*height,map.tileset[0].tiles[
-                        map.layer[0].data[y*layer.width + x]
-                    ]);
+                    auto a = map.layer[0].data[y*layer.width + x];
+                    if( a != 0 )
+                    {
+                        layer.background->set_subimage(x*width,y*height,
+                            map.tileset[
+                                a-1
+                            ].tiles[0]);
+                    }
                 }
             layer.background->reGenTexture();
         } catch(...) {
             re::Log::msg("Error creating background image for layer " + layer.name + ".", re::Log::LEVEL::DEBUG);
-        }   
+        }
     }
     return map;
 }
