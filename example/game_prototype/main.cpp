@@ -72,7 +72,7 @@ public:
     void display() override 
     {
         //std::cout << MainApp::delta_time << '\n';
-        if (re::getKeyState(re::Key::D))
+        if (re::get_key_state(re::Key::D))
             testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
         if (re::get_key_state(re::Key::A))
             testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
@@ -116,7 +116,7 @@ public:
 
     void on_key_pressed(re::Key key){
         //std::cout << "Key pressed\n";
-        if (key == re::Key::Escape){
+        if (key == re::Key::Escape){    
             exit(0);
         }
         if (key == re::Key::Down){
