@@ -24,6 +24,7 @@
 #include "icePlatform.h"
 #include "spikes.h"
 #include "deathTrigger.h"
+#include "jumpPlatform.h"
 
 class MainApp : public re::IBaseApp{
 public:
@@ -89,6 +90,9 @@ public:
 
         re::GameObjectPtr plat5 = std::make_shared<Platform>(re::Vector2f(30, 21), re::Vector2f(5, 1));
         mainGame.addObject(plat5);
+
+        re::GameObjectPtr plat6 = std::make_shared<JumpPlatform>(re::Vector2f(-6, 20), re::Vector2f(5, 1), 20);
+        mainGame.addObject(plat6);
 
         re::GameObjectPtr bird = std::make_shared<EvilBird>(re::Vector2f(10, 17), 2);
         mainGame.addObject(bird);
