@@ -71,6 +71,30 @@ public:
 
     void display() override 
     {
+<<<<<<< HEAD
+=======
+        //std::cout << MainApp::delta_time << '\n';
+        if (re::get_key_state(re::Key::D))
+            testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
+        if (re::get_key_state(re::Key::A))
+            testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
+
+        if ((testPlayer->isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
+            testPlayer->movingAnim.setSpeed(0.5);
+        else
+            testPlayer->movingAnim.setSpeed(0);
+
+        if (re::get_key_state(re::Key::W))
+        {
+            if (testPlayer->isGrounded)
+            {
+                testPlayer->addImpulse(re::Vector2f(0, -15 * testPlayer->getMass()));
+                testPlayer->isGrounded = false;
+            }
+        }
+        if ((testPlayer->getVelocity().Y > 0.1) && (testPlayer->isGrounded)) testPlayer->isGrounded = false;
+
+>>>>>>> 4f06793507c000fcd54317ad4091ecbbfe4e148e
         for (auto curObject : mainGame.getWorld())
         {
             (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();   
@@ -95,7 +119,7 @@ public:
 
     void on_key_pressed(re::Key key){
         //std::cout << "Key pressed\n";
-        if (key == re::Key::Escape){
+        if (key == re::Key::Escape){    
             exit(0);
         }
         if (key == re::Key::Down){
