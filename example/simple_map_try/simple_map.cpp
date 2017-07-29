@@ -37,7 +37,8 @@ public:
     }
 
     void display() override {
-        re::viewat( -x, 0 );
+        re::scale(2);
+        re::view_at( x, 0 );
         re::draw_image(0,0, imgptr);
         x = (x+1) % 100;
         // for (uint i = 0; i < curWorld.size(); i++)
