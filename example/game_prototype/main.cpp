@@ -29,10 +29,16 @@ public:
     void setup() override {
         re::Animation testanimCustom(0, true);
         re::Image buttonsource("test.png");
-        re::Image spritelist("spritelist.png");
+        re::Image spritelist("spritelistMario.png");
         for (int i = 0; i < 9; i++){
             testanimCustom.add_frame(spritelist.get_subimage(3 + 17*i, 5, 16, 25));
         }
+        re::BaseButton startgame_btn(50, 50, buttonsource.get_subimage(10, 10, 200, 70));
+        re::BaseButton exit_btn(50, 250, buttonsource.get_subimage(10, 200, 200, 70));
+        buttonList.push_back(startgame_btn);
+        buttonList.push_back(exit_btn);
+        buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
+        buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
         testPlayer = std::make_shared<Player>(re::Vector2f(5, 15), re::Vector2f(1, 1.5));
         testPlayer->movingAnim = testanimCustom;
         testPlayer->setRigidbodySimulated(true);
@@ -54,7 +60,13 @@ public:
         plat2->setBounciness(0.0);
         mainGame.addObject(plat2);
 
-        curState = AppState::Ingame;
+        re::GameObjectPtr plat3 = std::make_shared<Platform>(re::Vector2f(5, 12), re::Vector2f(8, 3));
+        plat3->setRigidbodySimulated(false);
+        plat3->setFriction(1.0);
+        plat3->setBounciness(0.0);
+        mainGame.addObject(plat3);
+
+        curState = AppState::MainMenu;
     }
 
     void update() override {
@@ -68,34 +80,51 @@ public:
     }
 
     void display() override 
-    {
-        if (re::get_key_state(re::Key::D))
-            testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
-        if (re::get_key_state(re::Key::A))
-            testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
+    {   
+        switch(curState){
+        case AppState::Ingame:
+            re::background(re::WHITE); 
+            if (re::get_key_state(re::Key::D))
+                testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
+            if (re::get_key_state(re::Key::A))
+                testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
 
-        if ((testPlayer->isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
-            testPlayer->movingAnim.setSpeed(0.5);
-        else
-            testPlayer->movingAnim.setSpeed(0);
+            if ((testPlayer->isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
+                testPlayer->movingAnim.setSpeed(0.5);
+            else
+                testPlayer->movingAnim.setSpeed(0);
 
-        if (re::get_key_state(re::Key::W))
-        {
-            if (testPlayer->isGrounded)
+            if (re::get_key_state(re::Key::W))
             {
-                testPlayer->addImpulse(re::Vector2f(0, -15 * testPlayer->getMass()));
-                testPlayer->isGrounded = false;
+                if (testPlayer->isGrounded)
+                {
+                    testPlayer->addImpulse(re::Vector2f(0, -15 * testPlayer->getMass()));
+                    testPlayer->isGrounded = false;
+                }
             }
-        }
-        if ((testPlayer->getVelocity().Y > 0.1) && (testPlayer->isGrounded)) testPlayer->isGrounded = false;
+            if ((testPlayer->getVelocity().Y > 0.1) && (testPlayer->isGrounded)) testPlayer->isGrounded = false;
 
-        mainGame.updateTick();
+            mainGame.updateTick();
 
-        testPlayer->display(k);
-        for (auto curObject : mainGame.getWorld())
-        {
-            if (curObject != testPlayer)
-                (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->display(k);
+            testPlayer->display(k);
+            for (auto curObject : mainGame.getWorld())
+            {
+                if (curObject != testPlayer)
+                    (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->display(k);
+            }
+            break;
+        case AppState::MainMenu:
+            re::background(re::WHITE); 
+            for (auto& btn : buttonList){
+                btn.display();
+            }
+            break;
+        case AppState::Pause:
+            re::background(re::WHITE);         
+            for (auto& btn : buttonList){
+                btn.display();
+            }
+            break;
         }
     }
     //Events:
@@ -108,8 +137,14 @@ public:
 
     void on_key_pressed(re::Key key){
         //std::cout << "Key pressed\n";
-        if (key == re::Key::Escape){
+        if (key == re::Key::Escape || (int) key == 255){ //255 = escape, and also "delete", dat opengl :(
+            if(curState == AppState::Ingame){
+                std::cout << "pause setter triggered" << std::endl;
+                setState_pause();
+            }
+            /*else{
             exit(0);
+            }*/
         }
         if (key == re::Key::Down){
             
@@ -117,6 +152,21 @@ public:
     }
 
     void on_button_pressed(int button){
+        /*
+         * magic-shmagic button constants:
+         * 0: left-mouse click,
+         * 1: mid button click,
+         * 2: right-mouse click,
+         * 3: scroll up,
+         * 4: scroll down.
+         */
+        if(button == 0 && curState == AppState::MainMenu || curState==AppState::Pause){
+            for (auto& btn : buttonList){
+                if(btn.check_if_mouse_over(curX, curY)){
+                    btn.action(button);
+                }
+            }
+        }
     }
 
     void on_mouse_move(int mouseX, int mouseY){
@@ -135,6 +185,11 @@ public:
         std::cout << "main app state change" << std::endl;
     }
 
+    void setState_pause(){
+        curState = AppState::Pause;
+        std::cout << "main app state change" << std::endl;        
+    }
+
 private:
     int x;
     int y;
@@ -147,6 +202,6 @@ private:
 };
 
 int main(){
-    re::runApp( 400, 400, std::make_shared<MainApp>() );
+    re::runApp( 1200, 800, std::make_shared<MainApp>() );
     return 0;
 }

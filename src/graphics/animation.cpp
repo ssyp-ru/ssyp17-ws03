@@ -7,15 +7,17 @@
 
 namespace re{
 
-void Animation::add_frame(ImagePtr img){ //fills images 
+void Animation::add_frame(ImagePtr img){
     images.push_back(img);
 }
 
 
-ImagePtr Animation::getNextFrame(){ //count which img to draw
+ImagePtr Animation::getNextFrame(){
     if (images.size() == 0) throw "no elements in animation found";
     curPosition += animationSpeed;
-    if (curPosition >= images.size()) curPosition = 0;
+    if (curPosition >= images.size()){ 
+        curPosition = 0;
+    }
     return images[(int) curPosition];
 }
 
@@ -43,5 +45,15 @@ float Animation::getSpeed(){
     return animationSpeed;
 }
 
+void Animation::setCurrentPos(float pos){
+    curPosition = pos;
+}
+
+ImagePtr Animation::getFrame(int pos){
+    if (pos < 0 || pos >= images.size()){
+        throw "element at given position does not exist";
+    }
+    return images[pos];
+}
 
 } //namespace re

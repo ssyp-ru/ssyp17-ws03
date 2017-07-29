@@ -8,17 +8,19 @@ namespace re{
 
 class Animation{
 private:
-    std::vector<ImagePtr> images;
+    std::vector<ImagePtr> images; //All frames of animation
     bool isCyclic;
     float animationSpeed;
     float curPosition = 0;
 
 public:
     Animation(float speed, bool cycleable);
-    Animation(); //goes 1 by default
+    Animation();
 
-    void add_frame(ImagePtr img);
-    ImagePtr getNextFrame();
+    void add_frame(ImagePtr img);  //Adds new frame to animation
+    ImagePtr getNextFrame();    //Changes curPosition and returns frame
+    ImagePtr getFrame(int index); //Returns frame at "index" position
+    void setCurrentPos(float pos);
     void setSpeed(float source);
     float getSpeed();
 };
