@@ -58,15 +58,19 @@ public:
             if( object.name == "grass" )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x / 200, object.y / 200), 
-                        re::Vector2f((float)object.width / 200, (float)object.height / 200)));
+                        re::Vector2f(object.x * 0.031275, object.y * 0.031275), 
+                        re::Vector2f((float)object.width * 0.031275, (float)object.height * 0.031275)));
 
-                std::cout << object.x / 200 << ' ' << object.y / 200 << ' ' << (float)object.height / 200 << object.width / 200 << '\n';
             } else if ( object.name == "yojus" ) {
-                testPlayer = std::make_shared<Player>(re::Vector2f(5, 18));
+                testPlayer = std::make_shared<Player>(re::Vector2f(object.x * 0.031275, object.y * 0.031275));
                 testPlayer->movingAnim = testanimCustom;
                 testPlayer->setFriction(-1.0);
                 testPlayer->setBounciness(0.0);
+            } else if ( object.name == "ice" ) {
+                re::GameObjectPtr platice = std::make_shared<IcePlatform>(
+                        re::Vector2f(object.x * 0.031275, object.y * 0.031275), 
+                        re::Vector2f((float)object.width * 0.031275, (float)object.height * 0.031275));
+                mainGame.addObject(platice);
             }
         }
 
@@ -100,8 +104,8 @@ public:
         re::GameObjectPtr spikes = std::make_shared<Spikes>(re::Vector2f(32, 20), re::Vector2f(1, 1), 50.0, 1.0);
         mainGame.addObject(spikes);
 
-        re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(re::Vector2f(-5, 30), re::Vector2f(50, 1));
-        mainGame.addObject(deathTrig);
+        //re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(re::Vector2f(-5, 30), re::Vector2f(50, 1));
+        //mainGame.addObject(deathTrig);
 
         curState = AppState::Ingame;
     }

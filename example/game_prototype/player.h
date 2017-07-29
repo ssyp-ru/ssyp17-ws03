@@ -72,7 +72,7 @@ public:
         {
             if (isGrounded)
             {
-                addImpulse(re::Vector2f(0, -15 * getMass()));
+                addImpulse(re::Vector2f(0, -45 * getMass()));
                 isGrounded = false;
             }
         }
