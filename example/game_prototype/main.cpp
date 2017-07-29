@@ -14,6 +14,8 @@
 #include <cmath>
 #include "RealEngine/physic_core.h"
 #include "platform.h"
+#include "movingPlatform.h"
+#include "weakPlatform.h"
 
 class MainApp : public re::IBaseApp{
 public:
@@ -35,11 +37,8 @@ public:
         }
         testPlayer = std::make_shared<Player>(re::Vector2f(5, 15), re::Vector2f(1, 1.5));
         testPlayer->movingAnim = testanimCustom;
-        testPlayer->setRigidbodySimulated(true);
-        //testPlayer->addImpulse(re::Vector2f(4, 0));
         testPlayer->setFriction(-1.0);
         testPlayer->setBounciness(0.0);
-        testPlayer->addCollisionCallback(testPlayer->getCallback());
         mainGame.addObject(testPlayer);
 
         re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
@@ -48,11 +47,14 @@ public:
         plat->setBounciness(0.0);
         mainGame.addObject(plat);
 
-        re::GameObjectPtr plat2 = std::make_shared<Platform>(re::Vector2f(15, 16), re::Vector2f(2, 2));
-        plat2->setRigidbodySimulated(false);
-        plat2->setFriction(1.0);
-        plat2->setBounciness(0.0);
+        re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->addWaypoint(re::Vector2f(20, 16));
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setCycled(true);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setActivated(true);
         mainGame.addObject(plat2);
+
+        re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(3, 0.5), 1.0);
+        mainGame.addObject(plat3);
 
         curState = AppState::Ingame;
     }
@@ -69,7 +71,8 @@ public:
 
     void display() override 
     {
-        if (re::get_key_state(re::Key::D))
+        //std::cout << MainApp::delta_time << '\n';
+        if (re::getKeyState(re::Key::D))
             testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
         if (re::get_key_state(re::Key::A))
             testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
@@ -88,6 +91,11 @@ public:
             }
         }
         if ((testPlayer->getVelocity().Y > 0.1) && (testPlayer->isGrounded)) testPlayer->isGrounded = false;
+
+        for (auto curObject : mainGame.getWorld())
+        {
+            (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();   
+        }
 
         mainGame.updateTick();
 

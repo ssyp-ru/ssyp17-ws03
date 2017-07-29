@@ -2,13 +2,15 @@
 
 #include "window/opengl.h"
 #include "graphics/particle.h"
-
+#include <RealEngine/time.h>
 #include <unistd.h>
 #include <iostream>
 
 namespace re{
 
 IBaseAppPtr MainApp::baseApp;
+
+
 
 void setWindowName( std::string name )
 {
@@ -37,14 +39,13 @@ void MainApp::init()
     baseApp->setup();
 }
 
-long MainApp::delta_time = 0;
-StopWatch MainApp::previous_time;
+double Time::delta_time;
+StopWatch Time::previous_time;
 
 void MainApp::tick()
 {
-    StopWatch now;
-    delta_time = previous_time.diff(now);
-    previous_time = now;
+    Time::updateTime();
+
     baseApp->update();
     baseApp->display();
     

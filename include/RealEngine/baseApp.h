@@ -3,10 +3,13 @@
 #include "keyboard.h"
 #include <memory>
 #include <string>
+
 namespace re{
 
 class IBaseApp{
 public:
+    long delta_time;
+
     virtual void setup()    = 0;
     virtual void update()   = 0;
     virtual void display()  = 0;

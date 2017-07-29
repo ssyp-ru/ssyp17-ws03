@@ -36,8 +36,8 @@ public:
 	Vector2f();
 	Vector2f(double X, double Y);
 	double Length();
-	void Normilize();
-	Vector2f Normilized();
+	void Normalize();
+	Vector2f Normalized();
 	Vector2f operator+(Vector2f vec);
 	Vector2f operator-(Vector2f vec);
 	Vector2f operator*(double val);
@@ -82,8 +82,6 @@ public:
 	std::vector<Vector2f>* getVertexes(); // Returns pointer to array with vertexes
 	std::vector<Edge>* getEdges(); // Returns copy of array with edges
 	void rotate(double rotation); // Turns gameobject in counter-clock-wise by 'rotation' radians
-	void addCollisionCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)> callback); // Adds function to onCollision event (collision from, collision to, normal vector)
-	void addTriggerCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)> callback); // Adds function to onTrigger event (collision from, collision to)
 	//#pragma region getters-and-setters
 	double getMass(); // Returns current mass of object
 	void setMass(double value); // Sets mass of gameobject(must be >= 0 (seriosly))
@@ -99,13 +97,17 @@ public:
 	void setRotationSpeed(double value); // Sets rotation speed of gameobject
 	Vector2f getPosition(); // Returns current gameobject position
     void setPosition(Vector2f pos); // Sets position to gameobject
-	Vector2f getVelocity();
+	Vector2f getVelocity(); 
 	void setVelocity(Vector2f vec);
 	//#pragma endregion
+	void destroy();
+	virtual void onCollision(std::shared_ptr<GameObject> to, Vector2f vec) { }
+	virtual void onTrigger(std::shared_ptr<GameObject> obj) { }
 	virtual ~GameObject() { }
 	friend class Game;
 protected:
     // just don't touch it.
+	bool destroyNextFrame;
 	double mass;
 	double bounciness, friction;
     bool isRigidbodySimulated;
