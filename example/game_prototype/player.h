@@ -23,22 +23,11 @@ public:
         addEdge(2, 3);
         addEdge(3, 0);
     }
-    void onCollision(re::GameObjectPtr from, re::GameObjectPtr to, re::Vector2f vec)
+    void onCollision(re::GameObjectPtr to, re::Vector2f vec) override
     {
-        //if (to->metadata.getInt("ID") == 3) setVelocity(to->getVelocity());
         if (re::Vector2f(0, -1).angleBetween(vec) < 60.0 / 180.0 * 3.14159) 
         { 
             isGrounded = true;
         }
     }
-    std::function<void(re::GameObjectPtr, re::GameObjectPtr, re::Vector2f)> getCallback()
-    {
-        return std::bind(&Player::onCollision, this
-            , std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-    }
-    void display(int scale) override
-    {
-        re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
-    }
-
 };

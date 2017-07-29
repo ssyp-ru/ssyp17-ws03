@@ -1,7 +1,9 @@
+#pragma once
 #include "RealEngine/physic_core.h"
 #include <cmath>
 #include <iostream>
 #include "RealEngine/logger.h"
+#include <vector>
 
 namespace re {
 
@@ -26,7 +28,7 @@ void Vector2f::Normalize()
 	X /= len;
 	Y /= len;
 }
-Vector2f Vector2f::Normilized()
+Vector2f Vector2f::Normalized()
 {
 	return Vector2f(X / Length(), Y / Length());
 }
@@ -211,6 +213,7 @@ GameObject::GameObject()
 }
 GameObject::GameObject(Vector2f pos)
 {
+	destroyNextFrame = false;
 	position = pos;
 	circleRadius = 0;
     mass = 1;
@@ -471,13 +474,9 @@ void GameObject::updatePos()
 			acceleration = Vector2f(0, 0);
 	}
 }
-void GameObject::addCollisionCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>, Vector2f)> callback)
+void GameObject::destroy()
 {
-	onCollisionEvents.push_back(callback);
-}
-void GameObject::addTriggerCallback(std::function<void(std::shared_ptr<GameObject>, std::shared_ptr<GameObject>)> callback)
-{
-	onTriggerEvents.push_back(callback);
+	destroyNextFrame = true;
 }
 
 
@@ -500,13 +499,12 @@ void Game::updatePhysics()
 						// тута вызывать событие коллизии
 						// вызовется даже если обрабатываемый объект не динамичен
 						if (!world[i]->isTrigger)
-							for (uint c = 0; c < world[i]->onCollisionEvents.size(); c++)
-								world[i]->onCollisionEvents[c](world[i], world[j], outOfCollisionVector);
+							if (!world[j]->isTrigger && ((world[j]->isRigidbodySimulated) || (world[i]->isRigidbodySimulated)))
+								world[i]->onCollision(world[j], outOfCollisionVector);
 						else
 							if (world[j]->isRigidbodySimulated)
-								for (uint c = 0; c < world[i]->onTriggerEvents.size(); c++)
-									world[i]->onTriggerEvents[c](world[i], world[j]);
-        				if (world[i]->isRigidbodySimulated)
+								world[i]->onTrigger(world[j]);
+        				if (world[i]->isRigidbodySimulated && !world[j]->isTrigger)
 						{
 			    			Vector2f reflected = world[i]->velocity.reflectFrom(outOfCollisionVector.getLeftNormal());
 							Vector2f frictionProject;
@@ -545,8 +543,7 @@ void Game::update()
     while(isGame)
     {
 		//std::cout << ticksAlive << ")\n";
-        updatePhysics();
-        ticksAlive++;
+        updateTick();
         //if (ticksAlive > 1000) isGame = false;
 		//usleep(1000); 
     }
@@ -571,6 +568,12 @@ void Game::addObject(GameObjectPtr obj)
 void Game::updateTick()
 {
     if (ticksAlive == 0) isGame = true;
+
+	for (uint i = 0; i < world.size(); i++)
+	{
+		if (world[i]->destroyNextFrame)
+			world.erase(world.begin() + i);
+	}
 	//std::cout << ticksAlive << ")\n";
     updatePhysics();
     ticksAlive++;

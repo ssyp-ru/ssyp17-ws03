@@ -5,7 +5,6 @@
 #include <RealEngine/math.h>
 #include "RealEngine/physic_core.h"
 #include "drawableGameObject.h"
-#include <iostream>
 
 class MovingPlatform : public Platform{
 private:
@@ -22,7 +21,7 @@ private:
             if ((nextPoint == 0) && (isCycled)) return waypoints.size() - 1;
             return nextPoint - 1;
         } else {
-            if ((nextPoint == waypoints.size() - 1) && (isCycled)) return 0;
+            if (((uint)nextPoint == waypoints.size() - 1) && (isCycled)) return 0;
             return nextPoint + 1;
         }
     }
@@ -30,7 +29,7 @@ private:
     {
         if (curDirection == 1)
         {
-            if (nextPoint == waypoints.size() - 1)
+            if ((uint)nextPoint == waypoints.size() - 1)
             {
                 if (isCycled) return 0;
                 curDirection = -1;
@@ -56,8 +55,6 @@ private:
 public:
     MovingPlatform(re::Vector2f pos, re::Vector2f size, double speed) : Platform::Platform(pos, size) 
     {
-        setFriction(1.0);
-        setBounciness(0.0);
         nextPoint = 1;
         curDirection = 1;
         isActivated = false;
