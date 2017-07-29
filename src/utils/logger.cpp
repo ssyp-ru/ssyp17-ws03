@@ -44,6 +44,9 @@ public:
         stream_.close();
     };
 };
+
+
+
 Log_ log("log.txt");
 
 void re::Log::log_level(LEVEL level) {

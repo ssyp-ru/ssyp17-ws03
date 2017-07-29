@@ -21,12 +21,13 @@ class MainApp : public IBaseApp{
 
         void setup() override {
             set_fps(60);
-            rm.load_file("anims.xml");
+
             cm.load_file("config.xml");
-            cout << cm.get_property("player/health") << endl;
-            cout << cm.get_property("player/velocity") << endl;
-            cout << cm.get_property("bototina/damage") << endl;
-            cout << cm.get_property("nazi_bird/health") << endl;
+            cout << cm.get_property("field1/var1") << endl;
+            cout << cm.get_property("field1/var2") << endl;
+            cout << cm.get_property("field2/subfield/var1") << endl;
+            
+            rm.load_file("anims.xml");
             screen = rm.get_image("screenshot");
             mario = rm.get_image("mario_sprite_sheet");
         }
@@ -36,6 +37,7 @@ class MainApp : public IBaseApp{
 
         void display() override {
             background(re::WHITE);
+
             draw_image(0, 0, screen);
             draw_image(0, 0, mario);
             draw_image(0, 300, rm.get_animation("mario_sprite")->getNextFrame());
