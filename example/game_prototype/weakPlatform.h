@@ -21,7 +21,7 @@ public:
         setFriction(1.0);
         setBounciness(0.0);
     }
-    void onCollision(re::GameObjectPtr to, re::Vector2f vec) override
+    void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec) override
     {
         if (re::Vector2f(0, 1).angleBetween(vec) < 30.0 / 180.0 * 3.14159)
             touched = true;

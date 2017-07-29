@@ -500,11 +500,15 @@ void Game::updatePhysics()
 						if (!world[i]->isTrigger)
 						{
 							if (!world[j]->isTrigger && ((world[j]->isRigidbodySimulated) || (world[i]->isRigidbodySimulated)))
+<<<<<<< HEAD
 								world[i]->onCollision(world[j], outOfCollisionVector);
 						}
+=======
+								world[i]->onCollisionStay(world[j], outOfCollisionVector);
+>>>>>>> 4a4fd181cb78bc8bedfe23005ebbc5ca27010b53
 						else
 							if (world[j]->isRigidbodySimulated)
-								world[i]->onTrigger(world[j]);
+								world[i]->onTriggerStay(world[j]);
         				if (world[i]->isRigidbodySimulated && !world[j]->isTrigger)
 						{
 			    			Vector2f reflected = world[i]->velocity.reflectFrom(outOfCollisionVector.getLeftNormal());
@@ -564,6 +568,7 @@ void Game::start()
 }
 void Game::addObject(GameObjectPtr obj)
 {
+	obj->worldContainer = &world;
     world.push_back(obj);
 }
 void Game::updateTick()

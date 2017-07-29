@@ -24,10 +24,10 @@ public:
         nPartic.move = re::Point2f(0,-7);
         // nPartic.size = re::Point2f( 50, 50 );
 
-        re::launchParticle( nPartic );
+        re::launch_particle( nPartic );
         
         //re::explodeImage( 100, 100, 200, 200, 4, 4, imgptr );
-        re::explodeImage(   re::Point2f( 100, 100 ), 
+        re::explode_image(   re::Point2f( 100, 100 ), 
                             re::Point2f( 200, 200 ), 
                             re::Point2f( 200, 200 ), 
                             imgptr, 

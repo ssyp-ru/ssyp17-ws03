@@ -16,12 +16,10 @@ Key openGL_special_key_to_key(int key_code);
 
 class OpenGL
 {
-    private:
-
+private:
     OpenGL(){}
 
-    public:
-
+public:
     static OpenGL& instance()
     {
         static OpenGL self;
@@ -47,7 +45,7 @@ class OpenGL
 
     void translate( int x, int y );
     void viewAt( int x, int y );
-    void scale( float x, float y );
+    void scale( float co );
     void rotate( float angle );
 
     void setWindowName( std::string name );
@@ -68,7 +66,7 @@ class OpenGL
 
     bool key[256];
 
-    private:
+private:
 
     static void keyboardDown(unsigned char c, int a, int b);
     static void keyboardUp(unsigned char c, int a, int b);
@@ -84,23 +82,13 @@ class OpenGL
 
     int curLay;
 
+    float zoom;
+
     IBaseAppPtr baseApp;
     std::string windowName;
     int windowId;
     uint w, h;
 };
 
-/*
-class Singleton{
-public:
-    Singleton& instance(){
-        static Singleton s;
-        return s;
-    }
 
-private:
-    Singleton();
-    Singleton& operator=();
-};
-*/
-}
+} // namespace re
