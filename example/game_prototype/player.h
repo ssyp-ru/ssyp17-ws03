@@ -80,6 +80,7 @@ public:
 
         if ((getVelocity().Y > 0.1) && (isGrounded)) isGrounded = false;
 
+        Unit::update();
     }
     void display(int scale) override
     {

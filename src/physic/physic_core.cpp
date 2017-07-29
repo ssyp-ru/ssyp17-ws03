@@ -283,8 +283,11 @@ Vector2f GameObject::getVelocity()
 }
 void GameObject::setVelocity(Vector2f vec)
 {
-    velocity = vec;
+	if (canChangeSpeed)
+    	velocity = vec;
 }
+bool GameObject::getCanChangeSpeed() { return canChangeSpeed; }
+void GameObject::setCanChangeSpeed(bool value) { canChangeSpeed = value; }
 void GameObject::countMassCenter() 
 {
     double x = 0, y = 0;
@@ -515,7 +518,7 @@ void Game::updatePhysics()
 								frictionProject = reflected.projectOnVector(outOfCollisionVector.getLeftNormal()) * (1 - (world[i]->friction + world[j]->friction) / 2);
                         	Vector2f bouncinessProject = reflected.projectOnVector(outOfCollisionVector) * (world[i]->bounciness + world[j]->bounciness) / 2;
 							Vector2f impulseVector = Vector2f(0, 0);
-							if (!((world[j]->friction == 1) && (world[i]->friction == -1) && (world[j]->velocity.Length() != 0)))
+							if (!((world[i]->friction == -1) && (world[j]->velocity.Length() != 0)))
                         		impulseVector = frictionProject + bouncinessProject - world[i]->velocity;
 							else
 								impulseVector = (world[j]->velocity - world[i]->velocity) + bouncinessProject;

@@ -25,7 +25,7 @@ protected:
         
     }
     virtual void onCollisionStay(re::GameObjectPtr obj, re::Vector2f vec) { }
-    virtual void update() { }
+    virtual void update() { DrawableGameObject::update(); }
 public:
     virtual void onDeath()
     {

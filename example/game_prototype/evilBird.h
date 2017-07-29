@@ -34,7 +34,7 @@ public:
     }
     virtual void update() override
     {
-        
+        Enemy::update();
     }
     //void display(int scale) override
     //{
