@@ -68,7 +68,7 @@ void launchParticleSystem( stParticleSystem &system )
     allSystems.push_back( system );
 }
 
-void launchParticle( stParticle &newParticle )
+void launch_particle( stParticle &newParticle )
 {
     int lastParticle = findLastParticle();
     if( lastParticle == -1 )
@@ -160,7 +160,7 @@ void initParticles()
     }
 }
 
-void explodeImage( Point2f pos, Point2f size, Point2f part, ImagePtr imge, Point2f center, Point2f impulse, float power, float randF )
+void explode_image( Point2f pos, Point2f size, Point2f part, ImagePtr imge, Point2f center, Point2f impulse, float power, float randF )
 {
     stParticle nPart;
     //nPart.imge = imge;

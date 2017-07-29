@@ -17,10 +17,6 @@ namespace re
         OpenGL::instance().draw_line( x0, y0, x1, y1, color );
     }
 
-    void draw_circle(int x0, int y0, int r, Color color){
-        OpenGL::instance().draw_circle( x0, y0, r, color );
-    }
-
     void draw_image(int x0, int y0, ImagePtr im){
         OpenGL::instance().draw_image( x0, y0, im );
     }
@@ -34,17 +30,17 @@ namespace re
         OpenGL::instance().draw_text( x0, y0, text, color );
     }
 
-    bool getKeyState( Key key )
+    bool get_key_state( Key key )
     {
         return OpenGL::instance().getKeyState( (int)key );
     }
 
-    void goFullScreen()
+    void go_full_screen()
     {
         OpenGL::instance().goFullScreen();
     }
 
-    void setDrawLay( int lay )
+    void set_draw_lay( int lay )
     {
         OpenGL::instance().setLay( lay );
     }
@@ -57,7 +53,7 @@ namespace re
         OpenGL::instance().translate( -x, y );
     }
 
-    void viewat(int x, int y)
+    void view_at(int x, int y)
     {
         OpenGL::instance().viewAt( x, y );
     }
