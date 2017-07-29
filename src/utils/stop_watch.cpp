@@ -7,7 +7,7 @@ std::string re::StopWatch::getTimeString() {
     std::tm *now_tm = std::localtime(&now_c);
 
     char buff[64];
-    size_t size = strftime(buff, sizeof(buff), "%x %X", now_tm);
+    strftime(buff, sizeof(buff), "%x %X", now_tm);
     return std::string(buff);
 }
 

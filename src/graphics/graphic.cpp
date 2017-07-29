@@ -36,7 +36,7 @@ namespace re
 
     bool getKeyState( Key key )
     {
-        OpenGL::instance().getKeyState( (int)key );
+        return OpenGL::instance().getKeyState( (int)key );
     }
 
     void goFullScreen()

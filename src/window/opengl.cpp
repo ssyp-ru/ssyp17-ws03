@@ -407,6 +407,8 @@ Key OpenGL::key_to_key_special(char key_code)
         case GLUT_KEY_UP:           return Key::Up;
         case GLUT_KEY_DOWN:         return Key::Down;
     }
+
+    return Key::Unknown;
 }
 
 void OpenGL::draw_text( int x0, int y0, std::string text, Color color )

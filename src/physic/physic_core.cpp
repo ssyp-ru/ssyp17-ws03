@@ -1,4 +1,3 @@
-#pragma once
 #include "RealEngine/physic_core.h"
 #include <cmath>
 #include <iostream>
@@ -499,8 +498,10 @@ void Game::updatePhysics()
 						// тута вызывать событие коллизии
 						// вызовется даже если обрабатываемый объект не динамичен
 						if (!world[i]->isTrigger)
+						{
 							if (!world[j]->isTrigger && ((world[j]->isRigidbodySimulated) || (world[i]->isRigidbodySimulated)))
 								world[i]->onCollision(world[j], outOfCollisionVector);
+						}
 						else
 							if (world[j]->isRigidbodySimulated)
 								world[i]->onTrigger(world[j]);
