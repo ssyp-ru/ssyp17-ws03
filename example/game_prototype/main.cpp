@@ -59,20 +59,10 @@ public:
         (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setActivated(true);
         mainGame.addObject(plat2);
 
-<<<<<<< HEAD
-        re::GameObjectPtr plat3 = std::make_shared<Platform>(re::Vector2f(5, 12), re::Vector2f(8, 3));
-        plat3->setRigidbodySimulated(false);
-        plat3->setFriction(1.0);
-        plat3->setBounciness(0.0);
-        mainGame.addObject(plat3);
-
-        curState = AppState::MainMenu;
-=======
         re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(3, 0.5), 1.0);
         mainGame.addObject(plat3);
 
         curState = AppState::Ingame;
->>>>>>> 16937082a0c6d6721d5bf10f7dd53c2d19d04181
     }
 
     void update() override {
@@ -86,46 +76,16 @@ public:
     }
 
     void display() override 
-<<<<<<< HEAD
     {   
         switch(curState){
         case AppState::Ingame:
-            re::background(re::WHITE); 
-            if (re::get_key_state(re::Key::D))
-                testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
-            if (re::get_key_state(re::Key::A))
-                testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
-
-            if ((testPlayer->isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
-                testPlayer->movingAnim.setSpeed(0.5);
-            else
-                testPlayer->movingAnim.setSpeed(0);
-
-            if (re::get_key_state(re::Key::W))
-            {
-                if (testPlayer->isGrounded)
-                {
-                    testPlayer->addImpulse(re::Vector2f(0, -15 * testPlayer->getMass()));
-                    testPlayer->isGrounded = false;
-                }
-            }
-            if ((testPlayer->getVelocity().Y > 0.1) && (testPlayer->isGrounded)) testPlayer->isGrounded = false;
-=======
-    {
-        for (auto curObject : mainGame.getWorld())
-        {
-            (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();   
-        }
->>>>>>> 16937082a0c6d6721d5bf10f7dd53c2d19d04181
-
             mainGame.updateTick();
 
-            testPlayer->display(k);
             for (auto curObject : mainGame.getWorld())
-            {
-                if (curObject != testPlayer)
-                    (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->display(k);
-            }
+                (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();
+
+            for (auto curObject : mainGame.getWorld())
+                (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->display(k);
             break;
         case AppState::MainMenu:
             re::background(re::WHITE); 
