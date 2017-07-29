@@ -72,17 +72,17 @@ public:
     void display() override 
     {
         //std::cout << MainApp::delta_time << '\n';
-        if (re::getKeyState(re::Key::D))
+        if (re::get_key_state(re::Key::D))
             testPlayer->setVelocity(re::Vector2f(5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
-        if (re::getKeyState(re::Key::A))
+        if (re::get_key_state(re::Key::A))
             testPlayer->setVelocity(re::Vector2f(-5 * testPlayer->getMass(), testPlayer->getVelocity().Y));
 
-        if ((testPlayer->isGrounded) && ((re::getKeyState(re::Key::D)) || (re::getKeyState(re::Key::A))))
+        if ((testPlayer->isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
             testPlayer->movingAnim.setSpeed(0.5);
         else
             testPlayer->movingAnim.setSpeed(0);
 
-        if (re::getKeyState(re::Key::W))
+        if (re::get_key_state(re::Key::W))
         {
             if (testPlayer->isGrounded)
             {

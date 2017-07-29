@@ -23,6 +23,8 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
     w = width;
     h = height;
     
+    zoom = 1;
+
     for( int i = 0; i < 256; i++ ) key[i] = false;
 
     baseApp = BaseApp;
@@ -284,12 +286,15 @@ void OpenGL::translate( int x, int y )
 
 void OpenGL::viewAt( int x, int y )
 {
-    glViewport( x, y, w, h );
+    glViewport( 0, 0, w, h );
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho( x, (w*zoom)+x, ((-(int)h)*zoom)-y, -y, -100, 100 );
 }
 
-void OpenGL::scale( float x, float y )
+void OpenGL::scale( float co )
 {
-    //TODO
+    zoom = co;
 }
 
 void OpenGL::rotate( float angle )
