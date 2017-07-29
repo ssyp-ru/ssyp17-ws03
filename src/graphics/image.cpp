@@ -24,10 +24,6 @@ Image::Image(const std::string filename){
     generate_texture();
 }
 
-Image::Image(const Image& im){
-    std::cerr << "incomplete copy constructor of image\n";
-}
-
 Image::Image( void *buffer, int width, int height, int c )
 {
     image_buffer = (unsigned char *)buffer;

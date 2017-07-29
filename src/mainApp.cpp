@@ -34,12 +34,17 @@ void exitApp()
 void MainApp::init()
 {
     initParticles();
-    
     baseApp->setup();
 }
 
+long MainApp::delta_time = 0;
+StopWatch MainApp::previous_time;
+
 void MainApp::tick()
 {
+    StopWatch now;
+    delta_time = previous_time.diff(now);
+    previous_time = now;
     baseApp->update();
     baseApp->display();
     
