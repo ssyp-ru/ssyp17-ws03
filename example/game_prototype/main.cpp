@@ -99,7 +99,7 @@ public:
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
                         re::Vector2f(object.x * SCALE_COEFF + ( (i) * 4 ) - 4, object.y * SCALE_COEFF), 
-                        re::Vector2f(4, 4), 0.5);
+                        re::Vector2f(4, 4), 0.75);
                     mainGame.addObject(weplat);
                 }
             } else if ( object.name == "metal" ) {
@@ -116,8 +116,11 @@ public:
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setActivated(true);
             } else if ( object.name == "deth" ) {
                 re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(
-                                re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
-                                re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF));
+                                re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + (float)object.height * SCALE_COEFF * 0.2), 
+                                re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF * 0.3));
+                mainGame.addObject( std::make_shared<Platform>(
+                                re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + (float)object.height * SCALE_COEFF * 0.5), 
+                                re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF * 0.5)));                        
                 mainGame.addObject(deathTrig);
             }
         }
@@ -189,8 +192,8 @@ public:
             if( cam_x != location.X )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(((location.X-1) * 4 * 16) - 4, location.Y * 4 * 9 ), 
-                        re::Vector2f(4 * 16.25, 4 * 9) ) );
+                        re::Vector2f(((location.X-1) * 4 * 16) - 4.25, location.Y * 4 * 9 ), 
+                        re::Vector2f(4 * 16.5, 4 * 9) ) );
                 testPlayer->reduceCooldowns();
             }
 
