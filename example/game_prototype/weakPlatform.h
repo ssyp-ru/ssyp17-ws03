@@ -9,26 +9,20 @@
 #include <RealEngine/time.h>
 #include <iostream>
 
+#include "platform.h"
+
 class WeakPlatform : public Platform{
 private:
     double hp;
     bool touched;
+
+    static re::ImagePtr tex;
+
+    re::Vector2f size;
 public:
-    WeakPlatform(re::Vector2f pos, re::Vector2f size, double destroyTime) : Platform::Platform(pos, size) 
-    {
-        touched = false;
-        hp = destroyTime;
-        setFriction(1.0);
-        setBounciness(0.0);
-    }
-    void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec) override
-    {
-        if (re::Vector2f(0, 1).angleBetween(vec) < 30.0 / 180.0 * 3.14159)
-            touched = true;
-    }
-    virtual void update() override
-    {
-        if (touched) hp -= re::Time::delta_time;
-        if (hp <= 0) destroy();
-    }
+    WeakPlatform(re::Vector2f pos, re::Vector2f siz, double destroyTime);
+    void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec);
+    virtual void update();
+
+    virtual void display(int scale);
 };
