@@ -53,7 +53,7 @@ public:
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
-        map = (re::parse_tiled( re::parse_xml( "map/untitled.tmx" ) ))[0];
+        map = re::get_tmx_map("map/untitled.tmx")[0];
 
         for( auto object : map.objectgroup[0].group )
         {

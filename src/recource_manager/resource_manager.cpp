@@ -11,14 +11,33 @@ namespace re {
 
 bool ResourceManager::load_file(std::string path_to_config_file) {
     XmlElemPtr root = parse_xml(path_to_config_file);
-    std::vector<XmlElemPtr> images = root->get_children("resources")[0]->get_children("images")[0]->get_children("im");
-    std::vector<XmlElemPtr> sprites = root->get_children("resources")[0]->get_children("sprites")[0]->get_children("sprite");
-    for (auto ptr : images) {
-        load_image_feature(ptr);
+    if (root == nullptr){
+        return false;
     }
-    for (auto ptr : sprites) {
-        load_sprite_feature(ptr);
+
+    XmlElemPtr resources_ptr = root->get_children("resources")[0];
+    if (resources_ptr == nullptr){
+        return false;
     }
+
+    // load images
+    XmlElemPtr image_ptr = resources_ptr->get_children("images")[0];
+    if (image_ptr != nullptr){
+        std::vector<XmlElemPtr> images = image_ptr->get_children("im");
+        for (auto ptr : images) {
+            load_image_feature(ptr);
+        }
+    }
+    
+    // load sprites
+    XmlElemPtr sprite_ptr = resources_ptr->get_children("sprites")[0];
+    if (sprite_ptr != nullptr){
+        std::vector<XmlElemPtr> sprites = sprite_ptr->get_children("sprite");
+        for (auto ptr : sprites) {
+            load_sprite_feature(ptr);
+        }
+    }
+
     return true;
 }
 

@@ -6,6 +6,7 @@
 
 namespace re{
 
+
 Object parse_object(XmlElemPtr parsed_xml) {
     Log::msg("parsing to object " + parsed_xml->name, Log::LEVEL::TRACE);    
     Object object;
@@ -24,6 +25,8 @@ Object parse_object(XmlElemPtr parsed_xml) {
     }
     return object;
 }
+
+
 ObjectGroup parse_objectgroup(XmlElemPtr parsed_xml) {
     Log::msg("parsing to objectgroup " + parsed_xml->name, Log::LEVEL::TRACE);    
     ObjectGroup objectgroup;
@@ -37,6 +40,8 @@ ObjectGroup parse_objectgroup(XmlElemPtr parsed_xml) {
     }
     return objectgroup;
 }
+
+
 Layer parse_layer(XmlElemPtr parsed_xml) {
     Log::msg("parsing to layer " + parsed_xml->name, Log::LEVEL::TRACE);
     Layer layer;
@@ -72,6 +77,7 @@ Layer parse_layer(XmlElemPtr parsed_xml) {
     return layer;
 }
 
+
 Tileset parse_tileset(XmlElemPtr parsed_xml) {
     Log::msg("parsing to tileset " + parsed_xml->name, Log::LEVEL::TRACE);    
     Tileset tileset;
@@ -87,7 +93,7 @@ Tileset parse_tileset(XmlElemPtr parsed_xml) {
         tileset.columns = std::stoi(ts->field.at("columns"));
         ts = ts->get_children("image").at(0);
         Log::msg("image : " + ts->name + ", source="+ts->field["source"], Log::LEVEL::TRACE);
-        tileset.img_source = ts->field.at("source");
+        tileset.img_source = ts->field.at("source"); // this is filename
         tileset.img_width = std::stoi(ts->field.at("width"));
         tileset.img_height = std::stoi(ts->field.at("height"));
         auto tileset_src = std::make_shared<Image>(tileset.img_source);
@@ -101,6 +107,7 @@ Tileset parse_tileset(XmlElemPtr parsed_xml) {
     }
     return tileset;
 }
+
 
 Map parse_map(XmlElemPtr parsed_xml) {
     Log::msg("parsing to map " + parsed_xml->name, Log::LEVEL::TRACE);
@@ -143,12 +150,18 @@ Map parse_map(XmlElemPtr parsed_xml) {
     return map;
 }
 
+
 std::vector<Map> parse_tiled(XmlElemPtr parsed_xml) {
     std::vector<Map> maps;
     for(auto& xml_map : parsed_xml->get_children("map")) {
         maps.push_back(parse_map(xml_map));
     }
     return maps;
+}
+
+
+std::vector<Map> get_tmx_map(const std::string& filepath){
+    return (re::parse_tiled( re::parse_xml( filepath ) ));
 }
 
 } // namespace re
