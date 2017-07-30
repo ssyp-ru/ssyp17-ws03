@@ -6,6 +6,7 @@
 #include <RealEngine/xml_parser.h>
 #include <RealEngine/math.h>
 #include "RealEngine/physic_core.h"
+#include "RealEngine/resource_manager.h"
 
 #include <functional>
 #include <string>
@@ -26,6 +27,9 @@
 #include "deathTrigger.h"
 #include "jumpPlatform.h"
 
+
+const double SCALE_COEFF = 0.031275;
+
 class MainApp : public re::IBaseApp{
 public:
     re::Game mainGame;
@@ -39,14 +43,12 @@ public:
     }
 
     void setup() override {
-        re::Animation testanimCustom(0, true);
-        re::Image buttonsource("test.png");
-        re::Image spritelist("spritelistMario.png");
-        for (int i = 0; i < 9; i++){
-            testanimCustom.add_frame(spritelist.get_subimage(3 + 17*i, 5, 16, 25));
-        }
-        re::BaseButton startgame_btn(50, 50, buttonsource.get_subimage(10, 10, 200, 70));
-        re::BaseButton exit_btn(50, 250, buttonsource.get_subimage(10, 200, 200, 70));
+        resource_manager.load_file("resources.xml");
+        re::AnimationPtr testanimCustom = resource_manager.get_animation("mario_sprite");
+        re::ImagePtr buttonsource = resource_manager.get_image("button_test");
+
+        re::BaseButton startgame_btn(50, 50, buttonsource->get_subimage(10, 10, 200, 70));
+        re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
         buttonList.push_back(startgame_btn);
         buttonList.push_back(exit_btn);
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
@@ -59,28 +61,28 @@ public:
             if( object.name == "grass" )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * 0.031275, object.y * 0.031275), 
-                        re::Vector2f((float)object.width * 0.031275, (float)object.height * 0.031275)));
+                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF)));
             } else if( object.name == "ground" )            {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * 0.031275, object.y * 0.031275), 
-                        re::Vector2f((float)object.width * 0.031275, (float)object.height * 0.031275)));
+                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF)));
 
             } else if ( object.name == "yojus" ) {
-                testPlayer = std::make_shared<Player>(re::Vector2f(object.x * 0.031275, object.y * 0.031275));
+                testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
                 testPlayer->movingAnim = testanimCustom;
                 testPlayer->setFriction(-1.0);
                 testPlayer->setBounciness(0.0);
             } else if ( object.name == "ice" ) {
                 re::GameObjectPtr platice = std::make_shared<IcePlatform>(
-                        re::Vector2f(object.x * 0.031275, object.y * 0.031275), 
-                        re::Vector2f((float)object.width * 0.031275, (float)object.height * 0.031275));
+                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
                 for( int i = 0; i < object.width / 128; i++ )
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
-                        re::Vector2f(object.x * 0.031275 + ( i * 4 ), object.y * 0.031275), 
+                        re::Vector2f(object.x * SCALE_COEFF + ( i * 4 ), object.y * SCALE_COEFF), 
                         re::Vector2f(4, 4), 1.0);
                     mainGame.addObject(weplat);
                 }
@@ -229,7 +231,7 @@ public:
 
     void setState_pause(){
         curState = AppState::Pause;
-        std::cout << "main app state change" << std::endl;        
+        std::cout << "main app state change" << std::endl;
     }
 
 private:
@@ -241,6 +243,8 @@ private:
     std::shared_ptr<Player> testPlayer;
     AppState curState;
     std::vector<re::BaseButton> buttonList;
+
+    re::ResourceManager resource_manager;
 };
 
 int main(){
