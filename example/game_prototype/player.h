@@ -20,6 +20,7 @@ public:
     void addAbility(Ability *ab);
     std::vector<Ability*>* getAbilities();
     void addExp(int amount);
+    int getLevel();
     void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec);
     void attack();
     void update();

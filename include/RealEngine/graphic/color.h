@@ -42,6 +42,7 @@ static const Color LIGHTBLUE (127, 127, 255);
 static const Color DARKRED   (127, 0, 0);
 static const Color DARKGREEN (0, 127, 0);
 static const Color DARKBLUE  (0, 0, 127);
+static const Color TRANSPARENTBLACK(0, 0, 0, 127);
 
 
 } // namespace re

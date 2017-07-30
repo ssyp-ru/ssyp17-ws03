@@ -50,6 +50,7 @@ void Player::tryCast(int abilityIndex)
         abilities[abilityIndex]->cast();
     }
 }
+int Player::getLevel() { return level; }
 std::vector<Ability*>* Player::getAbilities()
 {
     return &abilities;
