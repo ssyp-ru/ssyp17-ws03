@@ -40,6 +40,16 @@ namespace re
         OpenGL::instance().goFullScreen();
     }
 
+    uint get_width()
+    {
+        OpenGL::instance().getWidth();
+    }
+
+    uint get_height()
+    {
+        OpenGL::instance().getHeight();
+    }
+
     void set_draw_lay( int lay )
     {
         OpenGL::instance().setLay( lay );
