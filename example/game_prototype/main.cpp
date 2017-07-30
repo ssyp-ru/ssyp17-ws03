@@ -98,7 +98,7 @@ public:
                 for(size_t i = 0; i < object.width / 64; i++ )
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
-                        re::Vector2f(object.x * SCALE_COEFF + ( (i-1) * 4 ), object.y * SCALE_COEFF), 
+                        re::Vector2f(object.x * SCALE_COEFF + ( (i) * 4 ) - 4, object.y * SCALE_COEFF), 
                         re::Vector2f(4, 4), 0.5);
                     mainGame.addObject(weplat);
                 }
@@ -189,8 +189,8 @@ public:
             if( cam_x != location.X )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f((location.X-3) * 64 * 16, location.Y * 64 * 9 ), 
-                        re::Vector2f(64 * 1, 64 * 1) ) );
+                        re::Vector2f(((location.X-1) * 4 * 16) - 4, location.Y * 4 * 9 ), 
+                        re::Vector2f(4 * 16.25, 4 * 9) ) );
                 testPlayer->reduceCooldowns();
             }
 
@@ -204,7 +204,7 @@ public:
             {
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Vector2f((location.X-1) * 64 * 16, location.Y * 64 * 9 ), 
-                        re::Vector2f(64 * 16, 64 * 9) ) );
+                        re::Vector2f(4 * 16, 4 * 9) ) );
                 testPlayer->reduceCooldowns();
             }
             location.Y = cam_y;
