@@ -41,7 +41,7 @@ namespace re{
     uint get_height();
 
     int get_cam_x();
-    int get_cam_x();
+    int get_cam_y();
 
     struct stParticle
     {
