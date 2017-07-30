@@ -1,0 +1,6 @@
+<config>
+    <field1 var1="value1" var2="value2" />
+    <field2>
+        <subfield var1="subfield var" />
+    </field2>
+</config>
