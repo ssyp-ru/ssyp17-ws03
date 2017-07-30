@@ -77,12 +77,12 @@ public:
             if( object.name == "grass" )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF + 0.2)));
             } else if( object.name == "ground" )            {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF + 0.2)));
 
             } else if ( object.name == "yojus" ) {
                 testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
@@ -91,8 +91,8 @@ public:
                 testPlayer->setBounciness(0.0);
             } else if ( object.name == "ice" ) {
                 re::GameObjectPtr platice = std::make_shared<IcePlatform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF));
+                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF + 0.1));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
                 for(size_t i = 0; i < object.width / 64; i++ )
@@ -116,11 +116,8 @@ public:
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setActivated(true);
             } else if ( object.name == "deth" ) {
                 re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(
-                                re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + (float)object.height * SCALE_COEFF * 0.2), 
-                                re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF * 0.3));
-                mainGame.addObject( std::make_shared<Platform>(
-                                re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + (float)object.height * SCALE_COEFF * 0.5), 
-                                re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF * 0.5)));                        
+                                re::Vector2f(object.x * SCALE_COEFF - 3.6, object.y * SCALE_COEFF + (float)object.height * SCALE_COEFF * 0.1), 
+                                re::Vector2f((float)object.width * SCALE_COEFF - 0.8, (float)object.height * SCALE_COEFF * 0.8));
                 mainGame.addObject(deathTrig);
             }
         }
@@ -192,8 +189,8 @@ public:
             if( cam_x != location.X )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(((location.X-1) * 4 * 16) - 4.25, location.Y * 4 * 9 ), 
-                        re::Vector2f(4 * 16.5, 4 * 9) ) );
+                        re::Vector2f(((location.X-1) * 4 * 16) - 0.5, location.Y * 4 * 9 - 0.5), 
+                        re::Vector2f(4 * 15 + 1, 4 * 9 + 1) ) );
                 testPlayer->reduceCooldowns();
             }
 
@@ -207,7 +204,7 @@ public:
             {
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Vector2f((location.X-1) * 64 * 16, location.Y * 64 * 9 ), 
-                        re::Vector2f(4 * 16, 4 * 9) ) );
+                        re::Vector2f(4 * 15, 4 * 9) ) );
                 testPlayer->reduceCooldowns();
             }
             location.Y = cam_y;
