@@ -7,6 +7,7 @@ set(EXECUTABLE  main.cpp
                 player.cpp
                 weakPlatform.cpp
                 movingPlatform.cpp
+                hud.cpp
                 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})

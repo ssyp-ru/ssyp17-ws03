@@ -35,7 +35,7 @@ void Player::onCollisionStay(re::GameObjectPtr to, re::Vector2f vec)
 {
     if (re::Vector2f(0, -1).angleBetween(vec) < 60.0 / 180.0 * 3.14159) 
     { 
-        if (!((std::dynamic_pointer_cast<IcePlatform>(to) != 0) && (getVelocity().Length() > 0.5)))
+        if (!((std::dynamic_pointer_cast<IcePlatform>(to) != 0) && (getVelocity().Length() > 1.5)))
         {
             isOnIce = false;
             isGrounded = true;
@@ -93,6 +93,8 @@ void Player::attack()
 }
 void Player::update()
 {
+    if (velocity.Y > 20) setVelocity(re::Vector2f(velocity.X, 20));
+
     addForce(re::Vector2f(0, 60 * getMass()));
 
     for (uint i = 0; i < abilities.size(); i++)
@@ -142,6 +144,11 @@ void Player::update()
         }
     }
     Unit::update();
+}
+void Player::reduceCooldowns()
+{
+    for (uint i = 0; i < abilities.size(); i++)
+        abilities[i]->reduceCooldown();
 }
 void Player::display(int scale)
 {

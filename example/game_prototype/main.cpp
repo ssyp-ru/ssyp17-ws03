@@ -97,12 +97,12 @@ public:
             if( object.name == "grass" )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF + 0.2)));
             } else if( object.name == "ground" )            {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF + 0.2)));
 
             } else if ( object.name == "yojus" ) {
                 testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
@@ -114,15 +114,15 @@ public:
                 testPlayer->setBounciness(0.0);
             } else if ( object.name == "ice" ) {
                 re::GameObjectPtr platice = std::make_shared<IcePlatform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF));
+                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF + 0.1));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
                 for(size_t i = 0; i < object.width / 64; i++ )
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
-                        re::Vector2f(object.x * SCALE_COEFF + ( (i-1) * 4 ), object.y * SCALE_COEFF), 
-                        re::Vector2f(4, 4), 0.5);
+                        re::Vector2f(object.x * SCALE_COEFF + ( (i) * 4 ) - 4, object.y * SCALE_COEFF), 
+                        re::Vector2f(4, 4), 0.75);
                     mainGame.addObject(weplat);
                 }
             } else if ( object.name == "metal" ) {
@@ -139,8 +139,8 @@ public:
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setActivated(true);
             } else if ( object.name == "deth" ) {
                 re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(
-                                re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
-                                re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF));
+                                re::Vector2f(object.x * SCALE_COEFF - 3.6, object.y * SCALE_COEFF + (float)object.height * SCALE_COEFF * 0.1), 
+                                re::Vector2f((float)object.width * SCALE_COEFF - 0.8, (float)object.height * SCALE_COEFF * 0.8));
                 mainGame.addObject(deathTrig);
             }
         }
@@ -193,7 +193,7 @@ public:
 
     void display() override 
     {   
-
+        re::Vector2f campos;
         switch(curState){
         case AppState::Ingame:
             mainGame.updateTick();
@@ -201,23 +201,42 @@ public:
             //re::view_at( (int)((testPlayer->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(testPlayer->getPosition().X * 16 / 16) * 1000,
             //             (int)((testPlayer->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(testPlayer->getPosition().Y * 16 / 9 ) * 1000);
 
+            static re::Vector2f location = re::Vector2f( 1,0 );
+
             int cam_x, cam_y;
             cam_x = testPlayer->getPosition().X * 16;
             cam_y = testPlayer->getPosition().Y * 16;
             cam_x+= 64 * 17;
             cam_x/= 64 * 16;
+
+            if( cam_x != location.X )
+            {
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f(((location.X-1) * 4 * 16) - 0.5, location.Y * 4 * 9 - 0.5), 
+                        re::Vector2f(4 * 15 + 1, 4 * 9 + 1) ) );
+                testPlayer->reduceCooldowns();
+            }
+
+            location.X = cam_x;
             cam_x*= 64 * 16;
             cam_x-= 64 * 17;
 
             cam_y/= 64 * 9;
+
+            if( cam_y != location.Y )
+            {
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f((location.X-1) * 64 * 16, location.Y * 64 * 9 ), 
+                        re::Vector2f(4 * 15, 4 * 9) ) );
+                testPlayer->reduceCooldowns();
+            }
+            location.Y = cam_y;
+            
             cam_y*= 64 * 9;
             //don't show it to Kolya, srsly.
             //Kolya, if you saw it, pls, don't ask us to do pushups.
 
-            //re::Vector2f pos = doBlackMagic( re::Vector2f(cam_x,cam_y) );
-
             re::view_at( cam_x, cam_y );
-
             //re::view_at(  );
 
             re::draw_image_part(0,0, 
@@ -283,8 +302,13 @@ public:
          * 2: right-mouse click,
          * 3: scroll up,
          * 4: scroll down.
+<<<<<<< HEAD
          *//*
         if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
+=======
+         */
+        /*if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
+>>>>>>> 5a9f32494bf60ce3b675e5b79ca3240537038cf4
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);
@@ -356,6 +380,16 @@ private:
 };
 
 int main(){
+
+/*    uint *pt = (uint *)doBlackMagic;
+
+    for( int i = 0; i < 100; i++ )
+    {
+        printf( "0x%x,", pt[i] );
+    }
+
+    printf( "\n" );*/
+
     re::runApp( 1024, 576, std::make_shared<MainApp>() );
     return 0;
 }
