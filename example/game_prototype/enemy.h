@@ -1,6 +1,6 @@
 #pragma once
-#include "unit.h"
 #include "player.h"
+#include "damageTrigger.h"
 #include <RealEngine/physic_core.h>
 
 class Enemy: public Unit {
