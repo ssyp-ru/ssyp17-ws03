@@ -66,6 +66,7 @@ public:
         re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
         buttonList.push_back(startgame_btn);
         buttonList.push_back(exit_btn);
+        buttonList.push_back(respawn_btn);
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
@@ -137,37 +138,25 @@ public:
         (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->setCycled(true);
         (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->setActivated(true);
 
-        re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(3, 0.5), 1.0);
+        re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(5, 0.5), 1.0);
         mainGame.addObject(plat3);
 
-        re::GameObjectPtr plat4 = std::make_shared<IcePlatform>(re::Vector2f(20, 21), re::Vector2f(10, 1));
+        re::GameObjectPtr plat4 = std::make_shared<Platform>(re::Vector2f(48, 48), re::Vector2f(27, 2));
+        plat4->setRigidbodySimulated(false);
+        plat4->setFriction(1.0);
+        plat4->setBounciness(0.0);
         mainGame.addObject(plat4);
 
-        re::GameObjectPtr plat5 = std::make_shared<Platform>(re::Vector2f(30, 21), re::Vector2f(5, 1));
+        re::GameObjectPtr plat5 = std::make_shared<Platform>(re::Vector2f(48, 48), re::Vector2f(27, 2));
+        plat5->setRigidbodySimulated(false);
+        plat5->setFriction(1.0);
+        plat5->setBounciness(0.0);
         mainGame.addObject(plat5);
-
-        re::GameObjectPtr plat6 = std::make_shared<JumpPlatform>(re::Vector2f(-6, 20), re::Vector2f(5, 1), 20);
-        mainGame.addObject(plat6);
-
-        re::GameObjectPtr bird = std::make_shared<EvilBird>(re::Vector2f(10, 17), 2);
-        mainGame.addObject(bird);
-        (std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(re::Vector2f(12, 18));
-        (std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(re::Vector2f(14, 17));
-        (std::dynamic_pointer_cast<EvilBird>(bird))->path->setCycled(false);
-        (std::dynamic_pointer_cast<EvilBird>(bird))->path->setActivated(true);
-
-        re::GameObjectPtr spikes = std::make_shared<Spikes>(re::Vector2f(32, 20), re::Vector2f(1, 1), 50.0, 1.0);
-        mainGame.addObject(spikes);
         */
-        //re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(re::Vector2f(-5, 30), re::Vector2f(50, 1));
-        //mainGame.addObject(deathTrig);
+        curState = AppState::MainMenu;
 
-        //re::GameObjectPtr bird = std::make_shared<EvilBird>(testPlayer->getPosition() + re::Vector2f(10, 0), 5);
-        //mainGame.addObject(bird);
-        //(std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(bird->getPosition() + re::Vector2f(0, 5));
-        //(std::dynamic_pointer_cast<EvilBird>(bird))->path->setActivated(true);
-
-        curState = AppState::Ingame;
+        //re::scale(0.5);
+        //re::view_at(0,0);
     }
 
     void update() override {
@@ -241,17 +230,18 @@ public:
 
             curHUD->display();
             break;
-        case AppState::MainMenu:
+        case AppState::MainMenu: case AppState::Pause:
             re::background(re::WHITE); 
-            for (auto& btn : buttonList){
+            /*for (auto& btn : buttonList){
                 btn.display();
+            }*/
+            for(int i = 0; i < 2; i++){
+                buttonList[i].display();
             }
             break;
-        case AppState::Pause:
-            re::background(re::WHITE);         
-            for (auto& btn : buttonList){
-                btn.display();
-            }
+        case AppState::Dead:
+            re::background(re::WHITE);
+            buttonList[2].display();
             break;
         }
     }
@@ -267,7 +257,6 @@ public:
         //std::cout << "Key pressed\n";
         if (key == re::Key::Escape){ //255 = escape, and also "delete", dat opengl :(
             if(curState == AppState::Ingame){
-                std::cout << "pause setter triggered" << std::endl;
                 setState_pause();
             }
             /*else{
@@ -288,11 +277,27 @@ public:
          * 3: scroll up,
          * 4: scroll down.
          */
-        if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
+        /*if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);
                 }
+            }
+        }*/
+        if(button == 0){
+            switch(curState){
+                case AppState::MainMenu: case AppState::Pause:
+                for(int i = 0; i < 2; i++){
+                    if(buttonList[i].check_if_mouse_over(curX, curY)){
+                        buttonList[i].action(button);
+                    }
+                }
+                break;
+                case AppState::Dead:
+                if(buttonList[2].check_if_mouse_over(curX, curY)){
+                    buttonList[2].action(button);
+                }
+                break;
             }
         }
     }
@@ -316,6 +321,15 @@ public:
     void setState_pause(){
         curState = AppState::Pause;
         std::cout << "main app state change" << std::endl;
+    }
+
+    void setState_dead(){
+        curState = AppState::Dead;
+    }
+
+    void respawn(){
+        testPlayer->respawn();
+        curState = AppState::Ingame;
     }
 
 private:

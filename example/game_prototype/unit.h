@@ -2,6 +2,7 @@
 #include <RealEngine/physic_core.h>
 #include <RealEngine/stop_watch.h>
 #include "drawableGameObject.h"
+#include <functional>
 
 class Unit : public DrawableGameObject {
 protected:
