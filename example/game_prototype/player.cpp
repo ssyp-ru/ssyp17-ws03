@@ -7,7 +7,7 @@
 #include "icePlatform.h"
 #include "player.h"
 
-Player::Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(1, 1.5)) 
+Player::Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(2, 3)) 
 {
     hp = 100;
     attackDelay = 0.3;
@@ -46,17 +46,17 @@ void Player::attack()
 }
 void Player::update()
 {
-    addForce(re::Vector2f(0, 20 * getMass()));
+    addForce(re::Vector2f(0, 40 * getMass()));
     if ((getVelocity().Y > 0.1) && (isGrounded)) isGrounded = false;
     if (re::get_key_state(re::Key::D))
     {
         direction = 1;
-        setVelocity(re::Vector2f(5 * getMass(), getVelocity().Y));
+        setVelocity(re::Vector2f(10 * getMass(), getVelocity().Y));
     }
     if (re::get_key_state(re::Key::A))
     {
         direction = -1;
-        setVelocity(re::Vector2f(-5 * getMass(), getVelocity().Y));
+        setVelocity(re::Vector2f(-10 * getMass(), getVelocity().Y));
     }
     if (re::get_key_state(re::Key::F))
         tryAttack();
@@ -68,7 +68,7 @@ void Player::update()
     {
         if (isGrounded)
         {
-            addImpulse(re::Vector2f(0, -45 * getMass()));
+            addImpulse(re::Vector2f(0, -20 * getMass()));
             isGrounded = false;
         }
     }
@@ -76,6 +76,20 @@ void Player::update()
 }
 void Player::display(int scale)
 {
-    re::draw_image(position.X * scale, position.Y * scale, movingAnim->getNextFrame());
+    if( direction == 1 )
+    {
+        re::draw_image_part( position.X * scale, position.Y * scale,
+                            position.X * scale + 32, position.Y * scale +48,
+                            0,0, 1,1,
+                            movingAnim->getNextFrame() );
+    }
+    else
+    {
+        re::draw_image_part( position.X * scale, position.Y * scale,
+                            position.X * scale + 32, position.Y * scale +48,
+                            1,0, 0,1,
+                            movingAnim->getNextFrame() );
+    }
+    //re::draw_image(position.X * scale, position.Y * scale, movingAnim->getNextFrame());
 }
 

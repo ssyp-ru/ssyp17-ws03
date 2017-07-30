@@ -6,18 +6,15 @@
 #include "RealEngine/physic_core.h"
 #include "drawableGameObject.h"
 #include "waypointPath.h"
+#include "platform.h"
 
 class MovingPlatform : public Platform
 {
+    static re::ImagePtr tex;
 public:
     WaypointPath *path;
 
-    MovingPlatform(re::Vector2f pos, re::Vector2f size, double speed) : Platform::Platform(pos, size) 
-    {
-        path = new WaypointPath(speed, (DrawableGameObject*)this);
-    }
-    virtual void update() override
-    {
-        path->update();
-    }
+    MovingPlatform(re::Vector2f pos, re::Vector2f size, double speed);
+    virtual void display(int scale);
+    virtual void update();
 };

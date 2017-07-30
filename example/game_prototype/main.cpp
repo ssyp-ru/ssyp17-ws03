@@ -27,8 +27,7 @@
 #include "deathTrigger.h"
 #include "jumpPlatform.h"
 
-
-const double SCALE_COEFF = 0.031275;
+const double SCALE_COEFF = 0.0625;
 
 class MainApp : public re::IBaseApp{
 public:
@@ -45,6 +44,18 @@ public:
     void setup() override {
         resource_manager.load_file("resources.xml");
         re::AnimationPtr testanimCustom = resource_manager.get_animation("mario_sprite");
+
+        re::AnimationPtr playerAnim = std::make_shared<re::Animation>(0, true);
+        re::Image spritelist( "data/spritelist.png" );
+
+        playerAnim->add_frame(spritelist.get_subimage(29, 13, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(298, 12, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(556, 16, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(840, 9, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(17, 382, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(289, 377, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(569, 379, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(854, 375, 224, 343));
         re::ImagePtr buttonsource = resource_manager.get_image("button_test");
         re::BaseButton startgame_btn(50, 50, buttonsource->get_subimage(10, 10, 200, 70));
         re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
@@ -53,47 +64,63 @@ public:
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
+<<<<<<< HEAD
         map = re::get_tmx_map("map/untitled.tmx")[0];
+=======
+        map = (re::parse_tiled( re::parse_xml( "map/map_level1.tmx" ) ))[0];
+>>>>>>> 266aaaba7d151772fdb57310408a46c4425140d0
 
         for( auto object : map.objectgroup[0].group )
         {
             if( object.name == "grass" )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF)));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
             } else if( object.name == "ground" )            {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF)));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
 
             } else if ( object.name == "yojus" ) {
                 testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
-                testPlayer->movingAnim = testanimCustom;
+                testPlayer->movingAnim = playerAnim;//testanimCustom;
                 testPlayer->setFriction(-1.0);
                 testPlayer->setBounciness(0.0);
             } else if ( object.name == "ice" ) {
                 re::GameObjectPtr platice = std::make_shared<IcePlatform>(
-                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
+<<<<<<< HEAD
                 for( size_t i = 0; i < object.width / 128; i++ )
+=======
+                for( int i = 0; i < object.width / 64; i++ )
+>>>>>>> 266aaaba7d151772fdb57310408a46c4425140d0
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
-                        re::Vector2f(object.x * SCALE_COEFF + ( i * 4 ), object.y * SCALE_COEFF), 
-                        re::Vector2f(4, 4), 1.0);
+                        re::Vector2f(object.x * SCALE_COEFF + ( (i-1) * 4 ), object.y * SCALE_COEFF), 
+                        re::Vector2f(4, 4), 0.5);
                     mainGame.addObject(weplat);
                 }
             } else if ( object.name == "metal" ) {
                 re::GameObjectPtr movplat = std::make_shared<MovingPlatform>(
-                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * object.x * SCALE_COEFF, (float)object.height * object.x * SCALE_COEFF), 
+                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + 4), 
+                        re::Vector2f(4, 1), 
                         3.0);
                 mainGame.addObject(movplat);
-                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->addWaypoint(re::Vector2f(20, 16));
+                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->addWaypoint(re::Vector2f(
+                    (object.x * SCALE_COEFF) + 4 + (object.width / 128) * 4,// - 1) * 4,
+                    (object.y * SCALE_COEFF) + 4// + ((object.height / 128) - 1) * 4
+                ));
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setCycled(true);
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setActivated(true);
+            } else if ( object.name == "deth" ) {
+                re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(
+                                re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
+                                re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF));
+                mainGame.addObject(deathTrig);
             }
         }
 
@@ -151,11 +178,31 @@ public:
         case AppState::Ingame:
             mainGame.updateTick();
 
-            re::view_at( testPlayer->getPosition().X * 16 - 500,
-                         testPlayer->getPosition().Y * 16 - 300 );
+            //re::view_at( (int)((testPlayer->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(testPlayer->getPosition().X * 16 / 16) * 1000,
+            //             (int)((testPlayer->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(testPlayer->getPosition().Y * 16 / 9 ) * 1000);
+
+            int cam_x, cam_y;
+            cam_x = testPlayer->getPosition().X * 16;
+            cam_y = testPlayer->getPosition().Y * 16;
+            cam_x+= 64 * 17;
+            cam_x/= 64 * 16;
+            cam_x*= 64 * 16;
+            cam_x-= 64 * 17;
+
+            cam_y/= 64 * 9;
+            cam_y*= 64 * 9;
+            //don't show it to Kolya, srsly.
+            //Kolya, if you saw it, pls, don't ask us to do pushups.
+
+            //re::Vector2f pos = doBlackMagic( re::Vector2f(cam_x,cam_y) );
+
+            re::view_at( pos.X, pos.Y );
+
+            //re::view_at(  );
+
             re::draw_image_part(0,0, 
-                            1280,
-                            1280, 
+                            3072,
+                            1728, 
                             0,0, 1,1, 
                             map.layer[0].background);
 

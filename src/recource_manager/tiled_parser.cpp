@@ -61,14 +61,7 @@ Layer parse_layer(XmlElemPtr parsed_xml) {
             if(data.length() <= 0) break;
             found = data.find_first_of("\r ,\n\t");
             layer.data.push_back(std::stoi(data.substr(0,found)));
-            if(data.length() > 2)
-            {
-                data.erase(0,found);
-            }
-            else
-            {
-                break;
-            }
+            data.erase(0,found);
         }
         Log::stream() << std::endl;
     } catch(...) {
@@ -133,8 +126,8 @@ Map parse_map(XmlElemPtr parsed_xml) {
 
             for(uint y = 0; y < layer.height; y++)
                 for(uint x = 0; x < layer.width; x++) {
-                    auto a = map.layer[0].data[y*layer.width + x];
-                    if( a != 0 )
+                    int a = map.layer[0].data[y*layer.width + x];
+                    if( a > 0 && a < 100 )
                     {
                         layer.background->set_subimage(x*width,y*height,
                             map.tileset[
