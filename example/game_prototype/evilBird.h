@@ -10,6 +10,7 @@ public:
     EvilBird(re::Vector2f pos, double speed) : Enemy::Enemy(pos, re::Vector2f(1, 1)) 
     {
         hp = 10;
+        maxhp = hp;
         attackDelay = 0.5;
         attackDamage = 2;
         path = new WaypointPath(speed, (DrawableGameObject*)this);

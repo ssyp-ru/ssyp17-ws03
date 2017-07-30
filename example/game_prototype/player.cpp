@@ -11,6 +11,7 @@
 Player::Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(1, 1.5)) 
 {
     hp = 100;
+    maxhp = hp;
     attackDelay = 0.3;
     attackDamage = 2;
     direction = 1;

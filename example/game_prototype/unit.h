@@ -16,7 +16,7 @@ protected:
         addEdge(2, 3);
         addEdge(3, 0);
     }
-    double hp;
+    double hp, maxhp;
     double attackDamage;
     double attackDelay;
     re::StopWatch lastAttackTime;
@@ -26,7 +26,7 @@ protected:
         
     }
     virtual void onCollisionStay(re::GameObjectPtr obj, re::Vector2f vec) { }
-    virtual void update() { DrawableGameObject::update(); }
+    virtual void update() { DrawableGameObject::update(); if (hp > maxhp) hp = maxhp; }
 public:
     virtual void onDeath(re::GameObjectPtr lastAttacker)
     {
@@ -40,6 +40,8 @@ public:
             attack();
         }
     }
+    double getHp() { return hp; }
+    double getMaxHp() { return maxhp; }
     virtual void dealDamage(double dmg, re::GameObjectPtr sender) {
         hp -= dmg;
         if(hp <= 0.0) 

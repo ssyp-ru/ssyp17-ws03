@@ -27,11 +27,21 @@ struct Color
     }
 };
 
-static const Color WHITE    (0xff, 0xff, 0xff);
-static const Color BLACK    (0x00, 0x00, 0x00);
-static const Color RED      (0xff, 0x00, 0x00);
-static const Color GREEN    (0x00, 0xff, 0x00);
-static const Color BLUE     (0x00, 0x00, 0xff);
+static const Color WHITE     (255, 255, 255);
+static const Color BLACK     (0, 0, 0);
+static const Color RED       (255, 0, 0);
+static const Color GREEN     (0, 255, 0);
+static const Color BLUE      (0, 0, 255);
+static const Color YELLOW    (255, 255, 0);
+static const Color GRAY      (127, 127, 127);
+static const Color LIGHTGRAY (191, 191, 191);
+static const Color DARKGRAY  (64, 64, 64);
+static const Color LIGHTRED  (255, 127, 127);
+static const Color LIGHTGREEN(127, 255, 127);
+static const Color LIGHTBLUE (127, 127, 255);
+static const Color DARKRED   (127, 0, 0);
+static const Color DARKGREEN (0, 127, 0);
+static const Color DARKBLUE  (0, 0, 127);
 
 
 } // namespace re
