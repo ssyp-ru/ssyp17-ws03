@@ -137,6 +137,11 @@ void Player::update()
     }
     Unit::update();
 }
+void Player::reduceCooldowns()
+{
+    for (uint i = 0; i < abilities.size(); i++)
+        abilities[i]->reduceCooldown();
+}
 void Player::display(int scale)
 {
     if( direction == 1 )
