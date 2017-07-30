@@ -47,7 +47,7 @@ void Player::attack()
 }
 void Player::update()
 {
-    addForce(re::Vector2f(0, 20 * getMass()));
+    addForce(re::Vector2f(0, 40 * getMass()));
     if ((getVelocity().Y > 0.1) && (isGrounded)) isGrounded = false;
     if (re::get_key_state(re::Key::D))
     {
@@ -69,7 +69,7 @@ void Player::update()
     {
         if (isGrounded)
         {
-            addImpulse(re::Vector2f(0, -15 * getMass()));
+            addImpulse(re::Vector2f(0, -20 * getMass()));
             isGrounded = false;
         }
     }
