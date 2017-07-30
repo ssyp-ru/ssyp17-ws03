@@ -47,6 +47,18 @@ public:
     void setup() override {
         resource_manager.load_file("resources.xml");
         re::AnimationPtr testanimCustom = resource_manager.get_animation("mario_sprite");
+
+        re::AnimationPtr playerAnim = std::make_shared<re::Animation>(0, true);
+        re::Image spritelist( "data/spritelist.png" );
+
+        playerAnim->add_frame(spritelist.get_subimage(29, 13, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(298, 12, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(556, 16, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(840, 9, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(17, 382, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(289, 377, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(569, 379, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(854, 375, 224, 343));
         re::ImagePtr buttonsource = resource_manager.get_image("button_test");
         re::BaseButton startgame_btn(50, 50, buttonsource->get_subimage(10, 10, 200, 70));
         re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
@@ -71,7 +83,7 @@ public:
 
             } else if ( object.name == "yojus" ) {
                 testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
-                testPlayer->movingAnim = testanimCustom;
+                testPlayer->movingAnim = playerAnim;//testanimCustom;
                 testPlayer->setFriction(-1.0);
                 testPlayer->setBounciness(0.0);
             } else if ( object.name == "ice" ) {
@@ -84,16 +96,19 @@ public:
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
                         re::Vector2f(object.x * SCALE_COEFF + ( i * 4 ), object.y * SCALE_COEFF), 
-                        re::Vector2f(4, 4), 1.0);
+                        re::Vector2f(4, 4), 0.5);
                     mainGame.addObject(weplat);
                 }
             } else if ( object.name == "metal" ) {
                 re::GameObjectPtr movplat = std::make_shared<MovingPlatform>(
                         re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * object.x * SCALE_COEFF, (float)object.height * object.x * SCALE_COEFF), 
+                        re::Vector2f(4, 1), 
                         3.0);
                 mainGame.addObject(movplat);
-                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->addWaypoint(re::Vector2f(20, 16));
+                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->addWaypoint(re::Vector2f(
+                    (object.x * SCALE_COEFF) + ((object.width / 128) - 1) * 4,
+                    (object.y * SCALE_COEFF) + ((object.height / 128) - 1) * 4
+                ));
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setCycled(true);
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setActivated(true);
             }

@@ -1,0 +1,158 @@
+> 1: [07/30/17 13:49:10 : 0] Log opened successfully.
+> 2: [07/30/17 13:49:10 : 26] File "resources.xml" found!
+> 3: [07/30/17 13:49:10 : 26] Read line #1: "<resources>"
+> 4: [07/30/17 13:49:10 : 26] Read line #2: "    <images>"
+> 5: [07/30/17 13:49:10 : 26] Read line #3: "        <im id="mario_spritelist" file="data/spritelistMario.png" />"
+> 6: [07/30/17 13:49:10 : 26] Read line #4: "        <im id="button_test" file="data/test.png" />"
+> 7: [07/30/17 13:49:10 : 26] Read line #5: "    </images>"
+> 8: [07/30/17 13:49:10 : 27] Read line #6: ""
+> 9: [07/30/17 13:49:10 : 27] Read line #7: "    <sprites>"
+> 10: [07/30/17 13:49:10 : 27] Read line #8: "        <sprite id="mario_sprite" source_id="mario_spritelist" speed="0.1" cycleable="true">"
+> 11: [07/30/17 13:49:10 : 27] Read line #9: "            <sp x="3" y="5" w="16" h="25"/>"
+> 12: [07/30/17 13:49:10 : 27] Read line #10: "            <sp x="20" y="5" w="16" h="25"/>"
+> 13: [07/30/17 13:49:10 : 27] Read line #11: "            <sp x="37" y="5" w="16" h="25"/>"
+> 14: [07/30/17 13:49:10 : 27] Read line #12: "            <sp x="54" y="5" w="16" h="25"/>"
+> 15: [07/30/17 13:49:10 : 27] Read line #13: "            <sp x="71" y="5" w="16" h="25"/>"
+> 16: [07/30/17 13:49:10 : 27] Read line #14: "            <sp x="88" y="5" w="16" h="25"/>"
+> 17: [07/30/17 13:49:10 : 27] Read line #15: "            <sp x="105" y="5" w="16" h="25"/>"
+> 18: [07/30/17 13:49:10 : 27] Read line #16: "            <sp x="122" y="5" w="16" h="25"/>"
+> 19: [07/30/17 13:49:10 : 27] Read line #17: "            <sp x="139" y="5" w="16" h="25"/>"
+> 20: [07/30/17 13:49:10 : 27] Read line #18: "        </sprite>"
+> 21: [07/30/17 13:49:10 : 27] Read line #19: "    </sprites>"
+> 22: [07/30/17 13:49:10 : 27] Read line #20: "</resources>"
+> 23: [07/30/17 13:49:10 : 27] File closed successfully.
+> 24: [07/30/17 13:49:10 : 27] Parsing took 1157 micros.
+> 25: [07/30/17 13:49:10 : 27] .getChildren on "resources.xml" took 8938 ns.
+> 26: [07/30/17 13:49:10 : 27] .getChildren on "resources" took 2226 ns.
+> 27: [07/30/17 13:49:10 : 27] .getChildren on "images" took 2615 ns.
+> 28: [07/30/17 13:49:10 : 27] .getChildren on "resources.xml" took 1486 ns.
+> 29: [07/30/17 13:49:10 : 27] .getChildren on "resources" took 1670 ns.
+> 30: [07/30/17 13:49:10 : 27] .getChildren on "sprites" took 1446 ns.
+> 31: [07/30/17 13:49:10 : 152] .getChildren on "sprite" took 10586 ns.
+> 32: [07/30/17 13:49:10 : 392] File "map/untitled.tmx" found!
+> 33: [07/30/17 13:49:10 : 393] Read line #1: "<?xml version="1.0" encoding="UTF-8"?>"
+> 34: [07/30/17 13:49:10 : 393] Read line #2: "<map version="1.0" tiledversion="2017.07.17" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="128" tileheight="128" nextobjectid="33">"
+> 35: [07/30/17 13:49:10 : 393] Read line #3: " <tileset firstgid="1" source="map/gr.tsx"/>"
+> 36: [07/30/17 13:49:10 : 393] Read line #4: " <tileset firstgid="2" source="map/ground.tsx"/>"
+> 37: [07/30/17 13:49:10 : 393] Read line #5: " <tileset firstgid="3" source="map/ice.tsx"/>"
+> 38: [07/30/17 13:49:10 : 393] Read line #6: " <tileset firstgid="4" source="map/corr.tsx"/>"
+> 39: [07/30/17 13:49:10 : 393] Read line #7: " <layer name="Tile Layer 1" width="20" height="20" opacity="0.81">"
+> 40: [07/30/17 13:49:10 : 393] Read line #8: "  <data encoding="csv">"
+> 41: [07/30/17 13:49:10 : 393] Read line #9: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 42: [07/30/17 13:49:10 : 393] Read line #10: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 43: [07/30/17 13:49:10 : 393] Read line #11: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 44: [07/30/17 13:49:10 : 393] Read line #12: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 45: [07/30/17 13:49:10 : 393] Read line #13: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 46: [07/30/17 13:49:10 : 393] Read line #14: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 47: [07/30/17 13:49:10 : 393] Read line #15: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 48: [07/30/17 13:49:10 : 393] Read line #16: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 49: [07/30/17 13:49:10 : 393] Read line #17: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 50: [07/30/17 13:49:10 : 393] Read line #18: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 51: [07/30/17 13:49:10 : 393] Read line #19: "0,0,0,0,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,"
+> 52: [07/30/17 13:49:10 : 393] Read line #20: "0,0,0,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 53: [07/30/17 13:49:10 : 393] Read line #21: "0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 54: [07/30/17 13:49:10 : 393] Read line #22: "0,2,1,3,3,3,3,3,3,3,3,1,1,0,0,0,0,0,0,0,"
+> 55: [07/30/17 13:49:10 : 393] Read line #23: "0,0,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,0,0,0,"
+> 56: [07/30/17 13:49:10 : 393] Read line #24: "0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,0,0,0,"
+> 57: [07/30/17 13:49:10 : 393] Read line #25: "0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,0,0,"
+> 58: [07/30/17 13:49:10 : 393] Read line #26: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 59: [07/30/17 13:49:10 : 393] Read line #27: "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
+> 60: [07/30/17 13:49:10 : 393] Read line #28: "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+> 61: [07/30/17 13:49:10 : 393] Read line #29: "</data>"
+> 62: [07/30/17 13:49:10 : 393] Read line #30: " </layer>"
+> 63: [07/30/17 13:49:10 : 393] Read line #31: " <objectgroup name="Object Layer 1">"
+> 64: [07/30/17 13:49:10 : 393] Read line #32: "  <object id="6" name="grass" x="-4" y="2432" width="2564" height="128"/>"
+> 65: [07/30/17 13:49:10 : 393] Read line #33: "  <object id="7" name="grass" x="1664" y="1790" width="508" height="134"/>"
+> 66: [07/30/17 13:49:10 : 393] Read line #34: "  <object id="8" name="grass" x="1410" y="1662" width="254" height="132"/>"
+> 67: [07/30/17 13:49:10 : 393] Read line #35: "  <object id="9" name="grass" x="256" y="1662" width="128" height="134"/>"
+> 68: [07/30/17 13:49:10 : 393] Read line #36: "  <object id="10" name="grass" x="128" y="1534" width="128" height="132"/>"
+> 69: [07/30/17 13:49:10 : 393] Read line #37: "  <object id="11" name="grass" x="384" y="1406" width="126" height="132"/>"
+> 70: [07/30/17 13:49:10 : 393] Read line #38: "  <object id="16" name="grass" x="512" y="1280" width="382" height="128"/>"
+> 71: [07/30/17 13:49:10 : 393] Read line #39: "  <object id="19" name="grass" x="1666" y="1278" width="126" height="130"/>"
+> 72: [07/30/17 13:49:10 : 393] Read line #40: "  <object id="20" name="ice" x="388" y="1666" width="1020" height="124"/>"
+> 73: [07/30/17 13:49:10 : 393] Read line #41: "  <object id="22" name="ground" x="128" y="1666" width="128" height="126"/>"
+> 74: [07/30/17 13:49:10 : 393] Read line #42: "  <object id="23" name="ground" x="256" y="1796" width="1404" height="122"/>"
+> 75: [07/30/17 13:49:10 : 393] Read line #43: "  <object id="24" name="ground" x="768" y="1922" width="1408" height="130"/>"
+> 76: [07/30/17 13:49:10 : 393] Read line #44: "  <object id="25" name="ground" x="1408" y="2050" width="772" height="122"/>"
+> 77: [07/30/17 13:49:10 : 393] Read line #45: "  <object id="27" name="ground" x="510" y="1406" width="386" height="130"/>"
+> 78: [07/30/17 13:49:10 : 394] Read line #46: "  <object id="28" name="corr" x="894" y="1280" width="768" height="128"/>"
+> 79: [07/30/17 13:49:10 : 394] Read line #47: "  <object id="31" name="metal" x="2178" y="2308" width="128" height="256"/>"
+> 80: [07/30/17 13:49:10 : 394] Read line #48: "  <object id="32" name="yojus" x="2" y="2176" width="124" height="252"/>"
+> 81: [07/30/17 13:49:10 : 394] Read line #49: " </objectgroup>"
+> 82: [07/30/17 13:49:10 : 394] Read line #50: "</map>"
+> 83: [07/30/17 13:49:10 : 394] Read line #51: ""
+> 84: [07/30/17 13:49:10 : 394] File closed successfully.
+> 85: [07/30/17 13:49:10 : 394] Parsing took 1080 micros.
+> 86: [07/30/17 13:49:10 : 394] .getChildren on "map/untitled.tmx" took 2290 ns.
+> 87: [07/30/17 13:49:10 : 394] parsing to map map
+> 88: [07/30/17 13:49:10 : 394] .getChildren on "map" took 2785 ns.
+> 89: [07/30/17 13:49:10 : 394] parsing to tileset tileset
+> 90: [07/30/17 13:49:10 : 394] File "map/gr.tsx" found!
+> 91: [07/30/17 13:49:10 : 394] Read line #1: "<?xml version="1.0" encoding="UTF-8"?>"
+> 92: [07/30/17 13:49:10 : 394] Read line #2: "<tileset name="grass128" tilewidth="128" tileheight="128" tilecount="1" columns="1">"
+> 93: [07/30/17 13:49:10 : 394] Read line #3: " <image source="map/grass.png" width="128" height="128"/>"
+> 94: [07/30/17 13:49:10 : 394] Read line #4: "</tileset>"
+> 95: [07/30/17 13:49:10 : 394] Read line #5: ""
+> 96: [07/30/17 13:49:10 : 394] File closed successfully.
+> 97: [07/30/17 13:49:10 : 394] Parsing took 96 micros.
+> 98: [07/30/17 13:49:10 : 394] .getChildren on "map/gr.tsx" took 1332 ns.
+> 99: [07/30/17 13:49:10 : 394] .getChildren on "tileset" took 1047 ns.
+> 100: [07/30/17 13:49:10 : 394] image : image, source=map/grass.png
+> 101: [07/30/17 13:49:10 : 397] parsing to tileset tileset
+> 102: [07/30/17 13:49:10 : 397] File "map/ground.tsx" found!
+> 103: [07/30/17 13:49:10 : 397] Read line #1: "<?xml version="1.0" encoding="UTF-8"?>"
+> 104: [07/30/17 13:49:10 : 397] Read line #2: "<tileset name="ground128" tilewidth="128" tileheight="128" tilecount="1" columns="1">"
+> 105: [07/30/17 13:49:10 : 397] Read line #3: " <image source="map/ground.png" width="128" height="128"/>"
+> 106: [07/30/17 13:49:10 : 398] Read line #4: "</tileset>"
+> 107: [07/30/17 13:49:10 : 398] Read line #5: ""
+> 108: [07/30/17 13:49:10 : 398] File closed successfully.
+> 109: [07/30/17 13:49:10 : 398] Parsing took 191 micros.
+> 110: [07/30/17 13:49:10 : 398] .getChildren on "map/ground.tsx" took 3554 ns.
+> 111: [07/30/17 13:49:10 : 398] .getChildren on "tileset" took 1745 ns.
+> 112: [07/30/17 13:49:10 : 398] image : image, source=map/ground.png
+> 113: [07/30/17 13:49:10 : 401] parsing to tileset tileset
+> 114: [07/30/17 13:49:10 : 401] File "map/ice.tsx" found!
+> 115: [07/30/17 13:49:10 : 401] Read line #1: "<?xml version="1.0" encoding="UTF-8"?>"
+> 116: [07/30/17 13:49:10 : 401] Read line #2: "<tileset name="ice128" tilewidth="128" tileheight="128" tilecount="1" columns="1">"
+> 117: [07/30/17 13:49:10 : 401] Read line #3: " <image source="map/ice.png" width="128" height="128"/>"
+> 118: [07/30/17 13:49:10 : 401] Read line #4: "</tileset>"
+> 119: [07/30/17 13:49:10 : 401] Read line #5: ""
+> 120: [07/30/17 13:49:10 : 401] File closed successfully.
+> 121: [07/30/17 13:49:10 : 401] Parsing took 162 micros.
+> 122: [07/30/17 13:49:10 : 401] .getChildren on "map/ice.tsx" took 2925 ns.
+> 123: [07/30/17 13:49:10 : 401] .getChildren on "tileset" took 1566 ns.
+> 124: [07/30/17 13:49:10 : 401] image : image, source=map/ice.png
+> 125: [07/30/17 13:49:10 : 404] parsing to tileset tileset
+> 126: [07/30/17 13:49:10 : 404] File "map/corr.tsx" found!
+> 127: [07/30/17 13:49:10 : 404] Read line #1: "<?xml version="1.0" encoding="UTF-8"?>"
+> 128: [07/30/17 13:49:10 : 405] Read line #2: "<tileset name="corr" tilewidth="128" tileheight="128" tilecount="1" columns="1">"
+> 129: [07/30/17 13:49:10 : 405] Read line #3: " <image source="map/corr.png" width="128" height="128"/>"
+> 130: [07/30/17 13:49:10 : 405] Read line #4: "</tileset>"
+> 131: [07/30/17 13:49:10 : 405] Read line #5: ""
+> 132: [07/30/17 13:49:10 : 405] File closed successfully.
+> 133: [07/30/17 13:49:10 : 405] Parsing took 178 micros.
+> 134: [07/30/17 13:49:10 : 405] .getChildren on "map/corr.tsx" took 3273 ns.
+> 135: [07/30/17 13:49:10 : 405] .getChildren on "tileset" took 1481 ns.
+> 136: [07/30/17 13:49:10 : 405] image : image, source=map/corr.png
+> 137: [07/30/17 13:49:10 : 409] .getChildren on "map" took 8511 ns.
+> 138: [07/30/17 13:49:10 : 409] parsing to layer layer
+
+> 139: [07/30/17 13:49:10 : 409] .getChildren on "map" took 4269 ns.
+> 140: [07/30/17 13:49:10 : 409] parsing to objectgroup objectgroup
+> 141: [07/30/17 13:49:10 : 409] parsing to object object
+> 142: [07/30/17 13:49:10 : 409] parsing to object object
+> 143: [07/30/17 13:49:10 : 409] parsing to object object
+> 144: [07/30/17 13:49:10 : 409] parsing to object object
+> 145: [07/30/17 13:49:10 : 409] parsing to object object
+> 146: [07/30/17 13:49:10 : 409] parsing to object object
+> 147: [07/30/17 13:49:10 : 409] parsing to object object
+> 148: [07/30/17 13:49:10 : 409] parsing to object object
+> 149: [07/30/17 13:49:10 : 409] parsing to object object
+> 150: [07/30/17 13:49:10 : 409] parsing to object object
+> 151: [07/30/17 13:49:10 : 409] parsing to object object
+> 152: [07/30/17 13:49:10 : 409] parsing to object object
+> 153: [07/30/17 13:49:10 : 409] parsing to object object
+> 154: [07/30/17 13:49:10 : 409] parsing to object object
+> 155: [07/30/17 13:49:10 : 409] parsing to object object
+> 156: [07/30/17 13:49:10 : 409] parsing to object object
+> 157: [07/30/17 13:49:10 : 409] parsing to object object

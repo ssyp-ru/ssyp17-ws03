@@ -44,7 +44,7 @@
   <object id="25" name="ground" x="1408" y="2050" width="772" height="122"/>
   <object id="27" name="ground" x="510" y="1406" width="386" height="130"/>
   <object id="28" name="corr" x="894" y="1280" width="768" height="128"/>
-  <object id="31" name="metal" x="2178" y="2308" width="122" height="122"/>
+  <object id="31" name="metal" x="2178" y="2308" width="128" height="256"/>
   <object id="32" name="yojus" x="2" y="2176" width="124" height="252"/>
  </objectgroup>
 </map>
