@@ -3,6 +3,7 @@
 *.so
 .vscode/
 out/
+lib/
 obj/
 build/
 plan.todo
@@ -10,3 +11,10 @@ plan.todo
 *~
 *.sh
 *.swp
+log.txt
+
+physic_core_example
+resource_example
+simple_map_try
+simple_platformer
+simple_window

@@ -6,6 +6,8 @@
 #include <RealEngine/xml_parser.h>
 #include <RealEngine/math.h>
 #include "RealEngine/physic_core.h"
+#include "RealEngine/gui/base_button.h"
+#include "RealEngine/gui/gui_manager.h"
 //#include "RealEngine/resource_manager.h"
 #include "hud.h"
 
@@ -18,7 +20,6 @@
 
 #include "player.h"
 #include "app_state.h"
-#include "base_button.h"
 #include "platform.h"
 #include "movingPlatform.h"
 #include "weakPlatform.h"
@@ -46,51 +47,8 @@ public:
         return std::make_shared<Platform>(pos, size);
     }
 
-    void setup() override {
-        resource_manager.load_file("resources.xml");
-        re::AnimationPtr testanimCustom = resource_manager.get_animation("mario_sprite");
-
-        re::AnimationPtr playerAnim = std::make_shared<re::Animation>(0, true);
-        re::AnimationPtr jumpAnim = std::make_shared<re::Animation>(0.5, true);
-        re::AnimationPtr atkAnim = std::make_shared<re::Animation>(1, true);
-        re::AnimationPtr onIceAnim = std::make_shared<re::Animation>(0.5, true);
-        
-        re::Image spritelist( "data/spritelist.png" );
-
-        playerAnim->add_frame(spritelist.get_subimage(29, 12, 224, 344));
-        playerAnim->add_frame(spritelist.get_subimage(298, 11, 224, 344));
-        playerAnim->add_frame(spritelist.get_subimage(556, 15, 224, 344));
-        playerAnim->add_frame(spritelist.get_subimage(840, 8, 224, 344));
-        playerAnim->add_frame(spritelist.get_subimage(17, 381, 224, 344));
-        playerAnim->add_frame(spritelist.get_subimage(289, 376, 224, 344));
-        playerAnim->add_frame(spritelist.get_subimage(569, 378, 224, 344));
-        playerAnim->add_frame(spritelist.get_subimage(854, 374, 224, 344));
-
-        atkAnim->add_frame(spritelist.get_subimage(578, 739, 227, 344)); 
-        atkAnim->add_frame(spritelist.get_subimage(307, 735, 244, 344));
-        atkAnim->add_frame(spritelist.get_subimage(16, 744, 260, 344));
-        atkAnim->add_frame(spritelist.get_subimage(307, 735, 244, 344));
-        atkAnim->add_frame(spritelist.get_subimage(578, 739, 227, 344)); 
-
-        onIceAnim->add_frame(spritelist.get_subimage(862, 741, 224, 344));
-
-        jumpAnim->add_frame(spritelist.get_subimage(30, 1139, 224, 344));
-        jumpAnim->add_frame(spritelist.get_subimage(315, 1130, 224, 344));
-        jumpAnim->add_frame(spritelist.get_subimage(605, 1136, 224, 344));
-        jumpAnim->add_frame(spritelist.get_subimage(892, 1143, 224, 344));
-                                       
-
-        re::ImagePtr buttonsource = resource_manager.get_image("button_test");
-        pauseImage = std::make_shared<re::Image>("whilepaused.png");
-        re::BaseButton startgame_btn(50, 50, buttonsource->get_subimage(10, 10, 200, 70));
-        re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
-        buttonList.push_back(startgame_btn);
-        buttonList.push_back(exit_btn);
-        //buttonList.push_back(respawn_btn);
-        buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
-        buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
-
-        map = (re::parse_tiled( re::parse_xml( "map/map_level1.tmx" ) ))[0];
+    void map_objects_init(){
+        map = re::get_tmx_map("map/map_level1.tmx")[0];
 
         for( auto object : map.objectgroup[0].group )
         {
@@ -99,19 +57,22 @@ public:
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Vector2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
                         re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF + 0.2)));
+
             } else if( object.name == "ground" )            {
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Vector2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
                         re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF + 0.2)));
 
+
             } else if ( object.name == "yojus" ) {
-                testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
-                testPlayer->movingAnim = playerAnim;//testanimCustom;
-                testPlayer->slidingAnim = onIceAnim;
-                testPlayer->jumpingAnim = jumpAnim;
-                testPlayer->attackAnim = atkAnim;
-                testPlayer->setFriction(-1.0);
-                testPlayer->setBounciness(0.0);
+                player = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
+                player->movingAnim = resource_manager.get_animation("playerAnim");
+                player->slidingAnim = resource_manager.get_animation("onIceAnim");
+                player->jumpingAnim = resource_manager.get_animation("jumpAnim");
+                player->attackAnim = resource_manager.get_animation("atkAnim");
+                player->setFriction(-1.0);
+                player->setBounciness(0.0);
+
             } else if ( object.name == "ice" ) {
                 re::GameObjectPtr platice = std::make_shared<IcePlatform>(
                         re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
@@ -145,49 +106,69 @@ public:
             }
         }
 
-        mainGame.addObject(testPlayer);
-        testPlayer->addAbility(new Ability_DamageBoost(5, 2));
-        testPlayer->addAbility(new Ability_Heal(10));
-        testPlayer->addAbility(new Ability_Invincibility(5));
+        mainGame.addObject(player);
+        player->addAbility(new Ability_DamageBoost(5, 2));
+        player->addAbility(new Ability_Heal(10));
+        player->addAbility(new Ability_Invincibility(5));
 
-        curHUD = new HUD(std::dynamic_pointer_cast<Player>(testPlayer).get(), &resource_manager);
+        curHUD = new HUD(std::dynamic_pointer_cast<Player>(player).get(), &resource_manager);
+    }
 
-        /*re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
-        mainGame.addObject(plat);
+    void setup() override {
+        resource_manager.load_file("resources.xml");
 
-        re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
-        mainGame.addObject(plat2);
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->addWaypoint(re::Vector2f(20, 16));
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->setCycled(true);
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->setActivated(true);
+                                       
+        pause_image = resource_manager.get_image("whilepaused");
+        main_menu_image = resource_manager.get_image("mainmenu");
 
-        re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(5, 0.5), 1.0);
-        mainGame.addObject(plat3);
+        
+        map_objects_init();
 
-        re::GameObjectPtr plat4 = std::make_shared<Platform>(re::Vector2f(48, 48), re::Vector2f(27, 2));
-        plat4->setRigidbodySimulated(false);
-        plat4->setFriction(1.0);
-        plat4->setBounciness(0.0);
-        mainGame.addObject(plat4);
 
-        re::GameObjectPtr plat5 = std::make_shared<Platform>(re::Vector2f(48, 48), re::Vector2f(27, 2));
-        plat5->setRigidbodySimulated(false);
-        plat5->setFriction(1.0);
-        plat5->setBounciness(0.0);
-        mainGame.addObject(plat5);
-        */
+        re::ImagePtr bs = resource_manager.get_image("buttonsource");
+
+        re::ImagePtr im_small_button = bs->get_subimage(0, 225, 50, 50);
+        re::ImagePtr im_small_button_hover = bs->get_subimage(50, 225, 50, 50);
+        re::XmlElemPtr gui = re::parse_xml("menu.xml")->get_children("gui")[0];
+
+        re::BaseButton button1(341, 125, 289, 65, "new_game");
+        re::BaseButton button2(341, 387, 292, 65, "load_game");
+        re::BaseButton button3(341, 500, 291, 65, "settings");
+        re::BaseButton button4(960, 517, 64, 59, "quit");
+        gui_manager.register_button(std::make_shared<re::BaseButton>(button1), "main_menu");
+        gui_manager.register_button(std::make_shared<re::BaseButton>(button2), "main_menu");
+        gui_manager.register_button(std::make_shared<re::BaseButton>(button3), "main_menu");
+        gui_manager.register_button(std::make_shared<re::BaseButton>(button4), "main_menu");
+
+        for (auto small_button : gui->get_children("small_button")) {
+            int x = std::stoi(small_button->field["x"]);
+            int y = std::stoi(small_button->field["y"]);
+            std::string id = small_button->field["id"];
+            re::BaseButton button(x, y, id, im_small_button, im_small_button_hover);
+            // button.register_action(std::bind(&MainApp::set_changing_control, this, id));
+            gui_manager.register_button(std::make_shared<re::BaseButton>(button), "controls");
+        }
+
+        gui_manager.get_button_by_id("new_game")->register_action(std::bind(&MainApp::setState_ingame, this));
+        gui_manager.get_button_by_id("settings")->register_action(std::bind(&MainApp::toggle_state_controls, this));
+        gui_manager.get_button_by_id("quit")->register_action(std::bind(&MainApp::setState_exit, this));
+
+        gui_manager.layer_set_active("controls", false);
+
         curState = AppState::MainMenu;
-
-        //re::scale(0.5);
-        //re::view_at(0,0);
+        
     }
 
     void update() override {
+        
         switch(curState){
-            case AppState::Ingame:
+            case AppState::Ingame:{
+                mainGame.updateTick();
                 break;
-            case AppState::Exit:
+            }
+            case AppState::Exit:{
                 exit(0);
+            }
         }  
     }
 
@@ -196,16 +177,14 @@ public:
         re::Vector2f campos;
         switch(curState){
         case AppState::Ingame:
-            mainGame.updateTick();
-
-            //re::view_at( (int)((testPlayer->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(testPlayer->getPosition().X * 16 / 16) * 1000,
-            //             (int)((testPlayer->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(testPlayer->getPosition().Y * 16 / 9 ) * 1000);
+            //re::view_at( (int)((player->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(player->getPosition().X * 16 / 16) * 1000,
+            //             (int)((player->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(player->getPosition().Y * 16 / 9 ) * 1000);
 
             static re::Vector2f location = re::Vector2f( 1,0 );
 
             int cam_x, cam_y;
-            cam_x = testPlayer->getPosition().X * 16;
-            cam_y = testPlayer->getPosition().Y * 16;
+            cam_x = player->getPosition().X * 16;
+            cam_y = player->getPosition().Y * 16;
             cam_x+= 64 * 17;
             cam_x/= 64 * 16;
 
@@ -214,7 +193,7 @@ public:
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Vector2f(((location.X-1) * 4 * 16) - 0.5, location.Y * 4 * 9 - 0.5), 
                         re::Vector2f(4 * 15 + 1, 4 * 9 + 1) ) );
-                testPlayer->reduceCooldowns();
+                player->reduceCooldowns();
             }
 
             location.X = cam_x;
@@ -228,7 +207,7 @@ public:
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Vector2f((location.X-1) * 64 * 16, location.Y * 64 * 9 ), 
                         re::Vector2f(4 * 15, 4 * 9) ) );
-                testPlayer->reduceCooldowns();
+                player->reduceCooldowns();
             }
             location.Y = cam_y;
             
@@ -258,18 +237,21 @@ public:
             /*for (auto& btn : buttonList){
                 btn.display();
             }*/
+            re::draw_image(0, 0, main_menu_image);
             for(int i = 0; i < 2; i++){
-                buttonList[i].display();
+                // buttonList[i].display();
             }
             break;
         case AppState::Dead:
             //re::background(re::WHITE);
-            buttonList[2].display();
+            // buttonList[2].display();
             break;
         case AppState::Pause:
-            re::draw_image(-64, 0, pauseImage);
+            re::draw_image(-64, 0, pause_image);
             break;
         }
+
+        gui_manager.display(curX, curY);
     }
     //Events:
     void on_key_released(re::Key key){
@@ -302,33 +284,8 @@ public:
          * 2: right-mouse click,
          * 3: scroll up,
          * 4: scroll down.
-         *//*
-        if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
-            for (auto& btn : buttonList){
-                if(btn.check_if_mouse_over(curX, curY)){
-                    btn.action(button);
-                }
-            }
-        }*/
-        if(button == 0){
-            switch(curState){
-                case AppState::MainMenu:
-                for(int i = 0; i < 2; i++){
-                    if(buttonList[i].check_if_mouse_over(curX, curY)){
-                        buttonList[i].action(button);
-                    }
-                }
-                break;
-                case AppState::Pause:
-                    setState_ingame();
-                break;
-                case AppState::Dead:
-                if(buttonList[2].check_if_mouse_over(curX, curY)){
-                    buttonList[2].action(button);
-                }
-                break;
-            }
-        }
+         */
+        gui_manager.on_click(button, curX, curY);
     }
 
     void on_mouse_move(int mouseX, int mouseY){
@@ -339,7 +296,22 @@ public:
     //Callbacks:
     void setState_ingame(){
         curState = AppState::Ingame;
+        gui_manager.layer_set_active("main_menu", false);
+        gui_manager.layer_set_active("controls", false);
         std::cout << "main app state change" << std::endl;
+    }
+
+    void toggle_state_controls() {
+        if (gui_manager.get_button_by_id("right")->is_active()) {
+            gui_manager.layer_set_active("main_menu", true);
+            gui_manager.layer_set_active("controls", false);
+            curState = AppState::MainMenu;
+        } else {
+            gui_manager.get_button_by_id("new_game")->set_active(false);
+            gui_manager.get_button_by_id("load_game")->set_active(false);
+            gui_manager.layer_set_active("controls", true);
+            // curState = AppState::Controls;
+        }
     }
 
     void setState_exit(){
@@ -357,34 +329,22 @@ public:
     }
 
     void respawn(){
-        //testPlayer->respawn();
+        //player->respawn();
         curState = AppState::Ingame;
     }
 
 private:
-    int x;
-    int y;
+    int x, y;
+    int curX, curY;
     bool isMovingForward = true;
-    int curX;
-    int curY;
-    std::shared_ptr<Player> testPlayer;
+    std::shared_ptr<Player> player;
     AppState curState;
-    std::vector<re::BaseButton> buttonList;
-    re::ImagePtr pauseImage;
+    re::ImagePtr pause_image, main_menu_image;
     re::ResourceManager resource_manager;
+    re::GuiManager gui_manager;
 };
 
 int main(){
-
-/*    uint *pt = (uint *)doBlackMagic;
-
-    for( int i = 0; i < 100; i++ )
-    {
-        printf( "0x%x,", pt[i] );
-    }
-
-    printf( "\n" );*/
-
     re::runApp( 1024, 576, std::make_shared<MainApp>() );
     return 0;
 }

@@ -59,7 +59,7 @@ AnimationPtr ResourceManager::get_animation(std::string feature_id) {
 bool ResourceManager::load_image_feature(XmlElemPtr layer_ptr) {
     ImagePtr image = std::make_shared<Image>(layer_ptr->field["file"]);
     if (image == nullptr) {
-        Log::msg("RM: Failed to load image '" + layer_ptr->field["id"] + "': no such file", Log::LEVEL::DEBUG);
+        Log::msg("RM: Failed to load image '" + layer_ptr->field["id"] + "': no such file", Log::LEVEL::INFO);
         return false;
     }
     image_storage[layer_ptr->field["id"]] = image;
@@ -76,13 +76,13 @@ bool ResourceManager::load_sprite_feature(XmlElemPtr sprite_ptr) {
         if (cycleable != "true" && cycleable != "false")
             throw std::invalid_argument("");
     } catch (std::invalid_argument) {
-        Log::msg("RM: Failed to load sprite '" + sprite_ptr->field["id"] + "': invalid arguments", Log::LEVEL::DEBUG);
+        Log::msg("RM: Failed to load sprite '" + sprite_ptr->field["id"] + "': invalid arguments", Log::LEVEL::INFO);
         return false;
     }
     Animation anim(anim_speed, cycleable == "true");
     ImagePtr image = get_image(sprite_ptr->field["source_id"]);
     if (image == nullptr) {
-        Log::msg("RM: Failed to load sprite '" + sprite_ptr->field["id"] + "': no such spritesheet '" + sprite_ptr->field["source_id"] + "'", Log::LEVEL::DEBUG);
+        Log::msg("RM: Failed to load sprite '" + sprite_ptr->field["id"] + "': no such spritesheet '" + sprite_ptr->field["source_id"] + "'", Log::LEVEL::INFO);
         return false;
     }
     for (auto sp : sprite_ptr->get_children("sp")) {
@@ -93,7 +93,7 @@ bool ResourceManager::load_sprite_feature(XmlElemPtr sprite_ptr) {
             width = std::stoi(sp->field["w"]);
             height = std::stoi(sp->field["h"]);
         } catch (std::invalid_argument) {
-            Log::msg("RM: Failed to load sprite '" + sprite_ptr->field["id"] + "' frame: invalid arguments", Log::LEVEL::DEBUG);
+            Log::msg("RM: Failed to load sprite '" + sprite_ptr->field["id"] + "' frame: invalid arguments", Log::LEVEL::INFO);
             return false;
         }
         anim.add_frame(image->get_subimage(x, y, width, height));

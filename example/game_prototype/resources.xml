@@ -1,24 +1,42 @@
 <resources>
     <images>
-        <im id="mario_spritelist" file="data/spritelistMario.png" />
         <im id="button_test" file="data/test.png" />
         <im id="fork" file="data/fork.png" />
+        <im id="whilepaused" file="data/whilepaused.png" />
         <im id="ability_damageBoost" file="data/dmg.png" />
         <im id="ability_heal" file="data/health.png" />
         <im id="ability_invincibility" file="data/dazzlethem.png" />
+        <im id="mainmenu" file="data/menuwith.png" />
+        <im id="player_spritelist" file="data/spritelist.png" />
+        <im id="buttonsource" file="data/buttonsource.png" />
     </images>
 
     <sprites>
-        <sprite id="mario_sprite" source_id="mario_spritelist" speed="0.1" cycleable="true">
-            <sp x="3" y="5" w="16" h="25"/>
-            <sp x="20" y="5" w="16" h="25"/>
-            <sp x="37" y="5" w="16" h="25"/>
-            <sp x="54" y="5" w="16" h="25"/>
-            <sp x="71" y="5" w="16" h="25"/>
-            <sp x="88" y="5" w="16" h="25"/>
-            <sp x="105" y="5" w="16" h="25"/>
-            <sp x="122" y="5" w="16" h="25"/>
-            <sp x="139" y="5" w="16" h="25"/>
+        <sprite id="playerAnim" source_id="player_spritelist" speed="0" cycleable="true">
+            <sp x="29" y="12" w="224" h="344" />
+            <sp x="298" y="11" w="224" h="344" />
+            <sp x="556" y="15" w="224" h="344" />
+            <sp x="840" y="8" w="224" h="344" />
+            <sp x="17" y="381" w="224" h="344" />
+            <sp x="289" y="376" w="224" h="344" />
+            <sp x="569" y="378" w="224" h="344" />
+            <sp x="854" y="374" w="224" h="344" />
+        </sprite>
+        <sprite id="atkAnim" source_id="player_spritelist" speed="1.0" cycleable="true">
+            <sp x="578" y="739" w="227" h="344" /> 
+            <sp x="307" y="735" w="244" h="344" />
+            <sp x="16" y="744" w="260" h="344" />
+            <sp x="307" y="735" w="244" h="344" />
+            <sp x="578" y="739" w="227" h="344" /> 
+        </sprite>
+        <sprite id="jumpAnim" source_id="player_spritelist" speed="0.5" cycleable="true">
+            <sp x="30" y="1139" w="224" h="344" />
+            <sp x="315" y="1130" w="224" h="344" />
+            <sp x="605" y="1136" w="224" h="344" />
+            <sp x="892" y="1143" w="224" h="344" />
+        </sprite>
+        <sprite id="onIceAnim" source_id="player_spritelist" speed="0.5" cycleable="true">
+            <sp x="862" y="741" w="224" h="344" />
         </sprite>
     </sprites>
 </resources>
