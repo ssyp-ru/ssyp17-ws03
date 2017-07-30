@@ -43,5 +43,5 @@ namespace re {
         std::vector<ObjectGroup> objectgroup;
     };
 
-    std::vector<Map> parse_tiled(XmlElem parsed_xml);
+    std::vector<Map> parse_tiled(XmlElemPtr parsed_xml);
 }
