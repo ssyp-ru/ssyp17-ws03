@@ -88,7 +88,7 @@ void Player::attack()
 }
 void Player::update()
 {
-    addForce(re::Vector2f(0, 20 * getMass()));
+    addForce(re::Vector2f(0, 60 * getMass()));
 
     for (int i = 0; i < abilities.size(); i++)
         abilities[i]->update();
@@ -132,7 +132,7 @@ void Player::update()
     {
         if (isGrounded)
         {
-            addImpulse(re::Vector2f(0, -15 * getMass()));
+            addImpulse(re::Vector2f(0, -30 * getMass()));
             isGrounded = false;
         }
     }

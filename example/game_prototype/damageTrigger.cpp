@@ -38,3 +38,7 @@ DamageTrigger::DamageTrigger(re::Vector2f pos, re::Vector2f size, double damage,
     this->damage = damage;
     this->sender = sender;
 }
+void DamageTrigger::display(int k)
+{
+    
+}

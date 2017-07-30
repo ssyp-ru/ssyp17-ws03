@@ -11,4 +11,5 @@ public:
     DamageTrigger(re::Vector2f pos, re::Vector2f size, double damage, re::GameObjectPtr sender);
     virtual void onTriggerStay(re::GameObjectPtr obj);
     virtual void update();
+    virtual void display(int k);
 };
