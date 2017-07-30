@@ -5,5 +5,6 @@ enum class AppState{
     MainMenu,
     Ingame,
     Pause,
-    Exit
+    Exit,
+    Dead
 };

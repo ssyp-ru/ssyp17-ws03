@@ -12,11 +12,16 @@
 class Player : public Unit{
 private:
     int direction;
+    re::Vector2f playerSize;
+    re::Vector2f respawnCoords; //Respawn coordinates. Temporarily solution (!), because we have no map.
+    std::function<void()> deathFunction;
 public:
     bool isGrounded = false;
     re::Animation movingAnim; // moving animation
     Player(re::Vector2f pos, re::Vector2f size) : Unit::Unit(pos, size) 
     {
+        respawnCoords = pos; 
+        playerSize = size;
         hp = 10;
         attackDelay = 0.3;
         attackDamage = 100;
@@ -65,7 +70,7 @@ public:
             tryAttack();
 
         if ((isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
-            movingAnim.setSpeed(0.5);
+            movingAnim.setSpeed(0.3);
         else
             movingAnim.setSpeed(0);
 
@@ -80,9 +85,28 @@ public:
 
         if ((getVelocity().Y > 0.1) && (isGrounded)) isGrounded = false;
 
+        if (position.Y >= 50){
+            dealDamage(10); //fell to death (10 = max hp). TODO: Replace with death trigger
+        }
+
     }
     void display(int scale) override
     {
-        re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
+        re::draw_image_part( position.X * scale, position.Y * scale,
+                            (position.X + playerSize.X) * scale, (position.Y + playerSize.Y) * scale,
+                            0, 0,
+                            1, 1,
+                            movingAnim.getNextFrame() );
+        //re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
+    }
+    void respawn(){
+        hp = 10;
+        setPosition(respawnCoords);
+    }
+    void registerDeathFunction(std::function<void()> func){
+        deathFunction = func;
+    }
+    void onDeath() override{
+        deathFunction();
     }
 };

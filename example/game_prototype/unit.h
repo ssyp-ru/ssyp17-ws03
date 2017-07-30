@@ -2,6 +2,7 @@
 #include <RealEngine/physic_core.h>
 #include <RealEngine/stop_watch.h>
 #include "drawableGameObject.h"
+#include <functional>
 
 class Unit : public DrawableGameObject {
     protected:
@@ -15,6 +16,7 @@ class Unit : public DrawableGameObject {
             addEdge(2, 3);
             addEdge(3, 0);
         }
+        //std::function<void()> deathFunction;
         double hp;
         double attackDamage;
         double attackDelay;
@@ -27,8 +29,12 @@ class Unit : public DrawableGameObject {
         virtual void onCollisionStay(re::GameObjectPtr obj, re::Vector2f vec) { }
         virtual void update() { }
     public:
+        /*virtual void registerDeathFunction(std::function<void()> func){
+            deathFunction = func;
+        }*/
         virtual void onDeath() {
-            // Play sad theme
+            //deathFunction();
+            //Play sad theme. Override if you want.
         }
         void tryAttack()
         {
