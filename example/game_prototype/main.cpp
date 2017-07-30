@@ -66,7 +66,7 @@ public:
         re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
         buttonList.push_back(startgame_btn);
         buttonList.push_back(exit_btn);
-        buttonList.push_back(respawn_btn);
+        //buttonList.push_back(respawn_btn);
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
@@ -174,8 +174,6 @@ public:
         switch(curState){
         case AppState::Ingame:
             mainGame.updateTick();
-<<<<<<< HEAD
-=======
 
             //re::view_at( (int)((testPlayer->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(testPlayer->getPosition().X * 16 / 16) * 1000,
             //             (int)((testPlayer->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(testPlayer->getPosition().Y * 16 / 9 ) * 1000);
@@ -205,7 +203,6 @@ public:
                             0,0, 1,1, 
                             map.layer[0].background);
 
->>>>>>> 21533de7282e4fb29ab43c38ab6ae4f3acd98030
             for (auto curObject : mainGame.getWorld())
                 (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();
 
@@ -261,11 +258,7 @@ public:
          * 3: scroll up,
          * 4: scroll down.
          */
-<<<<<<< HEAD
         /*if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
-=======
-        if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
->>>>>>> 21533de7282e4fb29ab43c38ab6ae4f3acd98030
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);
@@ -316,7 +309,7 @@ public:
     }
 
     void respawn(){
-        testPlayer->respawn();
+        //testPlayer->respawn();
         curState = AppState::Ingame;
     }
 
