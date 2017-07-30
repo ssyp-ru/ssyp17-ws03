@@ -1,0 +1,20 @@
+<resources>
+    <images>
+        <im id="mario_spritelist" file="data/spritelistMario.png" />
+        <im id="button_test" file="data/test.png" />
+    </images>
+
+    <sprites>
+        <sprite id="mario_sprite" source_id="mario_spritelist" speed="0.1" cycleable="true">
+            <sp x="3" y="5" w="16" h="25"/>
+            <sp x="20" y="5" w="16" h="25"/>
+            <sp x="37" y="5" w="16" h="25"/>
+            <sp x="54" y="5" w="16" h="25"/>
+            <sp x="71" y="5" w="16" h="25"/>
+            <sp x="88" y="5" w="16" h="25"/>
+            <sp x="105" y="5" w="16" h="25"/>
+            <sp x="122" y="5" w="16" h="25"/>
+            <sp x="139" y="5" w="16" h="25"/>
+        </sprite>
+    </sprites>
+</resources>
