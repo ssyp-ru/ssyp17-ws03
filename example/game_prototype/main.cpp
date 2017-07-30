@@ -115,7 +115,7 @@ public:
         re::GameObjectPtr bird = std::make_shared<EvilBird>(re::Vector2f(10, 17), 2);
         mainGame.addObject(bird);
         (std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(re::Vector2f(12, 18));
-        (std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(re::Vector2f(14, 17));        
+        (std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(re::Vector2f(14, 17));
         (std::dynamic_pointer_cast<EvilBird>(bird))->path->setCycled(false);
         (std::dynamic_pointer_cast<EvilBird>(bird))->path->setActivated(true);
 
