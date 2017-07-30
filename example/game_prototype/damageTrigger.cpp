@@ -3,7 +3,6 @@
 #include "unit.h"
 #include "enemy.h"
 #include "player.h"
-#include <iostream>
 
 void DamageTrigger::update()
 {

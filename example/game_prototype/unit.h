@@ -15,10 +15,12 @@ protected:
         addEdge(1, 2);
         addEdge(2, 3);
         addEdge(3, 0);
+        isInvincible = false;
     }
     double hp, maxhp;
     double attackDamage;
     double attackDelay;
+    bool isInvincible;
     re::StopWatch lastAttackTime;
     re::Animation move_ani; // moving animation
     virtual void attack()
@@ -42,12 +44,19 @@ public:
     }
     double getHp() { return hp; }
     double getMaxHp() { return maxhp; }
+    void setMaxHp(double value) { maxhp = value; }
+    double getDamage() { return attackDamage; }
+    void setDamage(double value) {  attackDamage = value; }
+    void setIsInvincible(bool value) { isInvincible = value; }
+    bool getIsInvincible() { return isInvincible; }
     virtual void dealDamage(double dmg, re::GameObjectPtr sender) {
         hp -= dmg;
+        if ((isInvincible) && (hp < 1)) hp = 1;
         if(hp <= 0.0) 
         {
             onDeath(sender);
             destroy();
         }
     }
+    virtual void heal(double amount) { hp += amount; }
 };

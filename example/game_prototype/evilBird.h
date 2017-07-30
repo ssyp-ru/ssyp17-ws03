@@ -22,6 +22,11 @@ public:
             tryAttack();
         }
     }
+    virtual void onDeath(re::GameObjectPtr sender) override
+    {
+        if (std::dynamic_pointer_cast<Player>(sender) != 0)
+            std::dynamic_pointer_cast<Player>(sender)->addExp(100);            
+    }
     virtual void attack() override
     {
         re::GameObjectPtr ptr;

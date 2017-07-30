@@ -2,6 +2,7 @@
     <images>
         <im id="mario_spritelist" file="data/spritelistMario.png" />
         <im id="button_test" file="data/test.png" />
+        <im id="fork" file="data/fork.png" />
     </images>
 
     <sprites>
