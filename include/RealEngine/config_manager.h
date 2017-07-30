@@ -22,7 +22,6 @@ private:
     }
 
     XmlElemPtr root = nullptr;
-    bool initialized = false;
 };
 
 
