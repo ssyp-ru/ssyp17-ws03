@@ -44,8 +44,10 @@ public:
         re::draw_rectangle(x, y, 50, 50, re::RED);
         re::draw_rectangle(200, 200, 50, 50, re::RED);
         re::draw_line( x, 50, 200, 200, re::BLACK );
+        re::view_at( x, 0 );
         re::draw_text( 100, 100, "TEST TEXT", re::BLACK );
         //re::draw_image( 0, 0, imgptr );
+        x = ( x+1 ) % 100;
     }
 
     void on_key_pressed(re::Key key){
