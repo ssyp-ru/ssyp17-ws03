@@ -189,7 +189,7 @@ public:
             //re::view_at( (int)((testPlayer->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(testPlayer->getPosition().X * 16 / 16) * 1000,
             //             (int)((testPlayer->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(testPlayer->getPosition().Y * 16 / 9 ) * 1000);
 
-            static re::Vector2f location;
+            static re::Vector2f location = re::Vector2f( 1,0 );
 
             int cam_x, cam_y;
             cam_x = testPlayer->getPosition().X * 16;
@@ -199,7 +199,10 @@ public:
 
             if( cam_x != location.X )
             {
-
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f((location.X-3) * 64 * 16, location.Y * 64 * 9 ), 
+                        re::Vector2f(64 * 1, 64 * 1) ) );
+                testPlayer->reduceCooldowns();
             }
 
             location.X = cam_x;
@@ -208,10 +211,14 @@ public:
 
             cam_y/= 64 * 9;
 
-            if( cam_y != location.y )
+            if( cam_y != location.Y )
             {
-                location.Y = cam_y;
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f((location.X-1) * 64 * 16, location.Y * 64 * 9 ), 
+                        re::Vector2f(64 * 16, 64 * 9) ) );
+                testPlayer->reduceCooldowns();
             }
+            location.Y = cam_y;
             
             cam_y*= 64 * 9;
             //don't show it to Kolya, srsly.

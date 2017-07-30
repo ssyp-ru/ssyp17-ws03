@@ -87,7 +87,7 @@ void Player::attack()
 }
 void Player::update()
 {
-    addForce(re::Vector2f(0, 60 * getMass()));
+    addForce(re::Vector2f(0, 40 * getMass()));
 
     for (uint i = 0; i < abilities.size(); i++)
         abilities[i]->update();
