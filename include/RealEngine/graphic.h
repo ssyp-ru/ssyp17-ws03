@@ -37,6 +37,12 @@ namespace re{
     //return state( prese or not ) of key
     bool get_key_state( Key key );
 
+    uint get_width();
+    uint get_height();
+
+    int get_cam_x();
+    int get_cam_y();
+
     struct stParticle
     {
         float life;

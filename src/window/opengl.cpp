@@ -22,6 +22,9 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
 {   
     w = width;
     h = height;
+
+    camx = 0;
+    camy = 0;
     
     zoom = 1;
 
@@ -290,11 +293,24 @@ void OpenGL::viewAt( int x, int y )
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho( x, (w*zoom)+x, ((-(int)h)*zoom)-y, -y, -100, 100 );
+    
+    camx = x;
+    camy = y;
 }
 
 void OpenGL::scale( float co )
 {
     zoom = co;
+}
+
+int OpenGL::getCamX()
+{
+    return camx;
+}
+
+int OpenGL::getCamY()
+{
+    return camy;
 }
 
 void OpenGL::rotate( float angle )

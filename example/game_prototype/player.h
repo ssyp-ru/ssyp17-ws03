@@ -4,13 +4,12 @@
 #include <RealEngine/graphic/animation.h>
 #include <RealEngine/math.h>
 #include "RealEngine/physic_core.h"
-#include <functional>
-#include <iostream>
 #include "unit.h"
-#include "damageTrigger.h"
+#include "ability.h"
 
 class Player : public Unit{
 private:
+<<<<<<< HEAD
     int direction;
     re::Vector2f playerSize;
     re::Vector2f respawnCoords; //Respawn coordinates. Temporarily solution (!), because we have no map.
@@ -109,4 +108,22 @@ public:
     void onDeath() override{
         deathFunction();
     }
+=======
+    std::vector<Ability*> abilities;
+    int expToNextLevel[18] = { 100, 100, 150, 200, 300, 450, 500, 600, 1000, 1200, 1300, 1500, 1550, 1600, 1700, 1800, 1900, 2000 };
+    int exp, level;
+public:
+    bool isGrounded = false;
+    re::AnimationPtr movingAnim; // moving animation
+    Player(re::Vector2f pos);
+    void tryCast(int abilityIndex);
+    void addAbility(Ability *ab);
+    std::vector<Ability*>* getAbilities();
+    void addExp(int amount);
+    int getLevel();
+    void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec);
+    void attack();
+    void update();
+    void display(int scale);
+>>>>>>> 21533de7282e4fb29ab43c38ab6ae4f3acd98030
 };

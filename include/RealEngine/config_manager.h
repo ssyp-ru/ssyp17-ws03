@@ -6,14 +6,22 @@
 
 namespace re {
 
-
+// Manager for config. Config file - config.xml
 class ConfigManager {
-private:
-    XmlElem *root;
-
 public:
-    bool load_file(std::string path_to_config_file);
-    std::string get_property(std::string path_to_property);
+    static std::string get_property(std::string path_to_property);
+
+private:
+    ConfigManager();
+    ConfigManager& operator=(ConfigManager&);
+
+    static ConfigManager& instance()
+    {
+        static ConfigManager self;
+        return self;
+    }
+
+    XmlElemPtr root = nullptr;
 };
 
 

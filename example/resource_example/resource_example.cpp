@@ -16,16 +16,14 @@ using std::endl;
 class MainApp : public IBaseApp{
     public:
         ResourceManager rm;
-        ConfigManager cm;
         ImagePtr screen, mario;
 
         void setup() override {
             set_fps(60);
 
-            cm.load_file("config.xml");
-            cout << cm.get_property("field1/var1") << endl;
-            cout << cm.get_property("field1/var2") << endl;
-            cout << cm.get_property("field2/subfield/var1") << endl;
+            cout << ConfigManager::get_property("field1/var1") << endl;
+            cout << ConfigManager::get_property("field1/var2") << endl;
+            cout << ConfigManager::get_property("field2/subfield/var1") << endl;
             
             rm.load_file("anims.xml");
             screen = rm.get_image("screenshot");

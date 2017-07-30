@@ -100,6 +100,8 @@ public:
     void setPosition(Vector2f pos); // Sets position to gameobject
 	Vector2f getVelocity(); 
 	void setVelocity(Vector2f vec);
+	bool getCanChangeSpeed();
+	void setCanChangeSpeed(bool value);
 	//#pragma endregion
 	void destroy();
 	virtual void onCollisionStay(std::shared_ptr<GameObject> to, Vector2f vec) { }
@@ -108,6 +110,7 @@ public:
 	friend class Game;
 protected:
     // just don't touch it.
+	bool canChangeSpeed = true;
 	bool destroyNextFrame;
 	double mass;
 	double bounciness, friction;

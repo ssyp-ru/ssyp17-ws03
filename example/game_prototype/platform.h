@@ -22,4 +22,8 @@ public:
         addEdge(2, 3);
         addEdge(3, 0);
     }
+    void display(int scale) override
+    {
+
+    }
 };

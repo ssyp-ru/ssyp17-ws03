@@ -13,12 +13,12 @@ void DamageTrigger::onTriggerStay(re::GameObjectPtr obj)
 {
     if ((std::dynamic_pointer_cast<Enemy>(obj) != 0) && (std::dynamic_pointer_cast<Player>(sender) != 0))
     {
-        (std::dynamic_pointer_cast<Unit>(obj))->dealDamage(damage);
+        (std::dynamic_pointer_cast<Unit>(obj))->dealDamage(damage, sender);
         destroy();
     }
     if ((std::dynamic_pointer_cast<Player>(obj) != 0) && (std::dynamic_pointer_cast<Enemy>(sender) != 0))
     {
-        (std::dynamic_pointer_cast<Unit>(obj))->dealDamage(damage);
+        (std::dynamic_pointer_cast<Unit>(obj))->dealDamage(damage, sender);
         destroy();
     }
 }
@@ -37,4 +37,8 @@ DamageTrigger::DamageTrigger(re::Vector2f pos, re::Vector2f size, double damage,
     lifeTime = 0.05;
     this->damage = damage;
     this->sender = sender;
+}
+void DamageTrigger::display(int k)
+{
+    
 }

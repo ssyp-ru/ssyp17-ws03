@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="64" tileheight="64" nextobjectid="328">
+ <tileset firstgid="1" source="map/corr.tsx"/> </tileset>
+ <tileset firstgid="2" source="map/gr.tsx"/> </tileset>
+ <tileset firstgid="3" source="map/ground.tsx"/> </tileset>
+ <tileset firstgid="4" source="map/ice.tsx"/> </tileset> <layer name="Tile Layer 1" width="48" height="27">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,2,0,0,0,0,0,0,2,4,4,4,4,4,4,4,4,0,2,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,3,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,2,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,2,3,2,0,0,0,0,0,0,0,0,0,0,2,3,0,0,0,2,3,0,0,0,0,0,2,0,0,0,4,4,4,4,4,4,0,0,0,0,0,
+0,0,0,0,0,2,0,2,3,0,3,2,2,0,0,0,0,0,0,0,2,3,0,0,0,2,3,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,
+0,0,0,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,0,0,0,2,3,0,0,0,0,2,3,3,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2,
+2,2,2,3,3,3,0,0,0,0,0,0,0,2,2,2,2,2,2,3,0,0,2,2,3,0,0,0,2,2,3,3,3,3,3,3,4,4,4,4,4,0,0,0,3,3,3,3,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,4,4,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,3,3,3,3,3,4,4,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,2,2,
+2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,0,0,2,0,0,0,2,2,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,3,2,0,0,0,0,0,0,0,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,3,2,0,0,0,0,0,2,3,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,2,2,2,2,3,3,
+0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+2,2,2,2,2,2,2,0,2,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,4,0,4,
+0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,
+0,4,4,4,4,4,4,4,4,3,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="object">
+  <object id="149" name="grass" x="0" y="512" width="192" height="64"/>
+  <object id="151" name="grass" x="192" y="448" width="128" height="64"/>
+  <object id="152" name="grass" x="320" y="384" width="64" height="64"/>
+  <object id="153" name="ground" x="192" y="512" width="192" height="64"/>
+  <object id="154" name="ground" x="320" y="448" width="64" height="64"/>
+  <object id="155" name="grass" x="448" y="384" width="64" height="64"/>
+  <object id="156" name="grass" x="512" y="320" width="64" height="64"/>
+  <object id="157" name="ground" x="512" y="384" width="64" height="64"/>
+  <object id="158" name="ground" x="576" y="320" width="64" height="64"/>
+  <object id="159" name="ground" x="640" y="384" width="64" height="64"/>
+  <object id="160" name="grass" x="576" y="256" width="64" height="64"/>
+  <object id="161" name="grass" x="640" y="320" width="64" height="64"/>
+  <object id="163" name="grass" x="704" y="384" width="128" height="64"/>
+  <object id="165" name="grass" x="640" y="704" width="384" height="64"/>
+  <object id="166" name="grass" x="832" y="512" width="192" height="64"/>
+  <object id="167" name="grass" x="1024" y="512" width="192" height="64"/>
+  <object id="168" name="grass" x="1216" y="448" width="64" height="64"/>
+  <object id="169" name="grass" x="1280" y="384" width="64" height="64"/>
+  <object id="170" name="grass" x="1344" y="320" width="64" height="64"/>
+  <object id="171" name="grass" x="1408" y="256" width="64" height="64"/>
+  <object id="172" name="ground" x="1408" y="320" width="64" height="64"/>
+  <object id="173" name="ground" x="1344" y="384" width="64" height="64"/>
+  <object id="174" name="ground" x="1280" y="448" width="64" height="64"/>
+  <object id="175" name="ground" x="1216" y="512" width="64" height="64"/>
+  <object id="176" name="grass" x="1408" y="512" width="128" height="64"/>
+  <object id="177" name="grass" x="1536" y="448" width="64" height="64"/>
+  <object id="178" name="grass" x="1600" y="384" width="64" height="64"/>
+  <object id="179" name="grass" x="1664" y="320" width="64" height="64"/>
+  <object id="180" name="grass" x="1728" y="256" width="64" height="64"/>
+  <object id="181" name="ground" x="1728" y="320" width="64" height="64"/>
+  <object id="184" name="ground" x="1664" y="384" width="64" height="64"/>
+  <object id="185" name="ground" x="1600" y="448" width="64" height="64"/>
+  <object id="186" name="ground" x="1536" y="512" width="64" height="64"/>
+  <object id="187" name="ground" x="1536" y="192" width="64" height="64"/>
+  <object id="188" name="grass" x="1536" y="128" width="64" height="64"/>
+  <object id="189" name="grass" x="1792" y="512" width="128" height="64"/>
+  <object id="190" name="grass" x="1920" y="448" width="64" height="64"/>
+  <object id="194" name="grass" x="2112" y="448" width="192" height="64"/>
+  <object id="195" name="grass" x="2112" y="320" width="64" height="64"/>
+  <object id="197" name="grass" x="1856" y="128" width="64" height="64"/>
+  <object id="199" name="ground" x="1856" y="192" width="64" height="64"/>
+  <object id="202" name="grass" x="2176" y="256" width="64" height="64"/>
+  <object id="204" name="grass" x="2240" y="192" width="64" height="64"/>
+  <object id="205" name="grass" x="2304" y="128" width="64" height="64"/>
+  <object id="206" name="ice" x="2368" y="128" width="512" height="64"/>
+  <object id="207" name="grass" x="2944" y="128" width="128" height="64"/>
+  <object id="208" name="ice" x="2368" y="320" width="384" height="64"/>
+  <object id="209" name="grass" x="2752" y="384" width="64" height="64"/>
+  <object id="210" name="grass" x="2816" y="448" width="384" height="64"/>
+  <object id="211" name="ground" x="2816" y="512" width="256" height="64"/>
+  <object id="212" name="ice" x="2304" y="512" width="320" height="64"/>
+  <object id="213" name="ground" x="2048" y="512" width="256" height="64"/>
+  <object id="214" name="ground" x="2048" y="448" width="64" height="64"/>
+  <object id="215" name="ground" x="1984" y="448" width="64" height="128"/>
+  <object id="216" name="ground" x="1920" y="512" width="64" height="64"/>
+  <object id="217" name="ground" x="2304" y="576" width="320" height="64"/>
+  <object id="218" name="ground" x="2368" y="640" width="256" height="64"/>
+  <object id="221" name="ground" x="2432" y="704" width="320" height="64"/>
+  <object id="222" name="ground" x="2560" y="768" width="192" height="64"/>
+  <object id="223" name="ground" x="2624" y="832" width="64" height="64"/>
+  <object id="224" name="grass" x="2944" y="768" width="128" height="64"/>
+  <object id="225" name="grass" x="2688" y="896" width="192" height="64"/>
+  <object id="226" name="grass" x="3008" y="960" width="64" height="64"/>
+  <object id="227" name="grass" x="2944" y="1024" width="64" height="64"/>
+  <object id="228" name="grass" x="2624" y="1088" width="320" height="64"/>
+  <object id="229" name="grass" x="2560" y="1024" width="64" height="64"/>
+  <object id="230" name="grass" x="2496" y="960" width="64" height="64"/>
+  <object id="231" name="grass" x="2432" y="896" width="64" height="64"/>
+  <object id="232" name="ground" x="2432" y="960" width="64" height="64"/>
+  <object id="233" name="ground" x="2496" y="1024" width="64" height="64"/>
+  <object id="234" name="ground" x="2560" y="1088" width="64" height="64"/>
+  <object id="235" name="ground" x="2944" y="1088" width="128" height="64"/>
+  <object id="236" name="ground" x="3008" y="1024" width="64" height="64"/>
+  <object id="237" name="ground" x="2048" y="960" width="128" height="64"/>
+  <object id="238" name="ground" x="2048" y="1024" width="64" height="64"/>
+  <object id="239" name="grass" x="1984" y="896" width="192" height="64"/>
+  <object id="240" name="grass" x="1920" y="832" width="64" height="64"/>
+  <object id="241" name="grass" x="1856" y="768" width="64" height="64"/>
+  <object id="242" name="grass" x="1792" y="704" width="64" height="64"/>
+  <object id="243" name="grass" x="1216" y="896" width="128" height="64"/>
+  <object id="244" name="grass" x="1152" y="832" width="64" height="64"/>
+  <object id="245" name="grass" x="1088" y="768" width="64" height="64"/>
+  <object id="246" name="grass" x="1024" y="704" width="64" height="64"/>
+  <object id="247" name="corr" x="576" y="704" width="64" height="64"/>
+  <object id="248" name="corr" x="192" y="832" width="256" height="64"/>
+  <object id="249" name="grass" x="0" y="832" width="192" height="64"/>
+  <object id="250" name="corr" x="0" y="1088" width="128" height="64"/>
+  <object id="251" name="corr" x="192" y="1088" width="64" height="64"/>
+  <object id="252" name="corr" x="832" y="1088" width="192" height="64"/>
+  <object id="253" name="grass" x="0" y="1280" width="448" height="64"/>
+  <object id="254" name="grass" x="512" y="1280" width="64" height="64"/>
+  <object id="255" name="grass" x="576" y="1216" width="64" height="64"/>
+  <object id="256" name="grass" x="640" y="1152" width="64" height="64"/>
+  <object id="257" name="ground" x="640" y="1216" width="64" height="256"/>
+  <object id="258" name="ground" x="576" y="1280" width="64" height="256"/>
+  <object id="259" name="ice" x="64" y="1472" width="512" height="64"/>
+  <object id="260" name="corr" x="0" y="1664" width="704" height="64"/>
+  <object id="261" name="corr" x="704" y="1600" width="128" height="64"/>
+  <object id="262" name="corr" x="832" y="1536" width="64" height="64"/>
+  <object id="264" name="corr" x="1088" y="1408" width="64" height="64"/>
+  <object id="265" name="corr" x="1152" y="1344" width="64" height="64"/>
+  <object id="266" name="corr" x="1216" y="1280" width="64" height="64"/>
+  <object id="267" name="corr" x="896" y="1472" width="64" height="64"/>
+  <object id="268" name="grass" x="960" y="1472" width="64" height="64"/>
+  <object id="269" name="corr" x="1920" y="1600" width="128" height="64"/>
+  <object id="270" name="corr" x="2176" y="1664" width="128" height="64"/>
+  <object id="272" name="corr" x="2368" y="1664" width="128" height="64"/>
+  <object id="273" name="grass" x="2048" y="1600" width="64" height="64"/>
+  <object id="274" name="grass" x="2112" y="1536" width="64" height="64"/>
+  <object id="275" name="grass" x="2176" y="1472" width="64" height="64"/>
+  <object id="276" name="grass" x="2240" y="1408" width="64" height="64"/>
+  <object id="277" name="grass" x="2304" y="1344" width="64" height="64"/>
+  <object id="278" name="ice" x="2368" y="1280" width="128" height="64"/>
+  <object id="279" name="ice" x="2880" y="1280" width="64" height="64"/>
+  <object id="280" name="ice" x="3008" y="1280" width="64" height="64"/>
+  <object id="283" name="grass" x="1984" y="384" width="64" height="64"/>
+  <object id="284" name="grass" x="2048" y="384" width="64" height="64"/>
+  <object id="294" name="grass" x="1024" y="1472" width="64" height="64"/>
+  <object id="302" name="metal" x="2496" y="1280" width="384" height="64"/>
+  <object id="303" name="deth" x="2496" y="1344" width="384" height="64"/>
+  <object id="304" name="metal" x="2496" y="1536" width="512" height="64"/>
+  <object id="306" name="deth" x="2496" y="1664" width="576" height="64"/>
+  <object id="307" name="deth" x="704" y="1664" width="1472" height="64"/>
+  <object id="286" name="yojus" x="0" y="448" width="64" height="64"/>
+  <object id="309" name="deth" x="256" y="1088" width="576" height="64"/>
+  <object id="313" name="deth" x="1024" y="1088" width="1536" height="64"/>
+  <object id="316" name="metal" x="1280" y="1280" width="512" height="64"/>
+  <object id="317" name="metal" x="1408" y="704" width="384" height="64"/>
+  <object id="318" name="metal" x="2176" y="832" width="256" height="64"/>
+  <object id="321" name="deth" x="384" y="512" width="448" height="64"/>
+  <object id="322" name="deth" x="1280" y="512" width="128" height="64"/>
+  <object id="323" name="deth" x="1600" y="512" width="192" height="64"/>
+  <object id="324" name="ice" x="2624" y="640" width="128" height="64"/>
+  <object id="325" name="ice" x="2752" y="704" width="128" height="64"/>
+ </objectgroup>
+</map>

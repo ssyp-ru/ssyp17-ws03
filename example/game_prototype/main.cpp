@@ -2,25 +2,43 @@
 #include <RealEngine/graphic.h>
 #include <RealEngine/graphic/image.h>
 #include <RealEngine/graphic/animation.h>
-#include "player.h"
-#include "app_state.h"
-#include "base_button.h"
+#include <RealEngine/tiled_parser.h>
+#include <RealEngine/xml_parser.h>
 #include <RealEngine/math.h>
+#include "RealEngine/physic_core.h"
+//#include "RealEngine/resource_manager.h"
+#include "hud.h"
+
 #include <functional>
 #include <string>
 #include <iostream>
 #include <chrono>
 #include <vector>
 #include <cmath>
-#include "RealEngine/physic_core.h"
+
+#include "player.h"
+#include "app_state.h"
+#include "base_button.h"
 #include "platform.h"
 #include "movingPlatform.h"
 #include "weakPlatform.h"
+#include "evilBird.h"
+#include "icePlatform.h"
+#include "spikes.h"
+#include "deathTrigger.h"
+#include "jumpPlatform.h"
+#include "ability_damageBoost.h"
+#include "ability_heal.h"
+#include "ability_invincibility.h"
+
+const double SCALE_COEFF = 0.0625;
 
 class MainApp : public re::IBaseApp{
 public:
     re::Game mainGame;
     int k = 16; // scale
+    re::Map map;
+    HUD *curHUD;
     //Setup:
 
     re::GameObjectPtr getGameObject(re::Vector2f pos, re::Vector2f size)
@@ -29,53 +47,96 @@ public:
     }
 
     void setup() override {
-        re::Animation testanimCustom(0, true);
-        re::Image buttonsource("test.png");
-        re::Image spritelist("spritelist.png");
-        //Adding animation frames:
-        testanimCustom.add_frame(spritelist.get_subimage(29, 13, 224, 343));
-        testanimCustom.add_frame(spritelist.get_subimage(298, 12, 224, 343));
-        testanimCustom.add_frame(spritelist.get_subimage(556, 16, 224, 343));
-        testanimCustom.add_frame(spritelist.get_subimage(840, 9, 224, 343));
-        testanimCustom.add_frame(spritelist.get_subimage(17, 382, 224, 343));
-        testanimCustom.add_frame(spritelist.get_subimage(289, 377, 224, 343));
-        testanimCustom.add_frame(spritelist.get_subimage(569, 379, 224, 343));
-        testanimCustom.add_frame(spritelist.get_subimage(854, 375, 224, 343));
-        
-        re::BaseButton startgame_btn(50, 50, buttonsource.get_subimage(10, 10, 200, 70));
-        re::BaseButton exit_btn(50, 150, buttonsource.get_subimage(10, 200, 200, 70));
-        re::BaseButton respawn_btn(50, 250, buttonsource.get_subimage(10, 400, 200, 70));
-        /*
-            Button indexes:
-            0 - startgame_btn,
-            1 - exit_btn,
-            2 - respawn_btn
-            TODO: Make button ID's to prevent magic constants
-        */
+        resource_manager.load_file("resources.xml");
+        re::AnimationPtr testanimCustom = resource_manager.get_animation("mario_sprite");
+
+        re::AnimationPtr playerAnim = std::make_shared<re::Animation>(0, true);
+        re::Image spritelist( "data/spritelist.png" );
+
+        playerAnim->add_frame(spritelist.get_subimage(29, 13, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(298, 12, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(556, 16, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(840, 9, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(17, 382, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(289, 377, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(569, 379, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(854, 375, 224, 343));
+        re::ImagePtr buttonsource = resource_manager.get_image("button_test");
+        re::BaseButton startgame_btn(50, 50, buttonsource->get_subimage(10, 10, 200, 70));
+        re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
         buttonList.push_back(startgame_btn);
         buttonList.push_back(exit_btn);
         buttonList.push_back(respawn_btn);
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
-        buttonList[2].register_action(std::bind(&MainApp::respawn, this));
-        testPlayer = std::make_shared<Player>(re::Vector2f(5, 15), re::Vector2f(2, 3));
-        testPlayer->registerDeathFunction(std::bind(&MainApp::setState_dead, this));
-        testPlayer->movingAnim = testanimCustom;
-        testPlayer->setFriction(-1.0);
-        testPlayer->setBounciness(0.0);
-        mainGame.addObject(testPlayer);
 
-        re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 48), re::Vector2f(30, 2));
-        plat->setRigidbodySimulated(false);
-        plat->setFriction(1.0);
-        plat->setBounciness(0.0);
+        map = (re::parse_tiled( re::parse_xml( "map/map_level1.tmx" ) ))[0];
+
+        for( auto object : map.objectgroup[0].group )
+        {
+            if( object.name == "grass" )
+            {
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
+            } else if( object.name == "ground" )            {
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
+
+            } else if ( object.name == "yojus" ) {
+                testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
+                testPlayer->movingAnim = playerAnim;//testanimCustom;
+                testPlayer->setFriction(-1.0);
+                testPlayer->setBounciness(0.0);
+            } else if ( object.name == "ice" ) {
+                re::GameObjectPtr platice = std::make_shared<IcePlatform>(
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF));
+                mainGame.addObject(platice);
+            } else if ( object.name == "corr" ) {
+                for(size_t i = 0; i < object.width / 64; i++ )
+                {
+                    re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
+                        re::Vector2f(object.x * SCALE_COEFF + ( (i-1) * 4 ), object.y * SCALE_COEFF), 
+                        re::Vector2f(4, 4), 0.5);
+                    mainGame.addObject(weplat);
+                }
+            } else if ( object.name == "metal" ) {
+                re::GameObjectPtr movplat = std::make_shared<MovingPlatform>(
+                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + 4), 
+                        re::Vector2f(4, 1), 
+                        3.0);
+                mainGame.addObject(movplat);
+                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->addWaypoint(re::Vector2f(
+                    (object.x * SCALE_COEFF) + 4 + (object.width / 128) * 4,// - 1) * 4,
+                    (object.y * SCALE_COEFF) + 4// + ((object.height / 128) - 1) * 4
+                ));
+                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setCycled(true);
+                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setActivated(true);
+            } else if ( object.name == "deth" ) {
+                re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(
+                                re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
+                                re::Vector2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF));
+                mainGame.addObject(deathTrig);
+            }
+        }
+
+        mainGame.addObject(testPlayer);
+        testPlayer->addAbility(new Ability_DamageBoost(5, 2));
+        testPlayer->addAbility(new Ability_Heal(10));
+        testPlayer->addAbility(new Ability_Invincibility(5));
+
+        curHUD = new HUD(std::dynamic_pointer_cast<Player>(testPlayer).get(), &resource_manager);
+
+        /*re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
         mainGame.addObject(plat);
 
-        re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(30.5, 48), re::Vector2f(5, 0.5), 3.0);
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->addWaypoint(re::Vector2f(43, 48));
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setCycled(true);
-        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->setActivated(true);
+        re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
         mainGame.addObject(plat2);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->addWaypoint(re::Vector2f(20, 16));
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->setCycled(true);
+        (std::dynamic_pointer_cast<MovingPlatform>(plat2))->path->setActivated(true);
 
         re::GameObjectPtr plat3 = std::make_shared<WeakPlatform>(re::Vector2f(10, 16), re::Vector2f(5, 0.5), 1.0);
         mainGame.addObject(plat3);
@@ -91,7 +152,7 @@ public:
         plat5->setFriction(1.0);
         plat5->setBounciness(0.0);
         mainGame.addObject(plat5);
-
+        */
         curState = AppState::MainMenu;
 
         //re::scale(0.5);
@@ -101,7 +162,6 @@ public:
     void update() override {
         switch(curState){
             case AppState::Ingame:
-                mainGame.getWorld()[0]->addForce(re::Vector2f(0, 20 * mainGame.getWorld()[0]->getMass()));
                 break;
             case AppState::Exit:
                 exit(0);
@@ -114,11 +174,45 @@ public:
         switch(curState){
         case AppState::Ingame:
             mainGame.updateTick();
+<<<<<<< HEAD
+=======
+
+            //re::view_at( (int)((testPlayer->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(testPlayer->getPosition().X * 16 / 16) * 1000,
+            //             (int)((testPlayer->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(testPlayer->getPosition().Y * 16 / 9 ) * 1000);
+
+            int cam_x, cam_y;
+            cam_x = testPlayer->getPosition().X * 16;
+            cam_y = testPlayer->getPosition().Y * 16;
+            cam_x+= 64 * 17;
+            cam_x/= 64 * 16;
+            cam_x*= 64 * 16;
+            cam_x-= 64 * 17;
+
+            cam_y/= 64 * 9;
+            cam_y*= 64 * 9;
+            //don't show it to Kolya, srsly.
+            //Kolya, if you saw it, pls, don't ask us to do pushups.
+
+            //re::Vector2f pos = doBlackMagic( re::Vector2f(cam_x,cam_y) );
+
+            re::view_at( cam_x, cam_y );
+
+            //re::view_at(  );
+
+            re::draw_image_part(0,0, 
+                            3072,
+                            1728, 
+                            0,0, 1,1, 
+                            map.layer[0].background);
+
+>>>>>>> 21533de7282e4fb29ab43c38ab6ae4f3acd98030
             for (auto curObject : mainGame.getWorld())
                 (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();
 
             for (auto curObject : mainGame.getWorld())
                 (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->display(k);
+
+            curHUD->display();
             break;
         case AppState::MainMenu: case AppState::Pause:
             re::background(re::WHITE); 
@@ -167,7 +261,11 @@ public:
          * 3: scroll up,
          * 4: scroll down.
          */
+<<<<<<< HEAD
         /*if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
+=======
+        if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
+>>>>>>> 21533de7282e4fb29ab43c38ab6ae4f3acd98030
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);
@@ -210,7 +308,7 @@ public:
 
     void setState_pause(){
         curState = AppState::Pause;
-        std::cout << "main app state change" << std::endl;        
+        std::cout << "main app state change" << std::endl;
     }
 
     void setState_dead(){
@@ -231,9 +329,11 @@ private:
     std::shared_ptr<Player> testPlayer;
     AppState curState;
     std::vector<re::BaseButton> buttonList;
+
+    re::ResourceManager resource_manager;
 };
 
 int main(){
-    re::runApp( 1200, 800, std::make_shared<MainApp>() );
+    re::runApp( 1024, 576, std::make_shared<MainApp>() );
     return 0;
 }

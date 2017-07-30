@@ -64,6 +64,9 @@ public:
     uint getWidth();
     uint getHeight();
 
+    int getCamX();
+    int getCamY();
+
     bool key[256];
 
 private:
@@ -88,6 +91,7 @@ private:
     std::string windowName;
     int windowId;
     uint w, h;
+    uint camx, camy;
 };
 
 
