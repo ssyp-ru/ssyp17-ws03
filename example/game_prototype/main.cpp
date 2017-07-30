@@ -51,22 +51,42 @@ public:
         re::AnimationPtr testanimCustom = resource_manager.get_animation("mario_sprite");
 
         re::AnimationPtr playerAnim = std::make_shared<re::Animation>(0, true);
+        re::AnimationPtr jumpAnim = std::make_shared<re::Animation>(0.5, true);
+        re::AnimationPtr atkAnim = std::make_shared<re::Animation>(1, true);
+        re::AnimationPtr onIceAnim = std::make_shared<re::Animation>(0.5, true);
+        
         re::Image spritelist( "data/spritelist.png" );
 
-        playerAnim->add_frame(spritelist.get_subimage(29, 13, 224, 343));
-        playerAnim->add_frame(spritelist.get_subimage(298, 12, 224, 343));
-        playerAnim->add_frame(spritelist.get_subimage(556, 16, 224, 343));
-        playerAnim->add_frame(spritelist.get_subimage(840, 9, 224, 343));
-        playerAnim->add_frame(spritelist.get_subimage(17, 382, 224, 343));
-        playerAnim->add_frame(spritelist.get_subimage(289, 377, 224, 343));
-        playerAnim->add_frame(spritelist.get_subimage(569, 379, 224, 343));
-        playerAnim->add_frame(spritelist.get_subimage(854, 375, 224, 343));
+        playerAnim->add_frame(spritelist.get_subimage(29, 12, 224, 344));
+        playerAnim->add_frame(spritelist.get_subimage(298, 11, 224, 344));
+        playerAnim->add_frame(spritelist.get_subimage(556, 15, 224, 344));
+        playerAnim->add_frame(spritelist.get_subimage(840, 8, 224, 344));
+        playerAnim->add_frame(spritelist.get_subimage(17, 381, 224, 344));
+        playerAnim->add_frame(spritelist.get_subimage(289, 376, 224, 344));
+        playerAnim->add_frame(spritelist.get_subimage(569, 378, 224, 344));
+        playerAnim->add_frame(spritelist.get_subimage(854, 374, 224, 344));
+
+        atkAnim->add_frame(spritelist.get_subimage(578, 739, 227, 344)); 
+        atkAnim->add_frame(spritelist.get_subimage(307, 735, 244, 344));
+        atkAnim->add_frame(spritelist.get_subimage(16, 744, 260, 344));
+        atkAnim->add_frame(spritelist.get_subimage(307, 735, 244, 344));
+        atkAnim->add_frame(spritelist.get_subimage(578, 739, 227, 344)); 
+
+        onIceAnim->add_frame(spritelist.get_subimage(862, 741, 224, 344));
+
+        jumpAnim->add_frame(spritelist.get_subimage(30, 1139, 224, 344));
+        jumpAnim->add_frame(spritelist.get_subimage(315, 1130, 224, 344));
+        jumpAnim->add_frame(spritelist.get_subimage(605, 1136, 224, 344));
+        jumpAnim->add_frame(spritelist.get_subimage(892, 1143, 224, 344));
+                                       
+
         re::ImagePtr buttonsource = resource_manager.get_image("button_test");
+        pauseImage = std::make_shared<re::Image>("whilepaused.png");
         re::BaseButton startgame_btn(50, 50, buttonsource->get_subimage(10, 10, 200, 70));
         re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
         buttonList.push_back(startgame_btn);
         buttonList.push_back(exit_btn);
-        buttonList.push_back(respawn_btn);
+        //buttonList.push_back(respawn_btn);
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
@@ -87,6 +107,9 @@ public:
             } else if ( object.name == "yojus" ) {
                 testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
                 testPlayer->movingAnim = playerAnim;//testanimCustom;
+                testPlayer->slidingAnim = onIceAnim;
+                testPlayer->jumpingAnim = jumpAnim;
+                testPlayer->attackAnim = atkAnim;
                 testPlayer->setFriction(-1.0);
                 testPlayer->setBounciness(0.0);
             } else if ( object.name == "ice" ) {
@@ -174,8 +197,6 @@ public:
         switch(curState){
         case AppState::Ingame:
             mainGame.updateTick();
-<<<<<<< HEAD
-=======
 
             //re::view_at( (int)((testPlayer->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(testPlayer->getPosition().X * 16 / 16) * 1000,
             //             (int)((testPlayer->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(testPlayer->getPosition().Y * 16 / 9 ) * 1000);
@@ -205,7 +226,6 @@ public:
                             0,0, 1,1, 
                             map.layer[0].background);
 
->>>>>>> 21533de7282e4fb29ab43c38ab6ae4f3acd98030
             for (auto curObject : mainGame.getWorld())
                 (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->update();
 
@@ -214,7 +234,7 @@ public:
 
             curHUD->display();
             break;
-        case AppState::MainMenu: case AppState::Pause:
+        case AppState::MainMenu:
             re::background(re::WHITE); 
             /*for (auto& btn : buttonList){
                 btn.display();
@@ -226,6 +246,9 @@ public:
         case AppState::Dead:
             re::background(re::WHITE);
             buttonList[2].display();
+            break;
+        case AppState::Pause:
+            re::draw_image(-64, 0, pauseImage);
             break;
         }
     }
@@ -243,12 +266,12 @@ public:
             if(curState == AppState::Ingame){
                 setState_pause();
             }
-            /*else{
+            else{
             exit(0);
-            }*/
+            }
         }
-        if (key == re::Key::Down){
-            
+        else if (curState == AppState::Pause){
+            setState_ingame();
         }
     }
 
@@ -260,12 +283,8 @@ public:
          * 2: right-mouse click,
          * 3: scroll up,
          * 4: scroll down.
-         */
-<<<<<<< HEAD
-        /*if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
-=======
+         *//*
         if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
->>>>>>> 21533de7282e4fb29ab43c38ab6ae4f3acd98030
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);
@@ -274,12 +293,15 @@ public:
         }*/
         if(button == 0){
             switch(curState){
-                case AppState::MainMenu: case AppState::Pause:
+                case AppState::MainMenu:
                 for(int i = 0; i < 2; i++){
                     if(buttonList[i].check_if_mouse_over(curX, curY)){
                         buttonList[i].action(button);
                     }
                 }
+                break;
+                case AppState::Pause:
+                    setState_ingame();
                 break;
                 case AppState::Dead:
                 if(buttonList[2].check_if_mouse_over(curX, curY)){
@@ -316,7 +338,7 @@ public:
     }
 
     void respawn(){
-        testPlayer->respawn();
+        //testPlayer->respawn();
         curState = AppState::Ingame;
     }
 
@@ -329,7 +351,7 @@ private:
     std::shared_ptr<Player> testPlayer;
     AppState curState;
     std::vector<re::BaseButton> buttonList;
-
+    re::ImagePtr pauseImage;
     re::ResourceManager resource_manager;
 };
 

@@ -11,9 +11,9 @@ private:
     std::vector<ImagePtr> images; //All frames of animation
     bool isCyclic;
     float animationSpeed;
-    float curPosition = 0;
 
 public:
+    float curPosition = 0;
     Animation(float speed, bool cycleable);
     Animation();
 

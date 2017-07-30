@@ -37,7 +37,10 @@ void Player::onCollisionStay(re::GameObjectPtr to, re::Vector2f vec)
     { 
         if (!((std::dynamic_pointer_cast<IcePlatform>(to) != 0) && (getVelocity().Length() > 0.5)))
         {
+            isOnIce = false;
             isGrounded = true;
+        } else {
+            isOnIce = true;
         }
     }
 }
@@ -77,12 +80,15 @@ void Player::attack()
         }
     }
     re::GameObjectPtr trig;
-    if (direction == 1)
+    if (direction == 1){
         trig = std::make_shared<DamageTrigger>(position + vertexes[3] + vertexes[1] / 4,
          re::Vector2f(vertexes[3].X * 2, vertexes[1].Y / 2), attackDamage, ptr);
-    else
+    }
+    else{
         trig = std::make_shared<DamageTrigger>(position + vertexes[1] / 4,
          re::Vector2f(vertexes[3].X * -2, vertexes[1].Y / 2), attackDamage, ptr);
+    }
+    attackAnim->getNextFrame();
     worldContainer->push_back(trig);
 }
 void Player::update()
@@ -139,19 +145,70 @@ void Player::update()
 }
 void Player::display(int scale)
 {
-    if( direction == 1 )
+    if( attackAnim->curPosition != 0 )
     {
-        re::draw_image_part( position.X * scale, position.Y * scale,
+        if( direction == 1 )
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
+                                position.X * scale + 32, position.Y * scale +48,
+                                0,0, 1,1,
+                                attackAnim->getNextFrame() );
+        }
+        else
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
+                                position.X * scale + 32, position.Y * scale +48,
+                                1,0, 0,1,
+                                attackAnim->getNextFrame() );
+        }
+    }
+    else if(isGrounded){
+        if( direction == 1 )
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
+                                position.X * scale + 32, position.Y * scale +48,
+                                0,0, 1,1,
+                                movingAnim->getNextFrame() );
+        }
+        else
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
+                                position.X * scale + 32, position.Y * scale +48,
+                                1,0, 0,1,
+                                movingAnim->getNextFrame() );
+        }
+    }
+    else if(isOnIce){
+        if( direction == 1 )
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
                             position.X * scale + 32, position.Y * scale +48,
                             0,0, 1,1,
-                            movingAnim->getNextFrame() );
-    }
-    else
-    {
-        re::draw_image_part( position.X * scale, position.Y * scale,
+                            slidingAnim->getNextFrame() );
+        }
+        else
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
                             position.X * scale + 32, position.Y * scale +48,
                             1,0, 0,1,
-                            movingAnim->getNextFrame() );
+                            slidingAnim->getNextFrame() );
+        }
+        
+    } else{
+        if( direction == 1 )
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
+                            position.X * scale + 32, position.Y * scale +48,
+                            0,0, 1,1,
+                            jumpingAnim->getNextFrame() );
+        }
+        else
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
+                            position.X * scale + 32, position.Y * scale +48,
+                            1,0, 0,1,
+                            jumpingAnim->getNextFrame() );
+        }
     }
     //re::draw_image(position.X * scale, position.Y * scale, movingAnim->getNextFrame());
 }
