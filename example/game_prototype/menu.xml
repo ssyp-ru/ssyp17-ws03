@@ -1,0 +1,10 @@
+<gui>
+    <small_button x="450" y="125" id="right" />
+    <small_button x="450" y="200" id="left" />
+    <small_button x="450" y="275" id="jump" />
+    <small_button x="450" y="350" id="fork" />
+    <small_button x="725" y="125" id="interact" />
+    <small_button x="725" y="200" id="skill1" />
+    <small_button x="725" y="275" id="skill2" />
+    <small_button x="725" y="350" id="skill3" />
+</gui>
