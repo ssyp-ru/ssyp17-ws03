@@ -4,6 +4,7 @@ set(EXECUTABLE  main.cpp
                 base_button.cpp
                 damageTrigger.cpp
                 deathTrigger.cpp
+                player.cpp
                 weakPlatform.cpp
                 )
 

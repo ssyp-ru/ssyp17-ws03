@@ -7,7 +7,8 @@
 #include "RealEngine/physic_core.h"
 #include "drawableGameObject.h"
 #include <RealEngine/time.h>
-#include <iostream>
+#include "platform.h"
+#include "player.h"
 
 class IcePlatform : public Platform{
 public:
@@ -20,12 +21,13 @@ public:
     {
         if (std::dynamic_pointer_cast<Player>(to) != 0)
         {
-            if (to->getVelocity().Length() != 0)
+            if (to->getVelocity().Length() > 0.5)
             {
                 std::dynamic_pointer_cast<Player>(to)->isGrounded = false;
                 to->setCanChangeSpeed(false);
             } else 
             {
+                to->setCanChangeSpeed(true);
                 std::dynamic_pointer_cast<Player>(to)->isGrounded = true;
             }
         }
