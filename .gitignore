@@ -7,7 +7,6 @@ obj/
 build/
 plan.todo
 
-test.*
 *~
 *.sh
 *.swp
