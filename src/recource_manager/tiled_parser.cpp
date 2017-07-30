@@ -118,7 +118,7 @@ re::Map parse_map(re::XmlElem* parsed_xml) {
             for(uint y = 0; y < layer.height; y++)
                 for(uint x = 0; x < layer.width; x++) {
                     int a = map.layer[0].data[y*layer.width + x];
-                    if( a != 0 && a < 100 )
+                    if( a > 0 && a < 100 )
                     {
                         layer.background->set_subimage(x*width,y*height,
                             map.tileset[

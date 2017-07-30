@@ -71,12 +71,12 @@ public:
             if( object.name == "grass" )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF)));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
             } else if( object.name == "ground" )            {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF)));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF)));
 
             } else if ( object.name == "yojus" ) {
                 testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
@@ -85,8 +85,8 @@ public:
                 testPlayer->setBounciness(0.0);
             } else if ( object.name == "ice" ) {
                 re::GameObjectPtr platice = std::make_shared<IcePlatform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF));
+                        re::Vector2f(object.x * SCALE_COEFF - 4.1, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
                 for( int i = 0; i < object.width / 64; i++ )
@@ -175,17 +175,20 @@ public:
 
             int cam_x, cam_y;
             cam_x = testPlayer->getPosition().X * 16;
+            cam_y = testPlayer->getPosition().Y * 16;
             cam_x+= 64 * 17;
             cam_x/= 64 * 16;
             cam_x*= 64 * 16;
             cam_x-= 64 * 17;
 
-            cam_y = testPlayer->getPosition().Y * 16;
             cam_y/= 64 * 9;
             cam_y*= 64 * 9;
             //don't show it to Kolya, srsly.
             //Kolya, if you saw it, pls, don't ask us to do pushups.
-            re::view_at( cam_x, cam_y );
+
+            //re::Vector2f pos = doBlackMagic( re::Vector2f(cam_x,cam_y) );
+
+            re::view_at( pos.X, pos.Y );
 
             //re::view_at(  );
 
