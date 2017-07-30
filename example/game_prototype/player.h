@@ -12,7 +12,9 @@
 class Player : public Unit{
 public:
     bool isGrounded = false;
-    re::Animation movingAnim; // moving animation
+    re::AnimationPtr movingAnim; // moving animation
+
+public:
     Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(1, 1.5)) 
     {
         hp = 100;
@@ -47,6 +49,8 @@ public:
              re::Vector2f(vertexes[3].X * -2, vertexes[1].Y / 2), attackDamage, ptr);
         worldContainer->push_back(trig);
     }
+
+    
     void update() override
     {
         addForce(re::Vector2f(0, 20 * getMass()));
@@ -64,9 +68,9 @@ public:
             tryAttack();
 
         if ((isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
-            movingAnim.setSpeed(0.5);
+            movingAnim->setSpeed(0.5);
         else
-            movingAnim.setSpeed(0);
+            movingAnim->setSpeed(0);
 
         if (re::get_key_state(re::Key::W))
         {
@@ -81,8 +85,9 @@ public:
 
         Unit::update();
     }
+
     void display(int scale) override
     {
-        re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
+        re::draw_image(position.X * scale, position.Y * scale, movingAnim->getNextFrame());
     }
 };
