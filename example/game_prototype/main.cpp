@@ -63,6 +63,10 @@ public:
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
                         re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF)));
+            } else if( object.name == "ground" )            {
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF)));
 
             } else if ( object.name == "yojus" ) {
                 testPlayer = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
@@ -74,6 +78,14 @@ public:
                         re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
                         re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF));
                 mainGame.addObject(platice);
+            } else if ( object.name == "corr" ) {
+                for( int i = 0; i < object.width / 128; i++ )
+                {
+                    re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
+                        re::Vector2f(object.x * SCALE_COEFF + ( i * 4 ), object.y * SCALE_COEFF), 
+                        re::Vector2f(4, 4), 1.0);
+                    mainGame.addObject(weplat);
+                }
             }
         }
 

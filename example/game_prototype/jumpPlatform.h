@@ -24,3 +24,4 @@ public:
         obj->addImpulse(re::Vector2f(0, -power * obj->getMass()));
     }
 };
+    
