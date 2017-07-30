@@ -89,7 +89,7 @@ public:
 
         mainGame.addObject(testPlayer);
 
-        re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
+        /*re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
         mainGame.addObject(plat);
 
         re::GameObjectPtr plat2 = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
@@ -119,7 +119,7 @@ public:
 
         re::GameObjectPtr spikes = std::make_shared<Spikes>(re::Vector2f(32, 20), re::Vector2f(1, 1), 50.0, 1.0);
         mainGame.addObject(spikes);
-
+        */
         //re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(re::Vector2f(-5, 30), re::Vector2f(50, 1));
         //mainGame.addObject(deathTrig);
 
