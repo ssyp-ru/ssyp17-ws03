@@ -64,11 +64,7 @@ public:
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
-<<<<<<< HEAD
-        map = re::get_tmx_map("map/untitled.tmx")[0];
-=======
         map = (re::parse_tiled( re::parse_xml( "map/map_level1.tmx" ) ))[0];
->>>>>>> 266aaaba7d151772fdb57310408a46c4425140d0
 
         for( auto object : map.objectgroup[0].group )
         {
@@ -93,11 +89,7 @@ public:
                         re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
-<<<<<<< HEAD
-                for( size_t i = 0; i < object.width / 128; i++ )
-=======
                 for( int i = 0; i < object.width / 64; i++ )
->>>>>>> 266aaaba7d151772fdb57310408a46c4425140d0
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
                         re::Vector2f(object.x * SCALE_COEFF + ( (i-1) * 4 ), object.y * SCALE_COEFF), 
