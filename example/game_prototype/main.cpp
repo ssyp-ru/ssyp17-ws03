@@ -188,7 +188,7 @@ public:
 
             //re::Vector2f pos = doBlackMagic( re::Vector2f(cam_x,cam_y) );
 
-            re::view_at( pos.X, pos.Y );
+            re::view_at( cam_x, cam_y );
 
             //re::view_at(  );
 
