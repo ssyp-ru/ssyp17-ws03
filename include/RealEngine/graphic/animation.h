@@ -19,7 +19,7 @@ public:
 
     void add_frame(ImagePtr img);  //Adds new frame to animation
     ImagePtr getNextFrame();    //Changes curPosition and returns frame
-    ImagePtr getFrame(int index); //Returns frame at "index" position
+    ImagePtr getFrame(size_t index); //Returns frame at "index" position
     void setCurrentPos(float pos);
     void setSpeed(float source);
     float getSpeed();

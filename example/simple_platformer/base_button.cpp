@@ -32,7 +32,7 @@ namespace re{
         return false;
     }
     bool BaseButton::check_if_mouse_over(Point2f point){
-        check_if_mouse_over(point.x, point.y);
+        return check_if_mouse_over(point.x, point.y);
     }
     void BaseButton::register_action(std::function<void()> func){
         std::cout << "GSB reg " <<  std::endl;

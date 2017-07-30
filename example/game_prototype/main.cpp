@@ -55,7 +55,7 @@ public:
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
-        map = (re::parse_tiled( re::parse_xml( "map/untitled.tmx" ) ))[0];
+        map = re::get_tmx_map("map/untitled.tmx")[0];
 
         for( auto object : map.objectgroup[0].group )
         {
@@ -80,13 +80,22 @@ public:
                         re::Vector2f((float)object.width * SCALE_COEFF, (float)object.height * SCALE_COEFF));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
-                for( int i = 0; i < object.width / 128; i++ )
+                for( size_t i = 0; i < object.width / 128; i++ )
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
                         re::Vector2f(object.x * SCALE_COEFF + ( i * 4 ), object.y * SCALE_COEFF), 
                         re::Vector2f(4, 4), 1.0);
                     mainGame.addObject(weplat);
                 }
+            } else if ( object.name == "metal" ) {
+                re::GameObjectPtr movplat = std::make_shared<MovingPlatform>(
+                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * object.x * SCALE_COEFF, (float)object.height * object.x * SCALE_COEFF), 
+                        3.0);
+                mainGame.addObject(movplat);
+                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->addWaypoint(re::Vector2f(20, 16));
+                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setCycled(true);
+                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setActivated(true);
             }
         }
 
@@ -209,7 +218,7 @@ public:
          * 3: scroll up,
          * 4: scroll down.
          */
-        if(button == 0 && curState == AppState::MainMenu || curState==AppState::Pause){
+        if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);
