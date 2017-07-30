@@ -66,7 +66,7 @@ public:
         re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
         buttonList.push_back(startgame_btn);
         buttonList.push_back(exit_btn);
-        buttonList.push_back(respawn_btn);
+        //buttonList.push_back(respawn_btn);
         buttonList[0].register_action(std::bind(&MainApp::setState_ingame, this));
         buttonList[1].register_action(std::bind(&MainApp::setState_exit, this));
 
@@ -328,7 +328,7 @@ public:
     }
 
     void respawn(){
-        testPlayer->respawn();
+        //testPlayer->respawn();
         curState = AppState::Ingame;
     }
 
