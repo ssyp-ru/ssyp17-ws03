@@ -62,9 +62,9 @@ void Player::update()
     if (re::get_key_state(re::Key::F))
         tryAttack();
     if ((isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
-        movingAnim.setSpeed(0.5);
+        movingAnim->setSpeed(0.5);
     else
-        movingAnim.setSpeed(0);
+        movingAnim->setSpeed(0);
     if (re::get_key_state(re::Key::W))
     {
         if (isGrounded)
@@ -77,6 +77,6 @@ void Player::update()
 }
 void Player::display(int scale)
 {
-    re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
+    re::draw_image(position.X * scale, position.Y * scale, movingAnim->getNextFrame());
 }
 

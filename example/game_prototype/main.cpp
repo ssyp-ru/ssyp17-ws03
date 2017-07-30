@@ -45,8 +45,8 @@ public:
     void setup() override {
         resource_manager.load_file("resources.xml");
         re::AnimationPtr testanimCustom = resource_manager.get_animation("mario_sprite");
+        testPlayer->movingAnim = testanimCustom;
         re::ImagePtr buttonsource = resource_manager.get_image("button_test");
-
         re::BaseButton startgame_btn(50, 50, buttonsource->get_subimage(10, 10, 200, 70));
         re::BaseButton exit_btn(50, 250, buttonsource->get_subimage(10, 200, 200, 70));
         buttonList.push_back(startgame_btn);

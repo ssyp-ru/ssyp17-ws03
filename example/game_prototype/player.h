@@ -9,88 +9,10 @@
 class Player : public Unit{
 public:
     bool isGrounded = false;
-    re::Animation movingAnim; // moving animation
+    re::AnimationPtr movingAnim; // moving animation
     Player(re::Vector2f pos);
     void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec);
     void attack();
     void update();
     void display(int scale);
-    re::AnimationPtr movingAnim; // moving animation
-
-public:
-    Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(1, 1.5)) 
-    {
-        hp = 100;
-        attackDelay = 0.3;
-        attackDamage = 2;
-        direction = 1;
-    }
-    void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec) override
-    {
-        if (re::Vector2f(0, -1).angleBetween(vec) < 60.0 / 180.0 * 3.14159) 
-        { 
-            isGrounded = true;
-        }
-    }
-    void attack() override
-    {
-        re::GameObjectPtr ptr;
-        for (uint i = 0; i < (*worldContainer).size(); i++)
-        {
-            if ((*worldContainer)[i].get() == this)
-            {
-                ptr = (*worldContainer)[i];
-                break;
-            }
-        }
-        re::GameObjectPtr trig;
-        if (direction == 1)
-            trig = std::make_shared<DamageTrigger>(position + vertexes[3] + vertexes[1] / 4,
-             re::Vector2f(vertexes[3].X * 2, vertexes[1].Y / 2), attackDamage, ptr);
-        else
-            trig = std::make_shared<DamageTrigger>(position + vertexes[1] / 4,
-             re::Vector2f(vertexes[3].X * -2, vertexes[1].Y / 2), attackDamage, ptr);
-        worldContainer->push_back(trig);
-    }
-
-    
-    void update() override
-    {
-        addForce(re::Vector2f(0, 20 * getMass()));
-        if (re::get_key_state(re::Key::D))
-        {
-            direction = 1;
-            setVelocity(re::Vector2f(5 * getMass(), getVelocity().Y));
-        }
-        if (re::get_key_state(re::Key::A))
-        {
-            direction = -1;
-            setVelocity(re::Vector2f(-5 * getMass(), getVelocity().Y));
-        }
-        if (re::get_key_state(re::Key::F))
-            tryAttack();
-
-        if ((isGrounded) && ((re::get_key_state(re::Key::D)) || (re::get_key_state(re::Key::A))))
-            movingAnim->setSpeed(0.5);
-        else
-            movingAnim->setSpeed(0);
-
-        if (re::get_key_state(re::Key::W))
-        {
-            if (isGrounded)
-            {
-                addImpulse(re::Vector2f(0, -45 * getMass()));
-                isGrounded = false;
-            }
-        }
-
-        if ((getVelocity().Y > 0.1) && (isGrounded)) isGrounded = false;
-
-        Unit::update();
-    }
-
-    void display(int scale) override
-    {
-        re::draw_image(position.X * scale, position.Y * scale, movingAnim->getNextFrame());
-    }
 };
