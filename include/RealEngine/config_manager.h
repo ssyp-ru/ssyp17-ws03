@@ -9,7 +9,7 @@ namespace re {
 
 class ConfigManager {
 private:
-    XmlElem *root;
+    XmlElemPtr root;
 
 public:
     bool load_file(std::string path_to_config_file);

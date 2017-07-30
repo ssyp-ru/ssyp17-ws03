@@ -14,8 +14,8 @@ public:
     AnimationPtr get_animation(std::string feature_id);
 
 private:
-    bool load_image_feature(XmlElem *layer_ptr);
-    bool load_sprite_feature(XmlElem *sprite_ptr);
+    bool load_image_feature(XmlElemPtr layer_ptr);
+    bool load_sprite_feature(XmlElemPtr sprite_ptr);
 
     std::map<std::string, ImagePtr> image_storage;
     std::map<std::string, AnimationPtr> animation_storage;

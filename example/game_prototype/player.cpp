@@ -1,4 +1,3 @@
-#pragma once
 //#include <RealEngine/graphic.h>
 //#include <RealEngine/graphic/image.h>
 //#include <RealEngine/graphic/animation.h>
