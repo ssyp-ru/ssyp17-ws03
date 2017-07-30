@@ -254,7 +254,7 @@ public:
             curHUD->display();
             break;
         case AppState::MainMenu:
-            re::background(re::WHITE); 
+            //re::background(re::WHITE); 
             /*for (auto& btn : buttonList){
                 btn.display();
             }*/
@@ -263,7 +263,7 @@ public:
             }
             break;
         case AppState::Dead:
-            re::background(re::WHITE);
+            //re::background(re::WHITE);
             buttonList[2].display();
             break;
         case AppState::Pause:
@@ -302,13 +302,8 @@ public:
          * 2: right-mouse click,
          * 3: scroll up,
          * 4: scroll down.
-<<<<<<< HEAD
          *//*
         if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
-=======
-         */
-        /*if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
->>>>>>> 5a9f32494bf60ce3b675e5b79ca3240537038cf4
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);

@@ -3,6 +3,7 @@
 #include <iostream>
 #include "RealEngine/logger.h"
 #include <vector>
+#include <RealEngine/time.h>
 
 namespace re {
 
@@ -460,7 +461,7 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
 }
 void GameObject::updatePos()
 {
-	double deltaTime = 0.02;
+	double deltaTime = re::Time::delta_time;
 	if (isRigidbodySimulated) 
 	{
 	    velocity += acceleration * deltaTime;
