@@ -19,3 +19,7 @@ void DeathTrigger::onTriggerStay(re::GameObjectPtr obj)
     if (std::dynamic_pointer_cast<Unit>(obj) != 0)
         std::dynamic_pointer_cast<Unit>(obj)->destroy();
 }
+void DeathTrigger::display(int k)
+{
+    
+}

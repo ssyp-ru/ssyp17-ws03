@@ -6,7 +6,8 @@
 #include <RealEngine/xml_parser.h>
 #include <RealEngine/math.h>
 #include "RealEngine/physic_core.h"
-#include "RealEngine/resource_manager.h"
+//#include "RealEngine/resource_manager.h"
+#include "hud.h"
 
 #include <functional>
 #include <string>
@@ -26,6 +27,9 @@
 #include "spikes.h"
 #include "deathTrigger.h"
 #include "jumpPlatform.h"
+#include "ability_damageBoost.h"
+#include "ability_heal.h"
+#include "ability_invincibility.h"
 
 const double SCALE_COEFF = 0.0625;
 
@@ -34,6 +38,7 @@ public:
     re::Game mainGame;
     int k = 16; // scale
     re::Map map;
+    HUD *curHUD;
     //Setup:
 
     re::GameObjectPtr getGameObject(re::Vector2f pos, re::Vector2f size)
@@ -89,7 +94,7 @@ public:
                         re::Vector2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
-                for( int i = 0; i < object.width / 64; i++ )
+                for(size_t i = 0; i < object.width / 64; i++ )
                 {
                     re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
                         re::Vector2f(object.x * SCALE_COEFF + ( (i-1) * 4 ), object.y * SCALE_COEFF), 
@@ -117,6 +122,11 @@ public:
         }
 
         mainGame.addObject(testPlayer);
+        testPlayer->addAbility(new Ability_DamageBoost(5, 2));
+        testPlayer->addAbility(new Ability_Heal(10));
+        testPlayer->addAbility(new Ability_Invincibility(5));
+
+        curHUD = new HUD(std::dynamic_pointer_cast<Player>(testPlayer).get(), &resource_manager);
 
         /*re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
         mainGame.addObject(plat);
@@ -151,6 +161,11 @@ public:
         */
         //re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(re::Vector2f(-5, 30), re::Vector2f(50, 1));
         //mainGame.addObject(deathTrig);
+
+        //re::GameObjectPtr bird = std::make_shared<EvilBird>(testPlayer->getPosition() + re::Vector2f(10, 0), 5);
+        //mainGame.addObject(bird);
+        //(std::dynamic_pointer_cast<EvilBird>(bird))->path->addWaypoint(bird->getPosition() + re::Vector2f(0, 5));
+        //(std::dynamic_pointer_cast<EvilBird>(bird))->path->setActivated(true);
 
         curState = AppState::Ingame;
     }
@@ -216,6 +231,8 @@ public:
 
             for (auto curObject : mainGame.getWorld())
                 (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->display(k);
+
+            curHUD->display();
             break;
         case AppState::MainMenu:
             re::background(re::WHITE); 
@@ -264,7 +281,7 @@ public:
          * 3: scroll up,
          * 4: scroll down.
          */
-        if(button == 0 && curState == AppState::MainMenu || curState==AppState::Pause){
+        if(button == 0 && (curState == AppState::MainMenu || curState==AppState::Pause)){
             for (auto& btn : buttonList){
                 if(btn.check_if_mouse_over(curX, curY)){
                     btn.action(button);

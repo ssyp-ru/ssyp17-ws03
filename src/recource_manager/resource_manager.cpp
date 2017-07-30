@@ -10,15 +10,34 @@ namespace re {
 
 
 bool ResourceManager::load_file(std::string path_to_config_file) {
-    XmlElem root = parse_xml(path_to_config_file);
-    std::vector<XmlElem *> images = root.get_children("resources")[0]->get_children("images")[0]->get_children("im");
-    std::vector<XmlElem *> sprites = root.get_children("resources")[0]->get_children("sprites")[0]->get_children("sprite");
-    for (auto ptr : images) {
-        load_image_feature(ptr);
+    XmlElemPtr root = parse_xml(path_to_config_file);
+    if (root == nullptr){
+        return false;
     }
-    for (auto ptr : sprites) {
-        load_sprite_feature(ptr);
+
+    XmlElemPtr resources_ptr = root->get_children("resources")[0];
+    if (resources_ptr == nullptr){
+        return false;
     }
+
+    // load images
+    XmlElemPtr image_ptr = resources_ptr->get_children("images")[0];
+    if (image_ptr != nullptr){
+        std::vector<XmlElemPtr> images = image_ptr->get_children("im");
+        for (auto ptr : images) {
+            load_image_feature(ptr);
+        }
+    }
+    
+    // load sprites
+    XmlElemPtr sprite_ptr = resources_ptr->get_children("sprites")[0];
+    if (sprite_ptr != nullptr){
+        std::vector<XmlElemPtr> sprites = sprite_ptr->get_children("sprite");
+        for (auto ptr : sprites) {
+            load_sprite_feature(ptr);
+        }
+    }
+
     return true;
 }
 
@@ -37,7 +56,7 @@ AnimationPtr ResourceManager::get_animation(std::string feature_id) {
 }
 
 
-bool ResourceManager::load_image_feature(XmlElem *layer_ptr) {
+bool ResourceManager::load_image_feature(XmlElemPtr layer_ptr) {
     ImagePtr image = std::make_shared<Image>(layer_ptr->field["file"]);
     if (image == nullptr) {
         Log::msg("RM: Failed to load image '" + layer_ptr->field["id"] + "': no such file", Log::LEVEL::DEBUG);
@@ -48,7 +67,7 @@ bool ResourceManager::load_image_feature(XmlElem *layer_ptr) {
 }
 
 
-bool ResourceManager::load_sprite_feature(XmlElem *sprite_ptr) {
+bool ResourceManager::load_sprite_feature(XmlElemPtr sprite_ptr) {
     float anim_speed;
     std::string cycleable;
     try {

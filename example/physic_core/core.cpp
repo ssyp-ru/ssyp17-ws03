@@ -37,7 +37,7 @@ public:
         auto obj3 = mainGame.addQuadrangle(re::Vector2f(15, 14), re::Vector2f(1, 1), re::Vector2f(1, -1), re::Vector2f(-1, -1), re::Vector2f(-1, 1));
         obj3->setRigidbodySimulated(false);
         obj3->setIsTrigger(true);
-        obj3->addTriggerCallback(&MainApp::onTrigger);
+        //obj3->addTriggerCallback(&MainApp::onTrigger);
     }
 
     void update() override {

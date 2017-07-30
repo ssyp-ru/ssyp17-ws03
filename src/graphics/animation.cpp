@@ -49,8 +49,8 @@ void Animation::setCurrentPos(float pos){
     curPosition = pos;
 }
 
-ImagePtr Animation::getFrame(int pos){
-    if (pos < 0 || pos >= images.size()){
+ImagePtr Animation::getFrame(size_t pos){
+    if (pos >= images.size()){
         throw "element at given position does not exist";
     }
     return images[pos];

@@ -3,7 +3,6 @@
 #include "unit.h"
 #include "enemy.h"
 #include "player.h"
-#include <iostream>
 
 void DamageTrigger::update()
 {
@@ -38,4 +37,8 @@ DamageTrigger::DamageTrigger(re::Vector2f pos, re::Vector2f size, double damage,
     lifeTime = 0.05;
     this->damage = damage;
     this->sender = sender;
+}
+void DamageTrigger::display(int k)
+{
+    
 }

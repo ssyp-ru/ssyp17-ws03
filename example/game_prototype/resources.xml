@@ -2,6 +2,10 @@
     <images>
         <im id="mario_spritelist" file="data/spritelistMario.png" />
         <im id="button_test" file="data/test.png" />
+        <im id="fork" file="data/fork.png" />
+        <im id="ability_damageBoost" file="data/dmg.png" />
+        <im id="ability_heal" file="data/health.png" />
+        <im id="ability_invincibility" file="data/dazzlethem.png" />
     </images>
 
     <sprites>

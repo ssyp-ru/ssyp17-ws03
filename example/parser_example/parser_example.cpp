@@ -50,7 +50,7 @@ public:
         if (key == re::Key::Escape){
             re::exitApp();
         } else if(key == re::Key::A) {
-            re::goFullScreen();
+//            re::goFullScreen();
         }
         std::cout << (int)key << " pressed!" << std::endl;
     }
