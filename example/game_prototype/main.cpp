@@ -7,6 +7,7 @@
 #include <RealEngine/math.h>
 #include "RealEngine/physic_core.h"
 #include "RealEngine/resource_manager.h"
+#include "hud.h"
 
 #include <functional>
 #include <string>
@@ -35,6 +36,7 @@ public:
     re::Game mainGame;
     int k = 16; // scale
     re::Map map;
+    HUD *curHUD;
     //Setup:
 
     re::GameObjectPtr getGameObject(re::Vector2f pos, re::Vector2f size)
@@ -89,6 +91,8 @@ public:
         }
 
         mainGame.addObject(testPlayer);
+
+        curHUD = new HUD(std::dynamic_pointer_cast<Player>(testPlayer).get());
 
         /*re::GameObjectPtr plat = std::make_shared<Platform>(re::Vector2f(0, 20), re::Vector2f(20, 2));
         mainGame.addObject(plat);
@@ -155,6 +159,8 @@ public:
 
             for (auto curObject : mainGame.getWorld())
                 (std::dynamic_pointer_cast<DrawableGameObject>(curObject))->display(k);
+
+            curHUD->display();
             break;
         case AppState::MainMenu:
             re::background(re::WHITE); 
