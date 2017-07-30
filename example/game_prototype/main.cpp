@@ -86,7 +86,10 @@ public:
                     mainGame.addObject(weplat);
                 }
             } else if ( object.name == "metal" ) {
-                re::GameObjectPtr movplat = std::make_shared<MovingPlatform>(re::Vector2f(15, 16), re::Vector2f(3, 0.5), 3.0);
+                re::GameObjectPtr movplat = std::make_shared<MovingPlatform>(
+                        re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF), 
+                        re::Vector2f((float)object.width * object.x * SCALE_COEFF, (float)object.height * object.x * SCALE_COEFF), 
+                        3.0);
                 mainGame.addObject(movplat);
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->addWaypoint(re::Vector2f(20, 16));
                 (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setCycled(true);

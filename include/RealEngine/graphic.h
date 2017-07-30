@@ -40,6 +40,9 @@ namespace re{
     uint get_width();
     uint get_height();
 
+    int get_cam_x();
+    int get_cam_x();
+
     struct stParticle
     {
         float life;

@@ -42,12 +42,22 @@ namespace re
 
     uint get_width()
     {
-        OpenGL::instance().getWidth();
+        return OpenGL::instance().getWidth();
     }
 
     uint get_height()
     {
-        OpenGL::instance().getHeight();
+        return OpenGL::instance().getHeight();
+    }
+
+    int get_cam_x()
+    {
+        return OpenGL::instance().getCamX();
+    }
+
+    int get_cam_y()
+    {
+        return OpenGL::instance().getCamY();
     }
 
     void set_draw_lay( int lay )
