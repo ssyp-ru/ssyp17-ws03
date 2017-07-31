@@ -157,7 +157,6 @@ public:
         gui_manager.layer_set_active("controls", false);
 
         curState = AppState::MainMenu;
-        
     }
 
     void update() override {
@@ -258,6 +257,7 @@ public:
         }
 
         gui_manager.display(curX, curY);
+        re::draw_text(50, 70, std::to_string(re::get_fps()), re::RED);
     }
     //Events:
     void on_key_released(re::Key key){

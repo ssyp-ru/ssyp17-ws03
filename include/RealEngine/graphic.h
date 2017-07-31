@@ -37,6 +37,9 @@ namespace re{
     //return state( prese or not ) of key
     bool get_key_state( Key key );
 
+    void set_fps(uint new_fps);
+    uint get_fps();
+
     uint get_width();
     uint get_height();
 

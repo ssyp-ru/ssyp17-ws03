@@ -7,6 +7,7 @@
 #include "RealEngine/baseApp.h"
 
 #include <string>
+#include <chrono>
 
 namespace re
 {
@@ -55,6 +56,9 @@ public:
     void blewAll();
     void setLay( int lay );
 
+    void set_fps(uint new_fps);
+    uint get_fps();
+
     bool getKeyState( unsigned char c );
 
     void (*callbackPostInit)();
@@ -92,6 +96,8 @@ private:
     int windowId;
     uint w, h;
     uint camx, camy;
+    int fps_count_max, wait_period_mic, frame_count, fps;
+    std::chrono::time_point<std::chrono::steady_clock> last_frame_time, last_second;
 };
 
 
