@@ -8,6 +8,7 @@
         <im id="ability_invincibility" file="data/dazzlethem.png" />
         <im id="mainmenu" file="data/menuwith.png" />
         <im id="player_spritelist" file="data/spritelist.png" />
+        <im id="bird_spritelist" file="data/birdlist.png" />
         <im id="buttonsource" file="data/buttonsource.png" />
         <im id="bg" file="data/bg.png" />
     </images>
@@ -38,6 +39,14 @@
         </sprite>
         <sprite id="onIceAnim" source_id="player_spritelist" speed="0.5" cycleable="true">
             <sp x="862" y="741" w="224" h="344" />
+        </sprite>
+        <sprite id="birdMovingAnim" source_id="bird_spritelist" speed="0.2" cycleable="true">
+            <sp x="0" y="0" w="246" h="166" />
+            <sp x="275" y="0" w="246" h="166" />
+            <sp x="5" y="175" w="247" h="170" />
+            <sp x="280" y="175" w="247" h="170" />
+            <sp x="5" y="175" w="247" h="170" />
+            <sp x="275" y="0" w="246" h="166" />
         </sprite>
     </sprites>
 </resources>

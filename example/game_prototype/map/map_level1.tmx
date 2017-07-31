@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="64" tileheight="64" nextobjectid="328">
- <tileset firstgid="1" source="map/corr.tsx"/> </tileset>
- <tileset firstgid="2" source="map/gr.tsx"/> </tileset>
- <tileset firstgid="3" source="map/ground.tsx"/> </tileset>
- <tileset firstgid="4" source="map/ice.tsx"/> </tileset> <layer name="Tile Layer 1" width="48" height="27">
+ <tileset firstgid="1" source="map/corr.tsx"/>
+ <tileset firstgid="2" source="map/gr.tsx"/>
+ <tileset firstgid="3" source="map/ground.tsx"/>
+ <tileset firstgid="4" source="map/ice.tsx"/>
+ <layer name="Tile Layer 1" width="48" height="27">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -36,6 +37,7 @@
  </layer>
  <objectgroup name="object">
   <object id="149" name="grass" x="0" y="512" width="192" height="64"/>
+  <object id="150" name="EvilBird" x="300" y="300" width="64" height="64"/>
   <object id="151" name="grass" x="192" y="448" width="128" height="64"/>
   <object id="152" name="grass" x="320" y="384" width="64" height="64"/>
   <object id="153" name="ground" x="192" y="512" width="192" height="64"/>

@@ -87,22 +87,32 @@ public:
                     mainGame.addObject(weplat);
                 }
             } else if ( object.name == "metal" ) {
-                re::GameObjectPtr movplat = std::make_shared<MovingPlatform>(
+                auto movplat = std::make_shared<MovingPlatform>(
                         re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + 4), 
                         re::Vector2f(4, 1), 
                         3.0);
                 mainGame.addObject(movplat);
-                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->addWaypoint(re::Vector2f(
+                movplat->path->addWaypoint(re::Vector2f(
                     (object.x * SCALE_COEFF) + 4 + (object.width / 128) * 4,// - 1) * 4,
                     (object.y * SCALE_COEFF) + 4// + ((object.height / 128) - 1) * 4
                 ));
-                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setCycled(true);
-                (std::dynamic_pointer_cast<MovingPlatform>(movplat))->path->setActivated(true);
+                movplat->path->setCycled(true);
+                movplat->path->setActivated(true);
             } else if ( object.name == "deth" ) {
                 re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(
                                 re::Vector2f(object.x * SCALE_COEFF - 3.6, object.y * SCALE_COEFF + (float)object.height * SCALE_COEFF * 0.1), 
                                 re::Vector2f((float)object.width * SCALE_COEFF - 0.8, (float)object.height * SCALE_COEFF * 0.8));
                 mainGame.addObject(deathTrig);
+            } else if (object.name == "EvilBird"){
+                auto evilbird = std::make_shared<EvilBird>(re::Vector2f(object.x * SCALE_COEFF,
+                object.y * SCALE_COEFF), 5.0);
+                mainGame.addObject(evilbird);
+                evilbird->path->addWaypoint(re::Vector2f(
+                    (object.x * SCALE_COEFF) + 4 + (object.width / 128) * 4,// - 1) * 4,
+                    (object.y * SCALE_COEFF) + 4// + ((object.height / 128) - 1) * 4
+                ));
+                evilbird->path->setActivated(true);
+                evilbird->movingAnim = resource_manager.get_animation("birdMovingAnim");
             }
         }
 

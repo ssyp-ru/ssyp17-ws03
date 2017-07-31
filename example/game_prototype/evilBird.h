@@ -5,7 +5,7 @@
 class EvilBird: public Enemy {
 public:
     WaypointPath *path;
-    re::Animation movingAnim; // moving animation
+    re::AnimationPtr movingAnim; // moving animation
 
     EvilBird(re::Vector2f pos, double speed) : Enemy::Enemy(pos, re::Vector2f(1, 1)) 
     {
@@ -56,8 +56,22 @@ public:
         if ((velocity.X > 0) && (direction != 1)) direction = 1;
         if ((velocity.X < 0) && (direction != -1)) direction = -1;
     }
-    //void display(int scale) override
-    //{
-    //    re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
-    //}
+    void display(int scale) override
+    {
+        if( direction == 1 )
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
+                            position.X * scale + 60, position.Y * scale +40,
+                            0,0, 1,1,
+                            movingAnim->getNextFrame() );
+        }
+        else
+        {
+            re::draw_image_part( position.X * scale, position.Y * scale,
+                            position.X * scale + 60, position.Y * scale +40,
+                            1,0, 0,1,
+                            movingAnim->getNextFrame() );
+        }
+        //re::draw_image(position.X * scale, position.Y * scale, movingAnim.getNextFrame());
+    }
 };
