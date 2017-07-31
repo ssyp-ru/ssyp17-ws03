@@ -253,7 +253,7 @@ public:
             // buttonList[2].display();
             break;
         case AppState::Pause:
-            re::draw_image(-64, 0, pause_image);
+            re::draw_image(re::get_cam_x(), re::get_cam_y(), pause_image);
             break;
         }
 
