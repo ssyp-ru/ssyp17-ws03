@@ -37,7 +37,6 @@
  </layer>
  <objectgroup name="object">
   <object id="149" name="grass" x="0" y="512" width="192" height="64"/>
-  <object id="150" name="EvilBird" x="32" y="6" width="2" height="0"/>
   <object id="151" name="grass" x="192" y="448" width="128" height="64"/>
   <object id="152" name="grass" x="320" y="384" width="64" height="64"/>
   <object id="153" name="ground" x="192" y="512" width="192" height="64"/>
@@ -171,6 +170,7 @@
   <object id="323" name="deth" x="1600" y="512" width="192" height="64"/>
   <object id="324" name="ice" x="2624" y="640" width="128" height="64"/>
   <object id="325" name="ice" x="2752" y="704" width="128" height="64"/>
-  <object id="150" name="EvilBird" x="43" y="6" width="2.8" height="0"/>
+  <object id="150" name="EvilBird" x="32" y="6" width="2" height="0"/>
+  <object id="326" name="EvilBird" x="43" y="6" width="2.8" height="0"/>
  </objectgroup>
 </map>

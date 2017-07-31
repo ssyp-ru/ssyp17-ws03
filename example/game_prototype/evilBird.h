@@ -44,7 +44,7 @@ public:
             trig = std::make_shared<DamageTrigger>(position + vertexes[3],
              re::Vector2f(1, 1), attackDamage, ptr);
         } else {
-            trig = std::make_shared<DamageTrigger>(position - vertexes[3] - 1,
+            trig = std::make_shared<DamageTrigger>(position - vertexes[3] - re::Vector2f(1, 0),
              re::Vector2f(1, 1), attackDamage, ptr);
         }
         worldContainer->push_back(trig);
