@@ -6,7 +6,7 @@ class Ability_Heal : public Ability
 private:
     double healAmount;
 public:
-    Ability_Heal(double healAmount) : Ability::Ability(2, 2)
+    Ability_Heal(double healAmount) : Ability::Ability(3, 2)
     {
         this->healAmount = healAmount;
     }

@@ -155,7 +155,7 @@
   <object id="283" name="grass" x="1984" y="384" width="64" height="64"/>
   <object id="284" name="grass" x="2048" y="384" width="64" height="64"/>
   <object id="294" name="grass" x="1024" y="1472" width="64" height="64"/>
-  <object id="302" name="metal" x="2496" y="1280" width="384" height="64"/>
+  <object id="302" name="metal" x="2496" y="1850" width="384" height="64"/>
   <object id="303" name="deth" x="2496" y="1344" width="384" height="64"/>
   <object id="304" name="metal" x="2496" y="1536" width="512" height="64"/>
   <object id="306" name="deth" x="2496" y="1664" width="576" height="64"/>
