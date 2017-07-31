@@ -35,7 +35,7 @@ void Player::onCollisionStay(re::GameObjectPtr to, re::Vector2f vec)
 {
     if (re::Vector2f(0, -1).angleBetween(vec) < 60.0 / 180.0 * 3.14159) 
     { 
-        if (!((std::dynamic_pointer_cast<IcePlatform>(to) != 0) && (getVelocity().Length() > 1.5)))
+        if (!((std::dynamic_pointer_cast<IcePlatform>(to) != 0) && (getVelocity().Length() > 2.5)))
         {
             isOnIce = false;
             isGrounded = true;

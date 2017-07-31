@@ -21,7 +21,7 @@ public:
     {
         if (std::dynamic_pointer_cast<Player>(to) != 0)
         {
-            if (to->getVelocity().Length() > 1.5)
+            if (to->getVelocity().Length() > 2.5)
             {
                 std::dynamic_pointer_cast<Player>(to)->isGrounded = false;
                 to->setCanChangeSpeed(false);

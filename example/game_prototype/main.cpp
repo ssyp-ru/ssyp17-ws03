@@ -112,6 +112,11 @@ public:
         player->addAbility(new Ability_Invincibility(5));
 
         curHUD = new HUD(std::dynamic_pointer_cast<Player>(player).get(), &resource_manager);
+
+        mainGame.addObject(std::make_shared<Platform>(re::Vector2f(-7, -4), re::Vector2f(4, 9 * 4 * 3 + 8)));
+        mainGame.addObject(std::make_shared<Platform>(re::Vector2f(-4, -7), re::Vector2f(16 * 4 * 3 + 8, 4)));
+        mainGame.addObject(std::make_shared<Platform>(re::Vector2f(16 * 4 * 3 - 5, -4), re::Vector2f(4, 9 * 4 * 3 + 8)));
+        mainGame.addObject(std::make_shared<DeathTrigger>(re::Vector2f(-4, 9 * 4 * 3 - 1), re::Vector2f(16 * 4 * 3 + 8, 4)));
     }
 
     void setup() override {
@@ -156,7 +161,6 @@ public:
         gui_manager.layer_set_active("controls", false);
 
         curState = AppState::MainMenu;
-        
     }
 
     void update() override {
