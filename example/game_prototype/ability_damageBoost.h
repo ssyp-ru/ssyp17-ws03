@@ -9,7 +9,7 @@ private:
     double damage;
     double timeToDeactivate;
 public:
-    Ability_DamageBoost(double longevity, double damage) : Ability::Ability(1, 2)
+    Ability_DamageBoost(double longevity, double damage) : Ability::Ability(2, 2)
     {
         timeToDeactivate = 0;
         this->longevity = longevity;

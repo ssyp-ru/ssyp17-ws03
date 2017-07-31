@@ -13,7 +13,7 @@ Player::Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(2, 3))
 {
     level = 1;
     exp = 0;
-    hp = 100;
+    hp = 20;
     maxhp = hp;
     attackDelay = 0.3;
     attackDamage = 2;

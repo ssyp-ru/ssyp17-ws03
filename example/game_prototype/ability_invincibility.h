@@ -8,7 +8,7 @@ private:
     double longevity;
     double timeToDeactivate;
 public:
-    Ability_Invincibility(double longevity) : Ability::Ability(1, 2)
+    Ability_Invincibility(double longevity) : Ability::Ability(5, 5)
     {
         timeToDeactivate = 0;
         this->longevity = longevity;

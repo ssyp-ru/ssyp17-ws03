@@ -107,7 +107,7 @@ public:
         }
 
         mainGame.addObject(player);
-        player->addAbility(new Ability_DamageBoost(5, 2));
+        player->addAbility(new Ability_DamageBoost(15, 3));
         player->addAbility(new Ability_Heal(10));
         player->addAbility(new Ability_Invincibility(5));
 
