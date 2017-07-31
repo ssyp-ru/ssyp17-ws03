@@ -9,6 +9,7 @@
         <im id="mainmenu" file="data/menuwith.png" />
         <im id="player_spritelist" file="data/spritelist.png" />
         <im id="buttonsource" file="data/buttonsource.png" />
+        <im id="bg" file="data/bg.png" />
     </images>
 
     <sprites>
