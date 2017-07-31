@@ -12,6 +12,7 @@
 #include <string.h>
 #include <iostream>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <math.h>
 
@@ -27,6 +28,9 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
     camy = 0;
     
     zoom = 1;
+    set_fps(60);
+    last_frame_time = std::chrono::steady_clock::now();
+    last_second = last_frame_time;
 
     for( int i = 0; i < 256; i++ ) key[i] = false;
 
@@ -324,6 +328,23 @@ void OpenGL::draw()
 {
     glutSwapBuffers();
     glClear(GL_COLOR_BUFFER_BIT);
+
+    int time_milils = (std::chrono::duration_cast<std::chrono::microseconds>
+            (std::chrono::steady_clock::now() - last_frame_time)).count();
+    if (wait_period_mic - time_milils > 0){
+        usleep((wait_period_mic - time_milils) );
+    }
+    last_frame_time = std::chrono::steady_clock::now();
+
+    // count fps
+    if ((std::chrono::duration_cast<std::chrono::seconds>
+            (last_frame_time - last_second)).count() < 1){
+        frame_count++;
+    } else {
+        fps = frame_count;
+        frame_count = 1;
+        last_second = last_frame_time;
+    }
 }
 
 void OpenGL::keyboardDown( unsigned char c, int a, int b )
@@ -404,6 +425,15 @@ uint OpenGL::getWidth()
 uint OpenGL::getHeight()
 {
     return h;
+}
+
+void OpenGL::set_fps(uint new_fps){
+    fps_count_max = new_fps;
+    wait_period_mic = 1'000'000 / fps_count_max;
+}
+
+uint OpenGL::get_fps(){
+    return fps;
 }
 
 

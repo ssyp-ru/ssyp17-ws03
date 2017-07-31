@@ -65,10 +65,6 @@ namespace re
         OpenGL::instance().setLay( lay );
     }
 
-    void set_fps(uint fps){
-        
-    }
-
     void translate(int x, int y){
         OpenGL::instance().translate( -x, y );
     }
@@ -84,5 +80,13 @@ namespace re
 
     void rotate(float angle){
         OpenGL::instance().rotate( angle );
+    }
+
+    void set_fps(uint new_fps){
+        OpenGL::instance().set_fps(new_fps);
+    }
+
+    uint get_fps(){
+        return OpenGL::instance().get_fps();
     }
 } // namespace re

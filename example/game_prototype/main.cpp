@@ -129,9 +129,10 @@ public:
         
         map_objects_init();
 
+        re::background( re::Color(200,200,255) );
 
         re::ImagePtr bs = resource_manager.get_image("buttonsource");
-
+ 
         re::ImagePtr im_small_button = bs->get_subimage(0, 225, 50, 50);
         re::ImagePtr im_small_button_hover = bs->get_subimage(50, 225, 50, 50);
         re::XmlElemPtr gui = re::parse_xml("menu.xml")->get_children("gui")[0];
@@ -222,6 +223,11 @@ public:
             re::view_at( cam_x, cam_y );
             //re::view_at(  );
 
+            re::draw_image_part( re::get_cam_x(), re::get_cam_y(),
+                                 re::get_cam_x() + 1024, re::get_cam_y() + 576,
+                                 0,0, 1,1,
+                                 resource_manager.get_image("bg") );
+
             re::draw_image_part(0,0, 
                             3072,
                             1728, 
@@ -256,6 +262,7 @@ public:
         }
 
         gui_manager.display(curX, curY);
+        re::draw_text(50, 70, std::to_string(re::get_fps()), re::RED);
     }
     //Events:
     void on_key_released(re::Key key){
