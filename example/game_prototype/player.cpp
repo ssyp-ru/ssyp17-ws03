@@ -139,7 +139,7 @@ void Player::update()
     {
         if (isGrounded)
         {
-            addImpulse(re::Vector2f(0, -30 * getMass()));
+            addImpulse(re::Vector2f(0, -25 * getMass()));
             isGrounded = false;
         }
     }
