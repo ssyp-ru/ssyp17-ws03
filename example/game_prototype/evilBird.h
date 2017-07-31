@@ -7,7 +7,7 @@ public:
     WaypointPath *path;
     re::AnimationPtr movingAnim; // moving animation
 
-    EvilBird(re::Vector2f pos, double speed) : Enemy::Enemy(pos, re::Vector2f(1, 1)) 
+    EvilBird(re::Vector2f pos, double speed) : Enemy::Enemy(pos, re::Vector2f(3.5, 2.5)) 
     {
         hp = 10;
         maxhp = hp;
@@ -44,7 +44,7 @@ public:
             trig = std::make_shared<DamageTrigger>(position + vertexes[3],
              re::Vector2f(1, 1), attackDamage, ptr);
         } else {
-            trig = std::make_shared<DamageTrigger>(position - vertexes[3],
+            trig = std::make_shared<DamageTrigger>(position - vertexes[3] - 1,
              re::Vector2f(1, 1), attackDamage, ptr);
         }
         worldContainer->push_back(trig);

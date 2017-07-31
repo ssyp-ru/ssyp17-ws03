@@ -95,7 +95,7 @@ public:
         if ((isActivated) && (waypoints.size() > 1))
         {
             owner->setVelocity((waypoints[nextPoint] - owner->getPosition()).Normalized() * speed);
-            if ((owner->getPosition() - waypoints[nextPoint]).Length() <= 0.05)
+            if ((owner->getPosition() - waypoints[nextPoint]).Length() <= 0.25)
                 goNextWaypoint();
         }
     }

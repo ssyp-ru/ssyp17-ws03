@@ -104,12 +104,12 @@ public:
                                 re::Vector2f((float)object.width * SCALE_COEFF - 0.8, (float)object.height * SCALE_COEFF * 0.8));
                 mainGame.addObject(deathTrig);
             } else if (object.name == "EvilBird"){
-                auto evilbird = std::make_shared<EvilBird>(re::Vector2f(object.x * SCALE_COEFF,
-                object.y * SCALE_COEFF), 5.0);
+                auto evilbird = std::make_shared<EvilBird>(re::Vector2f(object.x * 64 * SCALE_COEFF,
+                object.y * 64 * SCALE_COEFF + 1), 5.0);
                 mainGame.addObject(evilbird);
                 evilbird->path->addWaypoint(re::Vector2f(
-                    (object.x * SCALE_COEFF) + 4 + (object.width / 128) * 4,// - 1) * 4,
-                    (object.y * SCALE_COEFF) + 4// + ((object.height / 128) - 1) * 4
+                    evilbird->getPosition().X + object.width * 4,
+                    evilbird->getPosition().Y + object.height * 4
                 ));
                 evilbird->path->setActivated(true);
                 evilbird->movingAnim = resource_manager.get_animation("birdMovingAnim");
@@ -203,13 +203,28 @@ public:
             cam_x+= 64 * 17;
             cam_x/= 64 * 16;
 
-            if( cam_x != location.X )
+            if( cam_x > location.X)
             {
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Vector2f(((location.X-1) * 4 * 16) - 0.5, location.Y * 4 * 9 - 0.5), 
                         re::Vector2f(4 * 15 + 1, 4 * 9 + 1) ) );
+                mainGame.addObject( std::make_shared<DeathTrigger>(
+                        re::Vector2f(((location.X-1) * 4 * 16) - 0.5 + 4, location.Y * 4 * 9 - 0.5 + 4), 
+                        re::Vector2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
                 player->reduceCooldowns();
             }
+
+            if( cam_x < location.X)
+            {
+                mainGame.addObject( std::make_shared<Platform>(
+                        re::Vector2f(((location.X+1) * 4 * 16) - 0.5, location.Y * 4 * 9 - 0.5), 
+                        re::Vector2f(4 * 15 + 1, 4 * 9 + 1) ) );
+                mainGame.addObject( std::make_shared<DeathTrigger>(
+                        re::Vector2f(((location.X+1) * 4 * 16) - 0.5 + 4, location.Y * 4 * 9 - 0.5 + 4), 
+                        re::Vector2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
+                player->reduceCooldowns();
+            }
+
 
             location.X = cam_x;
             cam_x*= 64 * 16;
@@ -220,8 +235,11 @@ public:
             if( cam_y != location.Y )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f((location.X-1) * 64 * 16, location.Y * 64 * 9 ), 
+                        re::Vector2f(location.X * 64 * 16, (location.Y - 1) * 64 * 9 ), 
                         re::Vector2f(4 * 15, 4 * 9) ) );
+                mainGame.addObject( std::make_shared<DeathTrigger>(
+                        re::Vector2f(location.X * 4 * 16 - 0.5 + 4, (location.Y - 1) * 4 * 9 - 0.5 + 4), 
+                        re::Vector2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
                 player->reduceCooldowns();
             }
             location.Y = cam_y;
