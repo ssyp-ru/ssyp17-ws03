@@ -27,7 +27,7 @@ public:
         return self;
     }
 
-    void init( uint width, uint height, IBaseAppPtr BaseApp );
+    void init( unsigned int width, unsigned int height, IBaseAppPtr BaseApp );
     void run();
     void close();
 
@@ -56,8 +56,8 @@ public:
     void blewAll();
     void setLay( int lay );
 
-    void set_fps(uint new_fps);
-    uint get_fps();
+    void set_fps(unsigned int new_fps);
+    unsigned int get_fps();
 
     bool getKeyState( unsigned char c );
 
@@ -65,8 +65,8 @@ public:
     void (*callbackIdle)();
     //std::function<void()> callbackIdle;
 
-    uint getWidth();
-    uint getHeight();
+    unsigned int getWidth();
+    unsigned int getHeight();
 
     int getCamX();
     int getCamY();
@@ -94,8 +94,8 @@ private:
     IBaseAppPtr baseApp;
     std::string windowName;
     int windowId;
-    uint w, h;
-    uint camx, camy;
+    unsigned int w, h;
+    unsigned int camx, camy;
     int fps_count_max, wait_period_mic, frame_count, fps;
     std::chrono::time_point<std::chrono::steady_clock> last_frame_time, last_second;
 };

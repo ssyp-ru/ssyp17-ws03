@@ -30,7 +30,7 @@ public:
     virtual void attack() override
     {
         re::GameObjectPtr ptr;
-        for (uint i = 0; i < (*worldContainer).size(); i++)
+        for (unsigned int i = 0; i < (*worldContainer).size(); i++)
         {
             if ((*worldContainer)[i].get() == this)
             {

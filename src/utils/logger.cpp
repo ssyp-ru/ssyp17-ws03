@@ -58,7 +58,7 @@ long re::Log::time() {
 std::ofstream& re::Log::stream() {
     return log.stream();
 }
-uint re::Log::msg(std::string message, re::Log::LEVEL level) {
+unsigned int re::Log::msg(std::string message, re::Log::LEVEL level) {
     return log.msg(message, level);
 }
 std::ofstream& re::Log::stream_msg() {

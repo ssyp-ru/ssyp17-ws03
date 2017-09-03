@@ -5,9 +5,9 @@
 namespace re {
 
 struct Object {
-    uint id;
+    unsigned int id;
     std::string name;
-    uint height, width;
+    unsigned int height, width;
     double x, y;
     std::vector<std::string> flags;
 };
@@ -18,9 +18,9 @@ struct ObjectGroup {
 };
 
 struct Tileset {
-    uint firstgid;
-    uint tilewidth, tileheight, tilecount, columns;
-    uint img_width, img_height;
+    unsigned int firstgid;
+    unsigned int tilewidth, tileheight, tilecount, columns;
+    unsigned int img_width, img_height;
     std::string source;
     std::string name;
     std::string img_source;
@@ -28,10 +28,10 @@ struct Tileset {
 };
 
 struct Layer {
-    uint height;
-    uint width;
+    unsigned int height;
+    unsigned int width;
     std::string name;
-    std::vector<uint> data;
+    std::vector<unsigned int> data;
     ImagePtr background;
 };
 struct Map {

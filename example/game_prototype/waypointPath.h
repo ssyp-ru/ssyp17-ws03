@@ -23,7 +23,7 @@ class WaypointPath
             if ((nextPoint == 0) && (isCycled)) return waypoints.size() - 1;
             return nextPoint - 1;
         } else {
-            if (((uint)nextPoint == waypoints.size() - 1) && (isCycled)) return 0;
+            if (((unsigned int)nextPoint == waypoints.size() - 1) && (isCycled)) return 0;
             return nextPoint + 1;
         }
     }
@@ -31,7 +31,7 @@ class WaypointPath
     {
         if (curDirection == 1)
         {
-            if ((uint)nextPoint == waypoints.size() - 1)
+            if ((unsigned int)nextPoint == waypoints.size() - 1)
             {
                 if (isCycled) return 0;
                 curDirection = -1;

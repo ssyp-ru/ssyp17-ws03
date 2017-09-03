@@ -8,15 +8,15 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#include <GL/glx.h>
+// #include <GL/glx.h>
 
 using std::vector;
 
 namespace re
 {
 
-const uint particleLimit = 1000;
-const uint particleSystemLimit = 10;
+const unsigned int particleLimit = 1000;
+const unsigned int particleSystemLimit = 10;
 
 std::vector<stParticle> allParticles;
 std::vector<stParticleSystem> allSystems;
@@ -33,7 +33,7 @@ int findLastParticle()
         }
     }*/
 
-    for( uint i = 0; i < particleLimit; i++ )
+    for( unsigned int i = 0; i < particleLimit; i++ )
     {
         if( allParticles[i].life <= 0 )
         {
@@ -46,7 +46,7 @@ int findLastParticle()
 
 int findLastParticleSystem()
 {
-    for( uint i = 0; i < particleSystemLimit; i++ )
+    for( unsigned int i = 0; i < particleSystemLimit; i++ )
     {
         if( allSystems[i].life <= 0 )
         {
@@ -146,7 +146,7 @@ void initParticles()
     nPatricle.endImg = Point2f(0,0);
     nPatricle.startImg = Point2f(0,0);
 
-    for( uint i = 0; i < particleLimit; i++ )
+    for( unsigned int i = 0; i < particleLimit; i++ )
     {
         allParticles.push_back( nPatricle );
     }
@@ -154,7 +154,7 @@ void initParticles()
     stParticleSystem systems;
     systems.life = 0;
     
-    for( uint i = 0; i < particleSystemLimit; i++ )
+    for( unsigned int i = 0; i < particleSystemLimit; i++ )
     {
         allSystems.push_back( systems );
     }

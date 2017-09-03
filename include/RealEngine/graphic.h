@@ -18,7 +18,7 @@ namespace re{
     //not simple draw image, (x0,y0)(x1,y1) position of rectangle, (w0,h0)(w1,h1) part of image
     void draw_image_part(int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr im);
     //set maximum fps
-    void set_fps(uint fps);
+    void set_fps(unsigned int fps);
     //change draw pos, strange foo
     void translate(int x, int y);
     //ZOOMING
@@ -37,11 +37,11 @@ namespace re{
     //return state( prese or not ) of key
     bool get_key_state( Key key );
 
-    void set_fps(uint new_fps);
-    uint get_fps();
+    void set_fps(unsigned int new_fps);
+    unsigned int get_fps();
 
-    uint get_width();
-    uint get_height();
+    unsigned int get_width();
+    unsigned int get_height();
 
     int get_cam_x();
     int get_cam_y();

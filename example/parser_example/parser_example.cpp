@@ -12,7 +12,7 @@ public:
     re::Map map;
     re::ImagePtr bg;
     std::vector<re::ImagePtr> emptyBG;
-    uint i, t = 0;
+    unsigned int i, t = 0;
     void setup() override {
         i = 1; t = 0;
         x = 0;
@@ -21,8 +21,8 @@ public:
         re::set_fps(60);
         for(int j = 1; j <= 32; j*=2) {
             re::ImagePtr img = std::make_shared<re::Image>(1920,1080, 4);
-            for(uint y = 0; y < 1080; y++)
-                for(uint x = 0; x < 1920; x++) {
+            for(unsigned int y = 0; y < 1080; y++)
+                for(unsigned int x = 0; x < 1920; x++) {
                     if(((x/j)%2 == 0) ^ ((y/j)%2 == 0)) {
                         img->set_pix_color(x,y,re::GREEN);
                     } else {

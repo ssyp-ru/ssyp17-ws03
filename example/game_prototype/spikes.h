@@ -25,7 +25,7 @@ public:
             if (/*(vec.angleBetween(re::Vector2f(0, -1)) <= 100 / 180 * 3.14159) && */(std::dynamic_pointer_cast<Unit>(obj) != 0))
             {
                 re::GameObjectPtr ptr;
-                for (uint i = 0; i < (*worldContainer).size(); i++)
+                for (unsigned int i = 0; i < (*worldContainer).size(); i++)
                 {
                     if ((*worldContainer)[i].get() == this)
                     {

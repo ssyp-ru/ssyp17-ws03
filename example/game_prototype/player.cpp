@@ -22,7 +22,7 @@ Player::Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(2, 3))
 void Player::addAbility(Ability *ab)
 {
     abilities.push_back(ab);
-    for (uint i = 0; i < (*worldContainer).size(); i++)
+    for (unsigned int i = 0; i < (*worldContainer).size(); i++)
     {
         if ((*worldContainer)[i].get() == this)
         {
@@ -46,7 +46,7 @@ void Player::onCollisionStay(re::GameObjectPtr to, re::Vector2f vec)
 }
 void Player::tryCast(int abilityIndex)
 {
-    if ((abilityIndex < 0) || ((uint)abilityIndex >= abilities.size())) return;
+    if ((abilityIndex < 0) || ((unsigned int)abilityIndex >= abilities.size())) return;
     if ((abilities[abilityIndex]->getRequiredLevel() <= level) && (abilities[abilityIndex]->canCast()))
     {
         abilities[abilityIndex]->cast();
@@ -71,7 +71,7 @@ void Player::addExp(int amount)
 void Player::attack()
 {
     re::GameObjectPtr ptr;
-    for (uint i = 0; i < (*worldContainer).size(); i++)
+    for (unsigned int i = 0; i < (*worldContainer).size(); i++)
     {
         if ((*worldContainer)[i].get() == this)
         {
@@ -97,7 +97,7 @@ void Player::update()
 
     addForce(re::Vector2f(0, 60 * getMass()));
 
-    for (uint i = 0; i < abilities.size(); i++)
+    for (unsigned int i = 0; i < abilities.size(); i++)
         abilities[i]->update();
 
     if ((getVelocity().Y > 0.1) && (isGrounded)) isGrounded = false;
@@ -147,7 +147,7 @@ void Player::update()
 }
 void Player::reduceCooldowns()
 {
-    for (uint i = 0; i < abilities.size(); i++)
+    for (unsigned int i = 0; i < abilities.size(); i++)
         abilities[i]->reduceCooldown();
 }
 void Player::display(int scale)

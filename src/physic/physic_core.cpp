@@ -258,7 +258,7 @@ std::vector<Edge>* GameObject::getEdges()
 }
 void GameObject::rotate(double rotation)
 {
-	for (uint i = 0; i < vertexes.size(); i++)
+	for (unsigned int i = 0; i < vertexes.size(); i++)
 	{
 		vertexes[i].rotate(rotation);
 	}
@@ -292,7 +292,7 @@ void GameObject::setCanChangeSpeed(bool value) { canChangeSpeed = value; }
 void GameObject::countMassCenter() 
 {
     double x = 0, y = 0;
-    for (uint i = 0; i < vertexes.size(); i++)
+    for (unsigned int i = 0; i < vertexes.size(); i++)
     {
         x += position.X + vertexes[i].X;
         y += position.Y + vertexes[i].Y;
@@ -315,11 +315,11 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
 	Vector2f middleObjectsVec = (gm.getMassCenter() - getMassCenter()) * 2;
 	//Vector2f curLineForProjection = ((getMassCenter() + *edges[i].P2) - (getMassCenter() + *edges[i].P1)).getRightNormal();
     std::vector<Vector2f> linesForProjection;
-    for (uint i = 0; i < edges.size(); i++)
+    for (unsigned int i = 0; i < edges.size(); i++)
     {
         bool needToAdd = true;
         Vector2f curLine = ((*edges[i].P1 + position) - (*edges[i].P2 + position)).getLeftNormal();
-        for (uint j = 0; j < linesForProjection.size(); j++)
+        for (unsigned int j = 0; j < linesForProjection.size(); j++)
         {
             if (curLine.isCollinearTo(linesForProjection[j]))
             {
@@ -331,11 +331,11 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
             linesForProjection.push_back(curLine);
     }
     //std::cout << "hey\n";
-    for (uint i = 0; i < gm.edges.size(); i++)
+    for (unsigned int i = 0; i < gm.edges.size(); i++)
     {
         bool needToAdd = true;
         Vector2f curLine = ((*gm.edges[i].P1 + gm.position) - (*gm.edges[i].P2 + gm.position)).getLeftNormal();
-        for (uint j = 0; j < linesForProjection.size(); j++)
+        for (unsigned int j = 0; j < linesForProjection.size(); j++)
         {
             if (curLine.isCollinearTo(linesForProjection[j]))
             {
@@ -347,7 +347,7 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
             linesForProjection.push_back(curLine);
     }
     //std::cout << "hey\n";
-	for (uint i = 0; i < linesForProjection.size(); i++)
+	for (unsigned int i = 0; i < linesForProjection.size(); i++)
 	{
 		Vector2f selfProjection;
 		Vector2f otherProjection;
@@ -360,7 +360,7 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
 			//re::graphic::draw_line(linesForProjection[i].X * 250 + 200, linesForProjection[i].Y * 250 + 200,
 			//					   linesForProjection[i].X * -250 + 200, linesForProjection[i].Y * -250 + 200,
 			//					   re::BLACK);
-			for (uint j = 0; j < vertexes.size(); j++)
+			for (unsigned int j = 0; j < vertexes.size(); j++)
 			{
 				self_projectedPoints.push_back((position + vertexes[j]).projectOnVector(linesForProjection[i]));
 				//re::graphic::draw_line((position.X + vertexes[j].X) * 25, (position.Y + vertexes[j].Y) * 25,
@@ -370,7 +370,7 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
 			}
 			
             Vector2f *self_smallestPoint = &self_projectedPoints[0], *self_biggestPoint = &self_projectedPoints[0];
-			for (uint j = 1; j < self_projectedPoints.size(); j++)
+			for (unsigned int j = 1; j < self_projectedPoints.size(); j++)
 			{
                 if (linesForProjection[i].X == 0)
                 {
@@ -390,7 +390,7 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
 		//#pragma region getting other-projection
 		//
 			std::vector<Vector2f> other_projectedPoints;
-			for (uint j = 0; j < gm.vertexes.size(); j++)
+			for (unsigned int j = 0; j < gm.vertexes.size(); j++)
 			{
 				other_projectedPoints.push_back((gm.position + gm.vertexes[j]).projectOnVector(linesForProjection[i]));
 				//re::graphic::draw_line((gm.position.X + gm.vertexes[j].X) * 25, (gm.position.Y + gm.vertexes[j].Y) * 25,
@@ -400,7 +400,7 @@ Vector2f GameObject::removeCollisionWith(GameObject &gm)
 			}
 			
             Vector2f *other_smallestPoint = &other_projectedPoints[0], *other_biggestPoint = &other_projectedPoints[0];
-			for (uint j = 1; j < other_projectedPoints.size(); j++)
+			for (unsigned int j = 1; j < other_projectedPoints.size(); j++)
 			{
                 if (linesForProjection[i].X == 0)
                 {
@@ -486,11 +486,11 @@ void GameObject::destroy()
 void Game::updatePhysics()
 {
     //std::cout << "WTF\n";
-	for (uint i = 0; i < world.size(); i++)
+	for (unsigned int i = 0; i < world.size(); i++)
 		world[i]->updatePos();
-	for (uint i = 0; i < world.size(); i++)
+	for (unsigned int i = 0; i < world.size(); i++)
 	{
-		for (uint j = 0; j < world.size(); j++)
+		for (unsigned int j = 0; j < world.size(); j++)
 		{
             if (world[i] != world[j])
 			    if (world[i]->needTestWith(*(world[j]))) // is objects near to each other
@@ -536,7 +536,7 @@ void Game::updatePhysics()
 			    }
 		}
 	}
-    for (uint i = 0; i < world.size(); i++)
+    for (unsigned int i = 0; i < world.size(); i++)
     {
         //if ((world[i]->newPosition.X != 0) && (world[i]->newPosition.Y != 0))
             world[i]->position += world[i]->newPosition;
@@ -575,7 +575,7 @@ void Game::updateTick()
 {
     if (ticksAlive == 0) isGame = true;
 
-	for (uint i = 0; i < world.size(); i++)
+	for (unsigned int i = 0; i < world.size(); i++)
 	{
 		if (world[i]->destroyNextFrame)
 			world.erase(world.begin() + i);

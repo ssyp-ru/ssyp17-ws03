@@ -6,20 +6,21 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#include <GL/glx.h>
+// #include <GL/glx.h>
 
 #include <string>
 #include <string.h>
 #include <iostream>
 #include <stdlib.h>
-#include <unistd.h>
+// #include <unistd.h>
+#include <thread>
 
 #include <math.h>
 
 namespace re
 {
 
-void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
+void OpenGL::init( unsigned int width, unsigned int height, IBaseAppPtr BaseApp )
 {   
     w = width;
     h = height;
@@ -332,7 +333,8 @@ void OpenGL::draw()
     int time_milils = (std::chrono::duration_cast<std::chrono::microseconds>
             (std::chrono::steady_clock::now() - last_frame_time)).count();
     if (wait_period_mic - time_milils > 0){
-        usleep((wait_period_mic - time_milils) );
+        // usleep((wait_period_mic - time_milils) );
+        std::this_thread::sleep_for(std::chrono::microseconds(wait_period_mic - time_milils));
     }
     last_frame_time = std::chrono::steady_clock::now();
 
@@ -417,22 +419,22 @@ void OpenGL::mousePress( int button, int state, int x, int y )
     if(state){ OpenGL::instance().baseApp->on_button_pressed( button ); }
 }
 
-uint OpenGL::getWidth()
+unsigned int OpenGL::getWidth()
 {
     return w;
 }
 
-uint OpenGL::getHeight()
+unsigned int OpenGL::getHeight()
 {
     return h;
 }
 
-void OpenGL::set_fps(uint new_fps){
+void OpenGL::set_fps(unsigned int new_fps){
     fps_count_max = new_fps;
     wait_period_mic = 1'000'000 / fps_count_max;
 }
 
-uint OpenGL::get_fps(){
+unsigned int OpenGL::get_fps(){
     return fps;
 }
 

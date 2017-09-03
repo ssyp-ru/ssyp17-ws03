@@ -20,7 +20,7 @@ namespace re {
         
         // prints message to log, in format "> N: [StopWatch.getTimeString : time()] msg"
         // returns index of msg printed.
-        static uint msg(std::string, LEVEL);
+        static unsigned int msg(std::string, LEVEL);
         
         // same as stream, but also writes default overhead of msg
         // +"> N: [StopWatch.getTimeString : time()]"

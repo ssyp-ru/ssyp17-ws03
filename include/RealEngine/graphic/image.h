@@ -31,7 +31,7 @@ public:
 private:
     unsigned char* image_buffer;
     bool gl;
-    uint glid;
+    unsigned int glid;
 
     void generate_texture();
 };

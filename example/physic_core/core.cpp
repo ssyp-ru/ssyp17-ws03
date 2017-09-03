@@ -53,9 +53,9 @@ public:
 
 
         re::background(re::WHITE);
-        for (uint i = 0; i < curWorld.size(); i++)
+        for (unsigned int i = 0; i < curWorld.size(); i++)
         {
-            for (uint j = 0; j < curWorld[i]->getEdges()->size(); j++)
+            for (unsigned int j = 0; j < curWorld[i]->getEdges()->size(); j++)
             {
                 re::draw_line(((*curWorld[i]->getEdges())[j].P1->X + curWorld[i]->getPosition().X) * 25, 
                                        ((*curWorld[i]->getEdges())[j].P1->Y + curWorld[i]->getPosition().Y) * 25,

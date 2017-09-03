@@ -40,12 +40,12 @@ namespace re
         OpenGL::instance().goFullScreen();
     }
 
-    uint get_width()
+    unsigned int get_width()
     {
         return OpenGL::instance().getWidth();
     }
 
-    uint get_height()
+    unsigned int get_height()
     {
         return OpenGL::instance().getHeight();
     }
@@ -82,11 +82,11 @@ namespace re
         OpenGL::instance().rotate( angle );
     }
 
-    void set_fps(uint new_fps){
+    void set_fps(unsigned int new_fps){
         OpenGL::instance().set_fps(new_fps);
     }
 
-    uint get_fps(){
+    unsigned int get_fps(){
         return OpenGL::instance().get_fps();
     }
 } // namespace re

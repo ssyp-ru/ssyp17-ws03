@@ -90,8 +90,8 @@ Tileset parse_tileset(XmlElemPtr parsed_xml) {
         tileset.img_width = std::stoi(ts->field.at("width"));
         tileset.img_height = std::stoi(ts->field.at("height"));
         auto tileset_src = std::make_shared<Image>(tileset.img_source);
-        for(uint j = 0; j < tileset.tilecount*tileset.columns; j++) {
-            for(uint i = 0; i < tileset.columns; i++) {
+        for(unsigned int j = 0; j < tileset.tilecount*tileset.columns; j++) {
+            for(unsigned int i = 0; i < tileset.columns; i++) {
                 tileset.tiles.push_back(tileset_src);//->get_subimage(i*tileset.tilewidth,j*tileset.tileheight,tileset.tilewidth,tileset.tileheight));
             }
         }
@@ -124,8 +124,8 @@ Map parse_map(XmlElemPtr parsed_xml) {
             auto height = map.tileset[0].tileheight;
             layer.background = std::make_shared<Image>(layer.width*width,layer.height*height, 4);
 
-            for(uint y = 0; y < layer.height; y++)
-                for(uint x = 0; x < layer.width; x++) {
+            for(unsigned int y = 0; y < layer.height; y++)
+                for(unsigned int x = 0; x < layer.width; x++) {
                     int a = map.layer[0].data[y*layer.width + x];
                     if( a > 0 && a < 100 )
                     {

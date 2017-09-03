@@ -28,8 +28,9 @@ add_library(real_engine SHARED ${SOURCE_LIB})
 target_link_libraries(real_engine gcc)
 target_link_libraries(real_engine gcc_s)
 
-target_link_libraries(real_engine glut)
-target_link_libraries(real_engine GLU)
-target_link_libraries(real_engine GL)
+#target_link_libraries(real_engine glut)
+#target_link_libraries(real_engine GLU)
+#target_link_libraries(real_engine GL)
+target_link_libraries(real_engine freeglut)
 
-target_link_libraries(real_engine stdc++fs)
+#target_link_libraries(real_engine stdc++fs)
