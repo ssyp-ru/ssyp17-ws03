@@ -62,6 +62,7 @@ void OpenGL::init( unsigned int width, unsigned int height, IBaseAppPtr BaseApp 
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 
     glutIdleFunc( OpenGL::callbackIdle );
+    glutDisplayFunc( OpenGL::callbackDisplay );
     glutKeyboardFunc( OpenGL::keyboardDown );
     glutKeyboardUpFunc( OpenGL::keyboardUp );
     glutMouseFunc( OpenGL::mousePress );

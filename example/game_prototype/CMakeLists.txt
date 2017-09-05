@@ -9,7 +9,7 @@ set(EXECUTABLE  main.cpp
                 hud.cpp
                 )
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_custom_target(run_game_prototype
     COMMAND game_prototype

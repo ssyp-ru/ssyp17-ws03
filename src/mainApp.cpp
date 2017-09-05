@@ -17,11 +17,14 @@ void setWindowName( std::string name )
     OpenGL::instance().setWindowName( name );
 }
 
+void idle(){ return; }
+
 void runApp(int window_width, int window_height, IBaseAppPtr BaseApp){
     MainApp::baseApp = BaseApp;
 
     OpenGL::instance().callbackPostInit = MainApp::init;
     OpenGL::instance().callbackIdle = MainApp::tick;
+    OpenGL::instance().callbackDisplay = idle;
 
     OpenGL::instance().init( window_width, window_height, BaseApp );
     

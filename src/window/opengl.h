@@ -63,6 +63,7 @@ public:
 
     void (*callbackPostInit)();
     void (*callbackIdle)();
+    void (*callbackDisplay)();
     //std::function<void()> callbackIdle;
 
     unsigned int getWidth();
