@@ -22,22 +22,17 @@ set(SOURCE_LIB  window/opengl.cpp
 
 set_source_files_properties(graphics/Image.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)
 
+find_package(OpenGL REQUIRED)
+find_package(GLUT REQUIRED)
 
-
-#add_library(freeglut SHARED IMPORTED GLOBAL)
-#set_property(TARGET freeglut PROPERTY IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/freeglut.dll)
-
+include_directories( ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
 
 add_library(real_engine SHARED ${SOURCE_LIB})
 # For stb_image lib
 target_link_libraries(real_engine gcc)
 target_link_libraries(real_engine gcc_s)
 
-#target_link_libraries(real_engine glut)
-#target_link_libraries(real_engine GLU)
-#target_link_libraries(real_engine GL)
-target_link_libraries(real_engine opengl32)
-target_link_libraries(real_engine freeglut)
-target_link_libraries(real_engine glu32)
+
+target_link_libraries(real_engine ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
 
 #target_link_libraries(real_engine stdc++fs)
