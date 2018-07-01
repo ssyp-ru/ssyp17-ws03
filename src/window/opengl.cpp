@@ -466,7 +466,9 @@ Key OpenGL::key_to_key(char key_code){
     }
 
     switch(key_code){
+        case ' ':                   return Key::Space;
         case 27:                    return Key::Escape;
+        case '\b':                  return Key::BackSpace;
     }
 
     return Key::Unknown;
@@ -479,6 +481,23 @@ Key OpenGL::key_to_key_special(char key_code)
         case GLUT_KEY_LEFT:         return Key::Left;
         case GLUT_KEY_UP:           return Key::Up;
         case GLUT_KEY_DOWN:         return Key::Down;
+        case GLUT_KEY_F1:           return Key::F1;
+        case GLUT_KEY_F2:           return Key::F2;
+        case GLUT_KEY_F3:           return Key::F3;
+        case GLUT_KEY_F4:           return Key::F4;
+        case GLUT_KEY_F5:           return Key::F5;
+        case GLUT_KEY_F6:           return Key::F6;
+        case GLUT_KEY_F7:           return Key::F7;
+        case GLUT_KEY_F8:           return Key::F8;
+        case GLUT_KEY_F9:           return Key::F9;
+        case GLUT_KEY_F10:          return Key::F10;
+        case GLUT_KEY_F11:          return Key::F11;
+        case GLUT_KEY_F12:          return Key::F12;
+        case GLUT_KEY_PAGE_UP:      return Key::PageUp;
+        case GLUT_KEY_PAGE_DOWN:    return Key::PageDown;
+        case GLUT_KEY_HOME:         return Key::Home;
+        case GLUT_KEY_END:          return Key::End;
+        case GLUT_KEY_INSERT:       return Key::Insert;
     }
 
     return Key::Unknown;
