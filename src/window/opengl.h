@@ -5,6 +5,7 @@
 #include "RealEngine/graphic/image.h"
 #include "RealEngine/keyboard.h"
 #include "RealEngine/baseApp.h"
+#include "RealEngine/math.h"
 
 #include <string>
 #include <chrono>
@@ -55,6 +56,9 @@ public:
     void draw_blew( int x0, int y0, int we, int he, int power );
     void blewAll();
     void setLay( int lay );
+
+    Point2f trace_to_world( Point2f click );
+    Point2f trace_to_screen( Point2f click );
 
     void set_fps(uint new_fps);
     uint get_fps();
