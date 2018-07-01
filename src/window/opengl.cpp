@@ -310,6 +310,7 @@ Point2f OpenGL::trace_to_world( Point2f click )
     click *= this->zoom;
     click.x += this->camx;
     click.y += this->camy;
+    return click;
 }
 
 Point2f OpenGL::trace_to_screen( Point2f click )
@@ -317,6 +318,7 @@ Point2f OpenGL::trace_to_screen( Point2f click )
     click.x -= this->camx;
     click.y -= this->camy;
     click /= this->zoom;
+    return click;
 }
 
 void OpenGL::scale( float co )
