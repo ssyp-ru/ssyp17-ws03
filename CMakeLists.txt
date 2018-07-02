@@ -34,6 +34,7 @@ target_link_libraries(math_test real_engine)
 
 # examples
 add_subdirectory(example/simple_window)
+add_subdirectory(example/simple_network)
 add_subdirectory(example/simple_platformer)
 add_subdirectory(example/parser_example)
 add_subdirectory(example/resource_example)
