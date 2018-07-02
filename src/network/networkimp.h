@@ -4,6 +4,11 @@
 #include <asio.hpp>
 #include <thread>
 
+namespace re
+{
+
+const size_t max_size_of_package = 4096;
+
 enum DataType
 {
     event,
@@ -12,38 +17,52 @@ enum DataType
 
 struct MsgHeader
 {
-    unsigned short int size;
-    unsigned char type;
+    uint16_t size;
+    uint8_t type;
 };
 
-class TCPClientImpl : public re::TCPClient {
+void encode_header( char *buffer, MsgHeader header );
+MsgHeader decode_header( char *buffer );
+
+static size_t msg_header_size = sizeof(uint16_t) + sizeof(uint8_t);
+
+class TCPClientImpl : public TCPClient {
 public:
     TCPClientImpl();
-    virtual bool connect( std::string, int ) override;
-    virtual bool isConnected() override;
+    virtual bool connect( std::string addr, int port ) override;
+    virtual bool is_connected() override;
     void listen();
-    virtual void send( std::string ) override;
+    virtual void send( std::vector<char> data ) override;
+    virtual void set_recive_callback( std::function<void(std::vector<char>)> on_recive ) override;
 private:
     bool connected = false;
     asio::io_service io_service;
     asio::ip::tcp::socket sock;
-    char bufferIn[re::networkMaxPackage];
-    char bufferOut[re::networkMaxPackage]; 
+    char buffer_in[max_size_of_package];
+    char buffer_out[max_size_of_package]; 
     std::thread listner;
+    std::function<void(std::vector<char>)> on_recive;
 };
 
-class TCPServerImpl : public re::TCPServer {
+class TCPServerImpl : public TCPServer {
 public:
     TCPServerImpl();
     virtual void setup( int port ) override;
-    virtual int getClientCount() override;
+    virtual int get_client_count() override;
+    virtual void set_connect_callback( std::function<void(int)> on_client_connect ) override;
 
-    virtual void send( int id, std::string data ) override;
+    virtual void send( int id, std::vector<char> data ) override;
+    virtual void set_recive_callback( std::function<void(int, std::vector<char>)> on_recive ) override;
 
     void accept();
     void listen( int id );
 private:
-    std::vector<asio::ip::tcp::socket*> clients;
+    std::function<void(int, std::vector<char>)> on_recive;
+    std::function<void(int)> on_client_connect;
+
+    std::vector<std::shared_ptr<asio::ip::tcp::socket>> clients;
     asio::io_service io_service;
     asio::ip::tcp::acceptor tcp_acceptor;
 };
+
+}

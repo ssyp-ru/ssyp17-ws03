@@ -1,28 +1,45 @@
 #include "networkimp.h"
 
-using namespace asio::ip;
+using namespace asio::ip; 
+
+using namespace re;
+
+void re::encode_header( char *buffer, MsgHeader header )
+{
+    *(uint16_t*)buffer = header.size;
+    *(uint8_t*)(buffer+2) = header.type;
+}
+
+MsgHeader re::decode_header( char *buffer )
+{
+    MsgHeader header;
+    header.size = *(uint16_t*)buffer;
+    header.type = *(uint8_t*)(buffer+2);
+    return header;
+}
 
 void TCPClientImpl::listen()
 {
     for(;;)
     {
-        char header[sizeof(MsgHeader)];
         asio::error_code error;
         asio::read(
             this->sock,
-            asio::buffer(header),
-            asio::transfer_exactly( sizeof(MsgHeader) ),
+            asio::buffer(buffer_in),
+            asio::transfer_exactly( msg_header_size ),
             error );
 
         if(error)
         {
             break;
         }
+
+        MsgHeader header = decode_header( buffer_in );
 
         asio::read(
             this->sock,
-            asio::buffer(this->bufferIn),
-            asio::transfer_exactly( ((MsgHeader*)header)->size ),
+            asio::buffer(this->buffer_in),
+            asio::transfer_exactly( header.size ),
             error );
 
         if(error)
@@ -30,9 +47,11 @@ void TCPClientImpl::listen()
             break;
         }
 
-        if( this->onRecive != nullptr )
+        std::vector<char> data(buffer_in, buffer_in + header.size);
+
+        if( this->on_recive )
         {
-            this->onRecive( std::string(bufferIn) );
+            this->on_recive( data );
         }
     }
 
@@ -40,19 +59,26 @@ void TCPClientImpl::listen()
     this->connected = false;
 }
 
-void TCPClientImpl::send( std::string data )
+void TCPClientImpl::send( std::vector<char> data )
 {
     MsgHeader header;
+    header.size = data.size();
     header.type = DataType::custom;
-    header.size = data.size() + 1;
-    
-    memcpy( bufferOut, &header, sizeof(MsgHeader) );
+
+    encode_header( buffer_out, header );
+
+    if( data.size() > max_size_of_package )
+    {
+        return;
+    }
+
+    memcpy( (buffer_out + msg_header_size), data.data(), data.size() );
 
     asio::error_code error;
     asio::write( 
         sock,
-        asio::buffer( bufferOut ),
-        asio::transfer_exactly( sizeof(MsgHeader) ),
+        asio::buffer( buffer_out ),
+        asio::transfer_exactly( msg_header_size + data.size() ),
         error
     );
 
@@ -60,19 +86,9 @@ void TCPClientImpl::send( std::string data )
     {
         return;
     }
-
-    memset( bufferOut, 0, re::networkMaxPackage );
-    memcpy( bufferOut, data.c_str(), data.size() );
-
-    asio::write(
-        sock,
-        asio::buffer(bufferOut),
-        asio::transfer_exactly( header.size ),
-        error
-    );
 }
 
-bool TCPClientImpl::isConnected()
+bool TCPClientImpl::is_connected()
 {
     return this->connected;
 }
@@ -89,7 +105,7 @@ bool TCPClientImpl::connect( std::string addr, int port )
     asio::error_code error;
     asio::read(
         sock,
-        asio::buffer(bufferIn),
+        asio::buffer(buffer_in),
         asio::transfer_exactly(4),
         error );
 
@@ -101,8 +117,12 @@ bool TCPClientImpl::connect( std::string addr, int port )
     listner = std::thread( std::bind(&TCPClientImpl::listen, this) );
     listner.detach();
 
-    this->connected = false;
+    this->connected = true;
     return true;
+}
+
+void TCPClientImpl::set_recive_callback( std::function<void(std::vector<char>)> on_recive ) {
+    this->on_recive = on_recive;
 }
 
 TCPClientImpl::TCPClientImpl()
