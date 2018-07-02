@@ -46,8 +46,7 @@ void TCPServerImpl::listen( int id ) {
         if(error)
         {
             //event disconect;
-            //break;
-            continue;
+            break;
         }
 
         MsgHeader header = decode_header( buffer );
