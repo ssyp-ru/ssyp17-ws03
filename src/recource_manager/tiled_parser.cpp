@@ -1,15 +1,37 @@
 #include <RealEngine/tiled_parser.h>
 #include <RealEngine/logger.h>
+#include <RealEngine/gstring.h>
 #include <RealEngine/graphic/image.h>
+#include <RealEngine/math.h>
 
 #include <iostream>
 
 namespace re{
 
+Polygon* parse_polygon(XmlElemPtr parsed_xml)
+{
+    Log::msg("parsing to object " + parsed_xml->name, Log::LEVEL::TRACE);
+
+    Polygon *poly = new Polygon;
+
+    try {
+        for (auto iter : str_split(parsed_xml->field.at("points"), ' '))
+        {
+            std::vector<std::string> values = str_split(iter, ',');
+            poly->points.push_back(Point2f(std::stof(values[0]), std::stof(values[1])));
+        }
+    } catch(...) {
+        Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
+    }
+
+    return poly;
+}
 
 Object parse_object(XmlElemPtr parsed_xml) {
-    Log::msg("parsing to object " + parsed_xml->name, Log::LEVEL::TRACE);    
+    Log::msg("parsing to object " + parsed_xml->name + " with ID " + parsed_xml->field.at("id"), Log::LEVEL::TRACE);
+
     Object object;
+
     try {
         object.name = parsed_xml->field.at("name");
         object.id = std::stoi(parsed_xml->field.at("id"));
@@ -17,12 +39,17 @@ Object parse_object(XmlElemPtr parsed_xml) {
         object.width = std::stoi(parsed_xml->field.at("width"));
         object.x = std::stod(parsed_xml->field.at("x"));
         object.y = std::stod(parsed_xml->field.at("y"));
-        for(auto& obj : parsed_xml->child) {
-            object.flags.push_back(obj->name);
+        for (auto& obj : parsed_xml->child)
+        {
+            if (object.poly == nullptr)
+                object.poly = parse_polygon(obj);
+            else
+                Log::msg("Unexpected second polygon in object.", Log::LEVEL::TRACE);
         }
     } catch(...) {
         Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
     }
+
     return object;
 }
 
@@ -33,7 +60,7 @@ ObjectGroup parse_objectgroup(XmlElemPtr parsed_xml) {
     try {
         objectgroup.name = parsed_xml->field.at("name");
         for(auto& obj : parsed_xml->child) {
-            objectgroup.group.push_back(parse_object(obj));
+            objectgroup.group.push_back((Object)parse_object(obj));
         }
     } catch(...) {
         Log::msg("Error parsing " + parsed_xml->name + " as an objectgroup.", Log::LEVEL::DEBUG);
@@ -118,27 +145,30 @@ Map parse_map(XmlElemPtr parsed_xml) {
     } catch(...) {
         Log::msg("Error parsing " + parsed_xml->name + " as a map.", Log::LEVEL::DEBUG);
     }
-    for(auto& layer : map.layer) {
-        try {
-            auto width = map.tileset[0].tilewidth;
-            auto height = map.tileset[0].tileheight;
-            layer.background = std::make_shared<Image>(layer.width*width,layer.height*height, 4);
+    if (map.tileset.size() > 0)
+    {
+        for(auto& layer : map.layer) {
+            try {
+                auto width = map.tileset[0].tilewidth;
+                auto height = map.tileset[0].tileheight;
+                layer.background = std::make_shared<Image>(layer.width*width,layer.height*height, 4);
 
-            for(uint y = 0; y < layer.height; y++)
-                for(uint x = 0; x < layer.width; x++) {
-                    int a = map.layer[0].data[y*layer.width + x];
-                    if( a > 0 && a < 100 )
-                    {
-                        layer.background->set_subimage(x*width,y*height,
-                            map.tileset[
-                                a-1
-                            ].tiles[0]);
+                for(uint y = 0; y < layer.height; y++)
+                    for(uint x = 0; x < layer.width; x++) {
+                        int a = map.layer[0].data[y*layer.width + x];
+                        if( a > 0 && a < 100 )
+                        {
+                            layer.background->set_subimage(x*width,y*height,
+                                map.tileset[
+                                    a-1
+                                ].tiles[0]);
+                        }
                     }
-                }
-            layer.background->reGenTexture();
-        } catch(...) {
-            Log::msg("Error creating background image for layer " + layer.name + ".", Log::LEVEL::DEBUG);
-        }
+                layer.background->reGenTexture();
+            } catch(...) {
+                Log::msg("Error creating background image for layer " + layer.name + ".", Log::LEVEL::TRACE);
+            }
+}
     }
     return map;
 }
