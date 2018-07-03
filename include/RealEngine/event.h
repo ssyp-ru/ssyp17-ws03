@@ -1,38 +1,45 @@
 #pragma once
 #include <vector>
 #include <functional>
+#include <memory>
 
 namespace re {
 
-template <typename E>
-class Event {
-public: 
-    typedef std::function<void(E)> callback;
-private: 
-    std::vector<callback> listeners;
+class Event{
 public:
-    void add_listener(callback cb) {
-        listeners.push_back(cb);
+    Event(unsigned int event_category, unsigned int event_type) : event_category_(event_category), event_type_(event_type){}     
+
+
+    unsigned int get_category()  
+    { 
+        return event_category_;
+    }
+    unsigned int get_type()      
+    { 
+        return event_type_; 
     }
 
-    bool remove_listener(callback cb)  {
-        size_t found = listeners.find(cb);
-        if(found != listeners.end()) {
-            listeners.erase(found);
-            return true;
-        }
-        return false;
-    }
 
-    void call(E event) {
-        for(callback& cb : listeners) {
-            cb(event);
-        }
-    }
-    
-    void operator()(E event) {
-        call(event);
-    }
+private:
+    const unsigned int event_category_;
+    const unsigned int event_type_;
 };
+typedef std::shared_ptr<Event> EventPtr;
+
+class EventSubscriber{
+ public:
+    virtual void on_event(std::shared_ptr<Event> event) = 0;
+    
+
+    virtual ~EventSubscriber();
+
+};
+
+
+
+void subscribe_to_event_type(EventSubscriber * event_sub, int category, int type);
+void subscribe_to_event_category(EventSubscriber * event_sub, int category);
+void publish_event(std::shared_ptr<Event> set_event);
+
 
 } // namespace re
