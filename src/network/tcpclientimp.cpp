@@ -40,13 +40,13 @@ uint16_t decode2byte( char *ch)
     return n;
 }
 
-void re::encode_header( char *buffer, MsgHeader header )
+void encode_header( char *buffer, MsgHeader header )
 {
     encode2byte( buffer, header.size );
     encode1byte( buffer + 2, header.type );
 }
 
-MsgHeader re::decode_header( char *buffer )
+MsgHeader decode_header( char *buffer )
 {
     MsgHeader header;
     header.size = decode2byte( buffer );
@@ -168,7 +168,7 @@ bool TCPClientImpl::connect( std::string addr, int port )
     return true;
 }
 
-void TCPClientImpl::set_recive_callback( std::function<void(std::vector<char>)> on_recive ) {
+void TCPClientImpl::set_recive_callback( TCPClientImpl::Callback on_recive ) {
     this->on_recive = on_recive;
 }
 

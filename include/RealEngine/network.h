@@ -14,11 +14,13 @@ typedef std::shared_ptr<class TCPServer> TCPServerPtr;
 class TCPClient
 {
 public:
+    typedef std::function<void(std::vector<char>)> Callback;
+
     virtual bool connect( std::string addr, int port ) = 0;
     virtual bool is_connected() = 0;
 
     virtual void send( std::vector<char> data ) = 0;
-    virtual void set_recive_callback( std::function<void(std::vector<char>)> on_recive ) = 0;
+    virtual void set_recive_callback( Callback on_recive ) = 0;
 
     static TCPClientPtr create();
 };

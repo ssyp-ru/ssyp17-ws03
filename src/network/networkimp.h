@@ -33,7 +33,7 @@ public:
     virtual bool is_connected() override;
     void listen();
     virtual void send( std::vector<char> data ) override;
-    virtual void set_recive_callback( std::function<void(std::vector<char>)> on_recive ) override;
+    virtual void set_recive_callback( Callback on_recive ) override;
 private:
     bool connected = false;
     asio::io_service io_service;
@@ -41,7 +41,7 @@ private:
     char buffer_in[max_size_of_package];
     char buffer_out[max_size_of_package]; 
     std::thread listner;
-    std::function<void(std::vector<char>)> on_recive;
+    Callback on_recive;
 };
 
 class TCPServerImpl : public TCPServer {
@@ -56,7 +56,7 @@ public:
     void accept();
     void listen( int id );
 private:
-    std::function<void(Callback_event,int,std::vector<char>)> callback;
+    Callback callback;
 
     std::vector<std::shared_ptr<asio::ip::tcp::socket>> clients;
     asio::io_service io_service;

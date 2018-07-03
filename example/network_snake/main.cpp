@@ -616,7 +616,7 @@ public:
             switch( key )
             {
             case re::Key::S:
-                tcp_server = re::TCPServer::get();
+                tcp_server = re::TCPServer::create();
                 tcp_server->set_callback( std::bind( 
                     &MainApp::on_recive_server, 
                     this, 
@@ -631,7 +631,7 @@ public:
                 players.push_back( Player(0,re::YELLOW, re::Point2f(2,2) ) );
                 break;
             case re::Key::C:
-                tcp_client = re::TCPClient::get();
+                tcp_client = re::TCPClient::create();
                 tcp_client->set_recive_callback( std::bind(
                     &MainApp::on_recive_client,
                     this,
