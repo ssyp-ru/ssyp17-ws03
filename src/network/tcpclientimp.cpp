@@ -14,42 +14,42 @@ void encode1byte( char *ch, uint8_t n)
     }
 }
 
-uint8_t decode1byte( char *ch)
+uint8_t decode1byte( char *ch )
 {
     uint8_t n = 0;
     for( int i = 7; i >= 0; i-- )
     {
         n *= 2;
-        n += (*ch >> i) & 1;
+        n += ( *ch >> i ) & 1;
     }
     return n;
 }
 
 void encode2byte( char *ch, uint16_t n)
 {
-    encode1byte(ch,n%256);
-    encode1byte(ch+1,n/256);
+    encode1byte( ch, n % 256 );
+    encode1byte( ch + 1, n / 256 );
 }
 
 uint16_t decode2byte( char *ch)
 {
     uint16_t n;
-    n = decode1byte(ch);
-    n+= decode1byte(ch+1) * 256;
+    n = decode1byte( ch );
+    n+= decode1byte( ch + 1 ) * 256;
     return n;
 }
 
 void re::encode_header( char *buffer, MsgHeader header )
 {
     encode2byte( buffer, header.size );
-    encode1byte( buffer+2, header.type );
+    encode1byte( buffer + 2, header.type );
 }
 
 MsgHeader re::decode_header( char *buffer )
 {
     MsgHeader header;
-    header.size = decode2byte(buffer);
-    header.type = decode1byte(buffer+2);
+    header.size = decode2byte( buffer );
+    header.type = decode1byte( buffer + 2 );
     return header;
 }
 
