@@ -1,14 +1,21 @@
 #pragma once
 #include "xml_parser.h"
 #include <RealEngine/graphic/image.h>
+#include <RealEngine/math.h>
+#include <optional>
 
 namespace re {
+
+struct Polygon {
+    std::vector<Point2f> points;
+};
 
 struct Object {
     uint id;
     std::string name;
-    uint height, width;
+    std::optional<uint> height, width;
     double x, y;
+    Polygon poly;
     std::vector<std::string> flags;
 };
 

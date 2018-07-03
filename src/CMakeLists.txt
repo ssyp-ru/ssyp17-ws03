@@ -8,6 +8,7 @@ set(SOURCE_LIB  window/opengl.cpp
                 graphics/animation.cpp
                 graphics/camera.cpp
                 utils/logger.cpp
+		utils/gstring.cpp
                 math/math.cpp
                 utils/stop_watch.cpp
                 recource_manager/xml_parser.cpp
