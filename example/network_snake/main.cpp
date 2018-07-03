@@ -223,6 +223,13 @@ public:
                 }
             }
         }
+        for( auto wall : walls )
+        {
+            if( pos == wall )
+            {
+                return true;
+            }
+        }
         return false;
     }
 
