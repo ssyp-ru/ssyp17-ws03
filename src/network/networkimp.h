@@ -49,16 +49,14 @@ public:
     TCPServerImpl();
     virtual void setup( int port ) override;
     virtual int get_client_count() override;
-    virtual void set_connect_callback( std::function<void(int)> on_client_connect ) override;
 
     virtual void send( int id, std::vector<char> data ) override;
-    virtual void set_recive_callback( std::function<void(int, std::vector<char>)> on_recive ) override;
+    virtual void set_callback( std::function<void(callback_event,int,std::vector<char>)> ) override;
 
     void accept();
     void listen( int id );
 private:
-    std::function<void(int, std::vector<char>)> on_recive;
-    std::function<void(int)> on_client_connect;
+    std::function<void(callback_event,int,std::vector<char>)> callback;
 
     std::vector<std::shared_ptr<asio::ip::tcp::socket>> clients;
     asio::io_service io_service;

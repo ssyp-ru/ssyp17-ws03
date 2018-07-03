@@ -65,10 +65,15 @@ void TCPServerImpl::listen( int id ) {
 
         std::vector<char> data( buffer, buffer + header.size );
 
-        if(this->on_recive)
+        if(this->callback)
         {
-            this->on_recive( id, data );
+            this->callback( callback_event::msg_recive, id, data );
         }
+    }
+
+    if( this->callback )
+    {
+        this->callback( callback_event::disconnect, id, std::vector<char>() );
     }
 }
 
@@ -92,9 +97,9 @@ void TCPServerImpl::accept() {
         std::thread th = std::thread( std::bind(&TCPServerImpl::listen, this, std::placeholders::_1), client_id );
         th.detach();
 
-        if( this->on_client_connect )
+        if( this->callback )
         {
-            this->on_client_connect( client_id );
+            this->callback( callback_event::connect, client_id, std::vector<char>() );
         }
     }
 }
@@ -110,12 +115,8 @@ int TCPServerImpl::get_client_count()
     return this->clients.size();
 }
 
-void TCPServerImpl::set_connect_callback( std::function<void(int)> on_client_connect ) {
-    this->on_client_connect = on_client_connect;
-}
-
-void TCPServerImpl::set_recive_callback( std::function<void(int, std::vector<char>)> on_recive ) {
-    this->on_recive = on_recive;
+void TCPServerImpl::set_callback( std::function<void(callback_event,int,std::vector<char>)> callback ) {
+    this->callback = callback;
 }
 
 TCPServerImpl::TCPServerImpl()

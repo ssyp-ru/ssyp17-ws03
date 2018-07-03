@@ -291,25 +291,31 @@ public:
 
     void on_connection( int id )
     {
-        std::vector<char> msg;
-        msg.push_back(0x02); // you index
-        msg.push_back(players.size()); // you index
-        tcp_server->send(id, msg);
-
-        int x = rand()%10;
-        int y = rand()%10;
-
-        players.push_back( Player( 
-            id+1,
-            get_player_color(id+1),
-            re::Point2f(x,y) ) );
-
-        sync_pos();
-        sync_eat();
+        
     }
 
-    void on_recive_server( int id, std::vector<char> msg )
+    void on_recive_server( re::TCPServer::callback_event event_type, int id, std::vector<char> msg )
     {
+        if( event_type == 
+            re::TCPServer::callback_event::connect )
+        {
+            std::vector<char> msg;
+            msg.push_back(0x02); // you index
+            msg.push_back(players.size()); // you index
+            tcp_server->send(id, msg);
+
+            int x = rand()%10;
+            int y = rand()%10;
+
+            players.push_back( Player( 
+                id+1,
+                get_player_color(id+1),
+                re::Point2f(x,y) ) );
+
+            sync_pos();
+            sync_eat();
+            return;
+        }
         switch( msg[0] )
         {
         case 0x03:
@@ -522,16 +528,12 @@ public:
             {
             case re::Key::S:
                 tcp_server = re::TCPServer::get();
-                tcp_server->set_connect_callback( std::bind( 
-                    &MainApp::on_connection, 
+                tcp_server->set_callback( std::bind( 
+                    &MainApp::on_recive_server, 
                     this, 
-                    std::placeholders::_1 ) );
-
-                tcp_server->set_recive_callback( std::bind(
-                    &MainApp::on_recive_server,
-                    this,
                     std::placeholders::_1,
-                    std::placeholders::_2 ) );
+                    std::placeholders::_2,
+                    std::placeholders::_3 ) );
 
                 tcp_server->setup(11999);
 
