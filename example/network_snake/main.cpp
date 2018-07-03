@@ -413,7 +413,12 @@ public:
                     players[i].update();
                     if( players[i].pos[0] == eat_pos )
                     {
-                        players[i].pos.push_back( players[i].pos[players[i].pos.size()-1] );
+                        if(players[i].pos.size() == 1)
+                        {
+                            players[i].pos.push_back( players[i].pos[players[i].pos.size()-1] - players[i].input );
+                        } else {
+                            players[i].pos.push_back( players[i].pos[players[i].pos.size()-1] );
+                        }
                         gen_eat_pos();
                     }
                     heads.push_back( players[i].pos[0] );
