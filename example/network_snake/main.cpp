@@ -361,6 +361,16 @@ public:
             int x = rand()%10;
             int y = rand()%10;
 
+            msg.clear();
+            msg.push_back(0x04);
+            msg.push_back(x);
+            msg.push_back(y);
+
+            for( int i = 1; i < players.size(); i++ )
+            {
+                tcp_server->send( i - 1, msg );
+            }
+
             players.push_back( Player( 
                 id+1,
                 get_player_color(id+1),
