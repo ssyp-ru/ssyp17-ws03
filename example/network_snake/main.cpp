@@ -289,7 +289,7 @@ public:
 
     void restart_game()
     {
-        for( int i = 0; i < players.size(); i++ )
+        for( size_t i = 0; i < players.size(); i++ )
         {
             re::Point2f pos(rand()%20,rand()%20);
             players[i].pos.clear();
