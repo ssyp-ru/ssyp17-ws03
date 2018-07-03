@@ -15,8 +15,8 @@ public:
     float metr_to_screen( float unit );
     float screen_to_metr( float unit );
 private:
-    re::Point2f cam_pos;
-    float coff;
+    re::Point2f cam_pos = {0,0};
+    float coff = 0;
 };
 
 }

@@ -1,5 +1,6 @@
 #include <RealEngine/baseApp.h>
 #include <RealEngine/graphic.h>
+#include <RealEngine/camera.h>
 
 #include <iostream>
 
@@ -7,8 +8,11 @@ class MainApp : public re::IBaseApp{
 public:
     re::ImagePtr imgptr;
     bool explode = false;
+    re::Camera camera;
 
     void setup() override {
+        camera.view_at(re::Point2f(0,0));
+        camera.scale(1);
         re::set_fps(60);
         imgptr = std::make_shared<re::Image>( "test.png" );
         x = 0;
@@ -45,6 +49,14 @@ public:
         re::draw_rectangle(200, 200, 50, 50, re::RED);
         re::draw_line( x, 50, 200, 200, re::BLACK );
         re::draw_text( 100, 100, "TEST TEXT", re::BLACK );
+
+        re::Point2f pos = camera.world_to_screen( {40,400} );
+        re::Point2f size(   camera.metr_to_screen( 10 ),
+                            camera.metr_to_screen( 10 ));
+        re::draw_rectangle( pos, size, re::BLUE );
+
+        camera.scale( 1 + ( float(x)/100.0f ) );
+
         x = ( x+1 ) % 100;
     }
 
