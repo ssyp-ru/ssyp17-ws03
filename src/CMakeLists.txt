@@ -15,6 +15,8 @@ set(SOURCE_LIB  window/opengl.cpp
                 recource_manager/config_manager.cpp
                 recource_manager/resource_manager.cpp
                 graphics/particle.cpp
+                network/tcpclientimp.cpp
+                network/tcpserverimp.cpp
                 mainApp.cpp
                 physic/physic_core.cpp
                 gui/base_button.cpp
