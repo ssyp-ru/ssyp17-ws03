@@ -21,6 +21,7 @@ set(SOURCE_LIB  window/opengl.cpp
                 physic/physic_core.cpp
                 gui/base_button.cpp
                 gui/gui_manager.cpp
+                event_manager/event_manager.cpp
 )
 
 set_source_files_properties(graphics/Image.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)
