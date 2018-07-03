@@ -6,6 +6,7 @@ set(SOURCE_LIB  window/opengl.cpp
                 graphics/image.cpp
                 graphics/graphic.cpp
                 graphics/animation.cpp
+                graphics/camera.cpp
                 utils/logger.cpp
                 math/math.cpp
                 utils/stop_watch.cpp
