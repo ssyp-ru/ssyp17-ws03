@@ -15,7 +15,7 @@ struct Object {
     std::string name;
     std::optional<uint> height, width;
     double x, y;
-    Polygon *poly = nullptr;
+    Polygon poly;
     std::vector<std::string> flags;
 };
 

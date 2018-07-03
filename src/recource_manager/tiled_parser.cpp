@@ -8,17 +8,17 @@
 
 namespace re{
 
-Polygon* parse_polygon(XmlElemPtr parsed_xml)
+Polygon parse_polygon(XmlElemPtr parsed_xml)
 {
     Log::msg("parsing to object " + parsed_xml->name, Log::LEVEL::TRACE);
 
-    Polygon *poly = new Polygon;
+    Polygon poly;
 
     try {
         for (auto iter : str_split(parsed_xml->field.at("points"), ' '))
         {
             std::vector<std::string> values = str_split(iter, ',');
-            poly->points.push_back(Point2f(std::stof(values[0]), std::stof(values[1])));
+            poly.points.push_back(Point2f(std::stof(values[0]), std::stof(values[1])));
         }
     } catch(...) {
         Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
@@ -48,10 +48,10 @@ Object parse_object(XmlElemPtr parsed_xml) {
 
         for (auto& obj : parsed_xml->child)
         {
-            if (object.poly == nullptr)
+            if (object.poly.points.empty())
                 object.poly = parse_polygon(obj);
             else
-                Log::msg("Unexpected second polygon in object.", Log::LEVEL::TRACE);
+                Log::msg("Unexpected second polygon in object.", Log::LEVEL::DEBUG);
         }
     } catch(...) {
         Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
