@@ -2,7 +2,8 @@
 
 using namespace asio::ip; 
 
-using namespace re;
+namespace re
+{
 
 void encode1byte( char *ch, uint8_t n)
 {
@@ -181,4 +182,6 @@ re::TCPClientPtr re::TCPClient::get()
 {
     re::TCPClientPtr client = std::make_shared<TCPClientImpl>();
     return client;
+}
+
 }

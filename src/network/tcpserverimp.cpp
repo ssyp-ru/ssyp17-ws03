@@ -4,7 +4,8 @@ using namespace asio::ip;
  
 #include <stdio.h>
 
-using namespace re;
+namespace re
+{
 
 void TCPServerImpl::send( int id, std::vector<char> data ){
     MsgHeader header;
@@ -130,4 +131,6 @@ re::TCPServerPtr re::TCPServer::get()
 {
     re::TCPServerPtr server = std::make_shared<TCPServerImpl>();
     return server;
+}
+
 }
