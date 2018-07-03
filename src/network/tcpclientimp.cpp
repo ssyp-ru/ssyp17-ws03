@@ -130,14 +130,25 @@ bool TCPClientImpl::is_connected()
 
 bool TCPClientImpl::connect( std::string addr, int port )
 {
+    asio::error_code error;
     tcp::resolver resolver(io_service);
+    
     tcp::resolver::query query( addr, std::to_string(port) );
     tcp::resolver::iterator endpoint_iterator
-        = resolver.resolve(query);
+        = resolver.resolve(query, error);
 
-    asio::connect( this->sock, endpoint_iterator );
+    if(error)
+    {
+        return false;
+    }
 
-    asio::error_code error;
+    asio::connect( this->sock, endpoint_iterator, error );
+
+    if(error)
+    {
+        return false;
+    }
+
     asio::read(
         sock,
         asio::buffer(buffer_in),

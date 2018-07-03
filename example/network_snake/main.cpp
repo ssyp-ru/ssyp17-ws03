@@ -489,6 +489,7 @@ public:
                             {
                                 tcp_server->send(j-1,msg);
                             }
+                            return;
                         }
                     }
                     restart_game();
@@ -516,6 +517,11 @@ public:
             re::draw_text(
                 re::Point2f(400, 60),
                 addrres,
+                re::BLACK
+            );
+            re::draw_text(
+                re::Point2f(400, 80),
+                game_message,
                 re::BLACK
             );
         }
@@ -631,9 +637,14 @@ public:
                     this,
                     std::placeholders::_1 ) );
 
-                tcp_client->connect( addrres, 11999 );
+                if( tcp_client->connect( addrres, 11999 ) )
+                {
+                    gameState = GameState::client;
+                    game_message = "";
+                }else{
+                    game_message = "connection error";
+                }
 
-                gameState = GameState::client;
                 break;
             }
             break;
