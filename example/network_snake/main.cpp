@@ -501,7 +501,7 @@ public:
                             {
                                 tcp_server->send(j-1,msg);
                             }
-                            return;
+                            break;
                         }
                     }
                     restart_game();
