@@ -33,12 +33,19 @@ Object parse_object(XmlElemPtr parsed_xml) {
     Object object;
 
     try {
-        object.name = parsed_xml->field.at("name");
+        // this params is mandatory
         object.id = std::stoi(parsed_xml->field.at("id"));
-        object.height = std::stoi(parsed_xml->field.at("height"));
-        object.width = std::stoi(parsed_xml->field.at("width"));
         object.x = std::stod(parsed_xml->field.at("x"));
         object.y = std::stod(parsed_xml->field.at("y"));
+
+        object.name = parsed_xml->get_field_value("name");
+        if (std::string height_str = parsed_xml->get_field_value("height"); !height_str.empty()){
+            object.height = std::stoi(height_str);
+        }
+        if (std::string width_str = parsed_xml->get_field_value("width"); !width_str.empty()){
+            object.width = std::stoi(width_str);
+        }
+
         for (auto& obj : parsed_xml->child)
         {
             if (object.poly == nullptr)

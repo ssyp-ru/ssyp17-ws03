@@ -276,4 +276,14 @@ XmlElemPtr parse_xml(std::string input_filename) {
 }
 
 
+std::string XmlElem::get_field_value(const std::string& field_name){
+    auto iter = field.find(field_name);
+    if (iter != field.end()){
+        return iter->second;
+    }
+
+    return "";
+}
+
+
 } // namespace re

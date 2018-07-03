@@ -29,13 +29,15 @@ public:
         for (auto objectData : map.objectgroup[0].group)
         {
             std::shared_ptr<DrawableGameObject> dobj = std::make_shared<DrawableGameObject>(re::Vector2f(objectData.x, objectData.y));
-            for (auto vertex : objectData.poly->points)
-                dobj->addPoint(re::Vector2f(vertex.x, vertex.y));
-            for (int i = 0; i < objectData.poly->points.size() - 1; i++)
-                dobj->addEdge(i, i + 1);
-            dobj->addEdge(objectData.poly->points.size() - 1, 0);
-            re::GameObjectPtr obj = dobj;
-            mainGame.addObject(obj);
+            if (objectData.poly){
+                for (auto vertex : objectData.poly->points)
+                    dobj->addPoint(re::Vector2f(vertex.x, vertex.y));
+                for (int i = 0; i < objectData.poly->points.size() - 1; i++)
+                    dobj->addEdge(i, i + 1);
+                dobj->addEdge(objectData.poly->points.size() - 1, 0);
+                re::GameObjectPtr obj = dobj;
+                mainGame.addObject(obj);
+            }
         }
     }
 
