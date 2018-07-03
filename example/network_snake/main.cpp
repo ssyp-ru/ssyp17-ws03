@@ -380,18 +380,20 @@ public:
             sync_eat();
             return;
         }
-        switch( msg[0] )
-        {
-        case 0x03:
-            if( ((msg[1] * -1) == players[id+1].input.x) ||
-                ((msg[2] * -1) == players[id+1].input.y) )
+        if (!msg.empty()){
+            switch( msg[0] )
             {
+            case 0x03:
+                if( ((msg[1] * -1) == players[id+1].input.x) ||
+                    ((msg[2] * -1) == players[id+1].input.y) )
+                {
+                    break;
+                }
+                players[id+1].new_input.x = msg[1];
+                players[id+1].new_input.y = msg[2];
+                sync_input( id+1 );
                 break;
             }
-            players[id+1].new_input.x = msg[1];
-            players[id+1].new_input.y = msg[2];
-            sync_input( id+1 );
-            break;
         }
     }
 
