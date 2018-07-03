@@ -17,14 +17,16 @@ enum DataType
 
 struct MsgHeader
 {
-    uint16_t size;
+    uint8_t ver;
+    uint16_t data_size;
     uint8_t type;
 };
 
 void encode_header( char *buffer, MsgHeader header );
 MsgHeader decode_header( char *buffer );
 
-static size_t msg_header_size = sizeof(uint16_t) + sizeof(uint8_t);
+const size_t msg_header_size = sizeof(uint8_t) + sizeof(uint16_t) + sizeof(uint8_t);
+const size_t version_of_our_cool_protocol_over_tcp = 1;
 
 class TCPClientImpl : public TCPClient {
 public:

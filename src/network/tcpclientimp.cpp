@@ -42,15 +42,17 @@ uint16_t decode2byte( char *ch)
 
 void encode_header( char *buffer, MsgHeader header )
 {
-    encode2byte( buffer, header.size );
-    encode1byte( buffer + 2, header.type );
+    encode1byte( buffer, version_of_our_cool_protocol_over_tcp );
+    encode2byte( buffer + 1, header.data_size );
+    encode1byte( buffer + 3, header.type );
 }
 
 MsgHeader decode_header( char *buffer )
 {
     MsgHeader header;
-    header.size = decode2byte( buffer );
-    header.type = decode1byte( buffer + 2 );
+    header.ver = decode1byte( buffer );
+    header.data_size = decode2byte( buffer + 1 );
+    header.type = decode1byte( buffer + 3 );
     return header;
 }
 
@@ -75,7 +77,7 @@ void TCPClientImpl::listen()
         asio::read(
             this->sock,
             asio::buffer(this->buffer_in),
-            asio::transfer_exactly( header.size ),
+            asio::transfer_exactly( header.data_size ),
             error );
 
         if(error)
@@ -83,7 +85,7 @@ void TCPClientImpl::listen()
             break;
         }
 
-        std::vector<char> data(buffer_in, buffer_in + header.size);
+        std::vector<char> data(buffer_in, buffer_in + header.data_size);
 
         if( this->on_recive )
         {
@@ -98,7 +100,7 @@ void TCPClientImpl::listen()
 void TCPClientImpl::send( std::vector<char> data )
 {
     MsgHeader header;
-    header.size = data.size();
+    header.data_size = data.size();
     header.type = DataType::custom;
 
     encode_header( buffer_out, header );
@@ -154,6 +156,26 @@ bool TCPClientImpl::connect( std::string addr, int port )
         sock,
         asio::buffer(buffer_in),
         asio::transfer_exactly(4),
+        error );
+
+    MsgHeader header = decode_header( buffer_in );
+
+    if( header.ver != version_of_our_cool_protocol_over_tcp )
+    {
+        strcpy(buffer_out,"er");
+        asio::write(
+            sock,
+            asio::buffer(buffer_out),
+            asio::transfer_exactly(2),
+            error );
+        return false;
+    }
+
+    strcpy(buffer_out,"ok");
+    asio::write(
+        sock,
+        asio::buffer(buffer_out),
+        asio::transfer_exactly(2),
         error );
 
     if(error)
