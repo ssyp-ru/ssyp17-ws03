@@ -127,7 +127,7 @@ TCPServerImpl::TCPServerImpl()
 
 }
 
-re::TCPServerPtr re::TCPServer::get()
+re::TCPServerPtr re::TCPServer::create()
 {
     re::TCPServerPtr server = std::make_shared<TCPServerImpl>();
     return server;

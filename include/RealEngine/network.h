@@ -20,7 +20,7 @@ public:
     virtual void send( std::vector<char> data ) = 0;
     virtual void set_recive_callback( std::function<void(std::vector<char>)> on_recive ) = 0;
 
-    static TCPClientPtr get();
+    static TCPClientPtr create();
 };
 
 class TCPServer
@@ -40,7 +40,7 @@ public:
     virtual void set_callback( Callback ) = 0;
     virtual void send( int id, std::vector<char> data ) = 0;
 
-    static TCPServerPtr get();
+    static TCPServerPtr create();
 };
 
 }

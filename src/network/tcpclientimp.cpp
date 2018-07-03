@@ -178,7 +178,7 @@ TCPClientImpl::TCPClientImpl()
 
 }
 
-re::TCPClientPtr re::TCPClient::get()
+re::TCPClientPtr re::TCPClient::create()
 {
     re::TCPClientPtr client = std::make_shared<TCPClientImpl>();
     return client;
