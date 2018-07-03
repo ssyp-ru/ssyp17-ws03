@@ -34,7 +34,7 @@ public:
         }
         input = new_input;
 
-        for( int i = pos.size()-1; i > 0; i-- )
+        for( size_t i = pos.size()-1; i > 0; i-- )
         {
             pos[i].x = int(pos[i-1].x) % 20;
             pos[i].y = int(pos[i-1].y) % 20;
@@ -66,7 +66,7 @@ public:
         {
             return;
         }
-        for( int i = 0; i < pos.size(); i++ )
+        for( size_t i = 0; i < pos.size(); i++ )
         {
             re::Color col = color;
             float coff = float(pos.size() - i + pos.size()) / float(pos.size()*2);
@@ -83,9 +83,9 @@ public:
 
     int is_collide( std::vector<re::Point2f> c_poses )
     {
-        for( int j = 0; j < c_poses.size(); j++ )
+        for( size_t j = 0; j < c_poses.size(); j++ )
         {
-            for( int i = 1; i < pos.size(); i++ )
+            for( size_t i = 1; i < pos.size(); i++ )
             {
                 if( pos[i] == c_poses[j] )
                 {
@@ -154,7 +154,7 @@ public:
             break;
         case 0x05:
             wall_count = msg[1];
-            for( int i = 0; i < wall_count; i++ )
+            for( size_t i = 0; i < wall_count; i++ )
             {
                 walls.push_back( re::Point2f( msg[2 + (i * 2)], msg[3 + (i * 2)] ) );
             }
@@ -178,7 +178,7 @@ public:
             size_t len = msg[2];
             if( players[index].pos.size() < len )
             {
-                for( int i = 0; i < players[index].pos.size() - len; i++ )
+                for( size_t i = 0; i < players[index].pos.size() - len; i++ )
                 {
                     players[index].pos.push_back( re::Point2f(0,0) );
                 }
@@ -190,7 +190,7 @@ public:
                     players[index].pos.pop_back();
                 }
             }
-            for( int i = 0; i < len; i++ )
+            for( size_t i = 0; i < len; i++ )
             {
                 players[index].pos[i].x = msg[3 + (i*2)];
                 players[index].pos[i].y = msg[4 + (i*2)];
@@ -205,7 +205,7 @@ public:
         msg.push_back(0x07);
         msg.push_back(id);
         msg.push_back(alive);
-        for( int i = 1; i < players.size(); i++ )
+        for( size_t i = 1; i < players.size(); i++ )
         {
             tcp_server->send( i-1, msg );
         }
@@ -255,7 +255,7 @@ public:
         msg.push_back(0x08);
         msg.push_back(eat_pos.x);
         msg.push_back(eat_pos.y);
-        for( int i = 1; i < players.size(); i++ )
+        for( size_t i = 1; i < players.size(); i++ )
         {
             tcp_server->send( i-1, msg );
         }
@@ -263,9 +263,9 @@ public:
 
     void sync_pos()
     {
-        for( int i = 1; i < players.size(); i++ )
+        for( size_t i = 1; i < players.size(); i++ )
         {
-            for( int j = 0; j < players.size(); j++ )
+            for( size_t j = 0; j < players.size(); j++ )
             {
                 std::vector<char> msg;
                 msg.push_back(0x01);
@@ -334,7 +334,7 @@ public:
             {
                 std::vector<re::Point2f> heads;
                 std::vector<re::Point2f> n_walls;
-                for( int i = 0; i < players.size(); i++ )
+                for( size_t i = 0; i < players.size(); i++ )
                 {
                     if( !players[i].alive )
                     {
@@ -349,7 +349,7 @@ public:
                     heads.push_back( players[i].pos[0] );
                 }
 
-                for( int i = 0; i < players.size(); i++ )
+                for( size_t i = 0; i < players.size(); i++ )
                 {
                     for( auto wall : walls )
                     {
@@ -367,7 +367,7 @@ public:
                     if( collide_pos != -1 )
                     {
                         size_t old_size = players[i].pos.size();
-                        for( int j = collide_pos; j < old_size; j++ )
+                        for( size_t j = collide_pos; j < old_size; j++ )
                         {
                             re::Point2f wall = players[i].pos[players[i].pos.size()-1];
                             players[i].pos.pop_back();
@@ -393,7 +393,7 @@ public:
                         walls.push_back( wall );
                     }
 
-                    for( int i = 1; i < players.size(); i++ )
+                    for( size_t i = 1; i < players.size(); i++ )
                     {
                         tcp_server->send( i-1, msg_wall );
                     }
@@ -432,7 +432,7 @@ public:
                 re::BLACK
             );
         }
-        for( int i = 0; i < players.size(); i++ )
+        for( size_t i = 0; i < players.size(); i++ )
         {
             players[i].draw();
         }
@@ -449,7 +449,7 @@ public:
             break;
         }
 
-        for( int i = 1; i <= 20; i++ )
+        for( size_t i = 1; i <= 20; i++ )
         {
             re::draw_line( 20 * i, 0, 20 * i, 400, re::BLACK );
             re::draw_line( 0, 20 * i, 400, 20 * i, re::BLACK );
