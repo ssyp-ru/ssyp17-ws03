@@ -228,7 +228,7 @@ public:
 
     void gen_eat_pos()
     {
-        re::Point2f pos = re::Point2f(2,2);//(rand()%20,rand()%20);
+        re::Point2f pos = re::Point2f(rand()%20,rand()%20);
         size_t offset = 0;
         while(is_collide_with_snake(pos))
         {
