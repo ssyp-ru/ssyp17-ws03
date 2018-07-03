@@ -48,7 +48,7 @@ public:
         switch(key)
         {
         case re::Key::A:
-            this->tcpClient = re::TCPClient::get();
+            this->tcpClient = re::TCPClient::create();
             this->tcpClient->connect( "127.0.0.1", 11999 );
             this->tcpClient->set_recive_callback( std::bind( &MainApp::reciveMsgClient, this, std::placeholders::_1 ) );
             lastMsg = "client";
@@ -57,7 +57,7 @@ public:
             this->tcpClient->send( std::vector<char>( test_string.c_str(), test_string.c_str() + test_string.size() ) );
             break;
         case re::Key::Z:
-            this->tcpServer = re::TCPServer::get();
+            this->tcpServer = re::TCPServer::create();
             this->tcpServer->setup( 11999 );
             lastMsg = "server";
             this->tcpServer->set_callback( std::bind( &MainApp::reciveMsgServer, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3 ) );
