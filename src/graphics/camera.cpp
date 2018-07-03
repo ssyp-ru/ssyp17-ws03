@@ -26,12 +26,12 @@ re::Point2f Camera::screen_to_world( re::Point2f pos ) {
     return pos;
 }
 
-float Camera::metr_to_screen( float unit )
+float Camera::meter_to_screen( float unit )
 {
     return unit / this->coff;
 }
 
-float Camera::screen_to_metr( float unit )
+float Camera::screen_to_meter( float unit )
 {
     return unit * this->coff;
 }

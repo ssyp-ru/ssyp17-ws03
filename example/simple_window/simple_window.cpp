@@ -51,8 +51,8 @@ public:
         re::draw_text( 100, 100, "TEST TEXT", re::BLACK );
 
         re::Point2f pos = camera.world_to_screen( {40,400} );
-        re::Point2f size(   camera.metr_to_screen( 10 ),
-                            camera.metr_to_screen( 10 ));
+        re::Point2f size(   camera.meter_to_screen( 10 ),
+                            camera.meter_to_screen( 10 ));
         re::draw_rectangle( pos, size, re::BLUE );
 
         camera.scale( 1 + ( float(x)/100.0f ) );
