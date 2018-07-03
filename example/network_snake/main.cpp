@@ -79,6 +79,12 @@ public:
                 col
             );
         }
+
+        re::draw_rectangle(
+            (pos[0] * 20) + re::Point2f(8,8) + (new_input * 10),
+            re::Point2f(3,3),
+            re::GRAY
+        );
     }
 
     int is_collide( std::vector<re::Point2f> c_poses )
@@ -135,12 +141,24 @@ public:
 
     re::Point2f eat_pos;
 
+    std::string game_message;
+
     void on_recive_client( std::vector<char> msg )
     {
         size_t wall_count;
         int player_index;
         switch( msg[0] )
         {
+        case 0x11:
+            walls.clear();
+            break;
+        case 0x10:
+            game_message = std::string("Win player ");
+            game_message += std::to_string(msg[1]);
+            break;
+        case 0x09:
+            players[msg[1]].new_input = re::Point2f( msg[2], msg[3] );
+            break;
         case 0x08:
             eat_pos.x = msg[1];
             eat_pos.y = msg[2];
@@ -256,6 +274,42 @@ public:
         sync_eat();
     }
 
+    void sync_input( int id )
+    {
+        std::vector<char> msg;
+        msg.push_back( 0x09 );
+        msg.push_back( id );
+        msg.push_back( players[id].new_input.x );
+        msg.push_back( players[id].new_input.y );
+        for( size_t i = 1; i < players.size(); i++ )
+        {
+            tcp_server->send( i-1, msg );
+        }
+    }
+
+    void restart_game()
+    {
+        for( int i = 0; i < players.size(); i++ )
+        {
+            re::Point2f pos(rand()%20,rand()%20);
+            players[i].pos.clear();
+            players[i].pos.push_back( pos );
+            players[i].pos.push_back( pos + re::Point2f(0,-1) );
+            players[i].new_input = re::Point2f(1,0);
+            players[i].alive = true;
+            sync_input(i);
+            sync_dead(i,1);
+        }
+        std::vector<char> msg;
+        msg.push_back(0x11);
+        for( size_t i = 1; i < players.size(); i++ )
+        {
+            tcp_server->send(i-1,msg);
+        }
+        walls.clear();
+        sync_pos();
+    }
+
     void sync_eat()
     {
         std::vector<char> msg;
@@ -326,6 +380,7 @@ public:
             }
             players[id+1].new_input.x = msg[1];
             players[id+1].new_input.y = msg[2];
+            sync_input( id+1 );
             break;
         }
     }
@@ -345,6 +400,7 @@ public:
 
             if( time_milils > 500'000 )
             {
+                size_t live_players = 0;
                 std::vector<re::Point2f> heads;
                 std::vector<re::Point2f> n_walls;
                 for( size_t i = 0; i < players.size(); i++ )
@@ -353,6 +409,7 @@ public:
                     {
                         continue;
                     }
+                    live_players++;
                     players[i].update();
                     if( players[i].pos[0] == eat_pos )
                     {
@@ -411,7 +468,27 @@ public:
                         tcp_server->send( i-1, msg_wall );
                     }
                 }
-                sync_pos();
+                
+                
+                if(!( players.size() > 1 && live_players < 2 )) {
+                    sync_pos();
+                } else {
+                    for( size_t i = 0; i < players.size(); i++ )
+                    {
+                        if( players[i].alive )
+                        {
+                            std::vector<char> msg;
+                            msg.push_back(0x10);
+                            msg.push_back(i);
+                            for( size_t j = 1; j < players.size(); j++ )
+                            {
+                                tcp_server->send(j-1,msg);
+                            }
+                        }
+                    }
+                    restart_game();
+                }
+
                 snake_update_time = std::chrono::steady_clock::now();
             }
         }
@@ -500,6 +577,7 @@ public:
                     return;
                 }
                 players[0].new_input = new_input;
+                sync_input(0);
             }
             return;
         }
