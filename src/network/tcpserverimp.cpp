@@ -67,13 +67,13 @@ void TCPServerImpl::listen( int id ) {
 
         if(this->callback)
         {
-            this->callback( callback_event::msg_recive, id, data );
+            this->callback( Callback_event::msg_recive, id, data );
         }
     }
 
     if( this->callback )
     {
-        this->callback( callback_event::disconnect, id, std::vector<char>() );
+        this->callback( Callback_event::disconnect, id, std::vector<char>() );
     }
 }
 
@@ -99,7 +99,7 @@ void TCPServerImpl::accept() {
 
         if( this->callback )
         {
-            this->callback( callback_event::connect, client_id, std::vector<char>() );
+            this->callback( Callback_event::connect, client_id, std::vector<char>() );
         }
     }
 }
@@ -115,7 +115,7 @@ int TCPServerImpl::get_client_count()
     return this->clients.size();
 }
 
-void TCPServerImpl::set_callback( std::function<void(callback_event,int,std::vector<char>)> callback ) {
+void TCPServerImpl::set_callback( Callback callback ) {
     this->callback = callback;
 }
 

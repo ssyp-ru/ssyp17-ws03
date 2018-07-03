@@ -22,7 +22,11 @@ public:
         }
     }
 
-    void reciveMsgServer( int id, std::vector<char> data ) {
+    void reciveMsgServer( re::TCPServer::Callback_event event_type, int id, std::vector<char> data ) {
+        if(event_type != re::TCPServer::Callback_event::msg_recive)
+        {
+            return;
+        }
         for( auto ch : data )
         {
             this->lastMsg += ch;
@@ -56,7 +60,7 @@ public:
             this->tcpServer = re::TCPServer::get();
             this->tcpServer->setup( 11999 );
             lastMsg = "server";
-            this->tcpServer->set_recive_callback( std::bind( &MainApp::reciveMsgServer, this, std::placeholders::_1, std::placeholders::_2 ) );
+            this->tcpServer->set_callback( std::bind( &MainApp::reciveMsgServer, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3 ) );
             break;
         case re::Key::X:
             std::string msg("test from server");

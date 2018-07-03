@@ -294,10 +294,10 @@ public:
         
     }
 
-    void on_recive_server( re::TCPServer::callback_event event_type, int id, std::vector<char> msg )
+    void on_recive_server( re::TCPServer::Callback_event event_type, int id, std::vector<char> msg )
     {
         if( event_type == 
-            re::TCPServer::callback_event::connect )
+            re::TCPServer::Callback_event::connect )
         {
             std::vector<char> msg;
             msg.push_back(0x02); // you index

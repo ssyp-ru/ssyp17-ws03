@@ -26,15 +26,18 @@ public:
 class TCPServer
 {
 public:
-    enum callback_event {
+    enum Callback_event {
         connect,
         disconnect,
         msg_recive
     };
+
+    typedef std::function<void(Callback_event,int,std::vector<char>)> Callback;
+
     virtual void setup( int port ) = 0;
 
     virtual int get_client_count() = 0;
-    virtual void set_callback( std::function<void(callback_event,int,std::vector<char>)> ) = 0;
+    virtual void set_callback( Callback ) = 0;
     virtual void send( int id, std::vector<char> data ) = 0;
 
     static TCPServerPtr get();

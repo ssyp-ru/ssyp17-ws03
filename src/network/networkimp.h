@@ -51,12 +51,12 @@ public:
     virtual int get_client_count() override;
 
     virtual void send( int id, std::vector<char> data ) override;
-    virtual void set_callback( std::function<void(callback_event,int,std::vector<char>)> ) override;
+    virtual void set_callback( Callback ) override;
 
     void accept();
     void listen( int id );
 private:
-    std::function<void(callback_event,int,std::vector<char>)> callback;
+    std::function<void(Callback_event,int,std::vector<char>)> callback;
 
     std::vector<std::shared_ptr<asio::ip::tcp::socket>> clients;
     asio::io_service io_service;
