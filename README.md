@@ -5,7 +5,7 @@
 ## Сборка проекта
 ### Install requirements
 ```
-sudo apt install g++ cmake mesa-common-dev freeglut3-dev
+sudo apt install g++ cmake mesa-common-dev freeglut3-dev libasio-dev
 ```
 
 ### Сборка
