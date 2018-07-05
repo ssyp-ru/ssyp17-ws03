@@ -7,6 +7,8 @@
 ```
 sudo apt install g++ cmake mesa-common-dev freeglut3-dev libasio-dev
 ```
+Важно. Для сборки нужен g++ >= 7.0
+
 
 ### Сборка
 Проект собирается с помощью cmake. Тестировалось все на ubuntu 16.04. Для сборки нужно выполнить следующие команды.
