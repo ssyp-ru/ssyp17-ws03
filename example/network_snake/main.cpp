@@ -366,7 +366,7 @@ public:
             msg.push_back(x);
             msg.push_back(y);
 
-            for( int i = 1; i < players.size(); i++ )
+            for( size_t i = 1; i < players.size(); i++ )
             {
                 tcp_server->send( i - 1, msg );
             }
@@ -501,7 +501,7 @@ public:
                             {
                                 tcp_server->send(j-1,msg);
                             }
-                            return;
+                            break;
                         }
                     }
                     restart_game();
