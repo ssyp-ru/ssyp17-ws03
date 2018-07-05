@@ -19,10 +19,10 @@ int sqr(int a){
   re::Point2f start , re::Point2f end){
         int n = wave.size();
         for(int i = 0; i < n; i++){
-            if(sqrt(sqr(A.x - start.x) + sqr(A.y - start.y)) + 
-            sqrt(sqr(A.x - end.x) + sqr(A.y - end.y))  <     
-            sqrt(sqr(wave[i].x - start.x) + sqr(wave[i].y - start.y)) + 
-            sqrt(sqr(wave[i].x - end.x) + sqr(wave[i].y - end.y))){
+            if(sqrt(sqr(A.x - start.x) + sqr(A.y - start.y)) +        // If for search minimum distance
+               sqrt(sqr(A.x - end.x) + sqr(A.y - end.y))  <     
+               sqrt(sqr(wave[i].x - start.x) + sqr(wave[i].y - start.y)) + 
+               sqrt(sqr(wave[i].x - end.x) + sqr(wave[i].y - end.y))){
                 wave.insert(wave.begin() + i, A);
                 return;
             }
@@ -46,10 +46,6 @@ public:
         next_step.push_back(re::Point2f(-1, -1));
         next_step.push_back(re::Point2f(-1, 1));
         next_step.push_back(re::Point2f(1, -1));
-
-
-
-
         std::cin >> n >> startx >> starty >>endx >> endy;
         for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
@@ -158,7 +154,7 @@ public:
 */
 
             for( int i = 0; i < 8; i++){
-                if((map[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] == 1) && 
+                if((map[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] == 1) &&  // If, when we have to go the cell
                   ((count [int(indexx + next_step[i].x)][int(indexy+ next_step[i].y)] == -1)||
                   ((count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] != -1) &&
                   (count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] > 
