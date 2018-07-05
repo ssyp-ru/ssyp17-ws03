@@ -7,190 +7,198 @@
 #include "event_manager.h"
 namespace re {
 
-       
-    Subscriber::Subscriber(EventSubscriber * feature_sub ){
-        sub = feature_sub;
-        this->recive_all = false;
+
+EventManager event_manager;
+
+
+
+Subscriber::Subscriber(EventSubscriber * feature_sub ){
+    sub = feature_sub;
+    this->recive_all = false;
+}
+
+void Subscriber::subscride_to_all()
+{
+    this->recive_all = true;
+}
+
+void Subscriber::add_event_type(int category, int type)
+{
+    for(size_t i = 0; i < category_list.size(); i++){
+        if(category_list[i] == category)
+            break;
     }
-
-    void Subscriber::subscride_to_all()
-    {
-        this->recive_all = true;
-    }
-
-    void Subscriber::add_event_type(int category, int type)
-    {
-        for(size_t i = 0; i < category_list.size(); i++){
-            if(category_list[i] == category)
-                break;
-        }
-        category_and_type_list.push_back(re::Point2f(category, type));
-    }
+    category_and_type_list.push_back(re::Point2f(category, type));
+}
 
 
-    void Subscriber::add_event_category(int category)
-    {
-        for(size_t i = 0; i < category_and_type_list.size(); i++){
-            if(category_and_type_list[i].x == category) 
-                    category_and_type_list.erase(category_and_type_list.begin() + i);
-        }
-        category_list.push_back(category);
-    }
-
-
-    void Subscriber::delete_event_type(int category, int type)
-    {
-        for(size_t i = 0; i < category_and_type_list.size(); i++)
-        {
-            if((category_and_type_list[i].x == category) && (category_and_type_list[i].y == type))
-            {
+void Subscriber::add_event_category(int category)
+{
+    for(size_t i = 0; i < category_and_type_list.size(); i++){
+        if(category_and_type_list[i].x == category) 
                 category_and_type_list.erase(category_and_type_list.begin() + i);
-                break;
-            }
+    }
+    category_list.push_back(category);
+}
+
+
+void Subscriber::delete_event_type(int category, int type)
+{
+    for(size_t i = 0; i < category_and_type_list.size(); i++)
+    {
+        if((category_and_type_list[i].x == category) && (category_and_type_list[i].y == type))
+        {
+            category_and_type_list.erase(category_and_type_list.begin() + i);
+            break;
         }
     }
+}
 
-    void Subscriber::delete_event_category(int category)
+void Subscriber::delete_event_category(int category)
+{
+    for(size_t i = 0; i < category_list.size(); i++)
     {
-        for(size_t i = 0; i < category_list.size(); i++)
+        if(category_list[i] == category) 
         {
-            if(category_list[i] == category) 
-            {
-                category_list.erase(category_list.begin() + i);
-                break;
-            }
+            category_list.erase(category_list.begin() + i);
+            break;
         }
     }
-    
-    int Subscriber::get_type_size(){
-        return category_and_type_list.size();
-    }
+}
 
-        int Subscriber::get_category_size(){
-        return category_list.size();
-    }
-    
-    bool Subscriber::is_subscribed_category(int category)
+int Subscriber::get_type_size(){
+    return category_and_type_list.size();
+}
+
+    int Subscriber::get_category_size(){
+    return category_list.size();
+}
+
+bool Subscriber::is_subscribed_category(int category)
+{
+    if( this->recive_all )
     {
-        if( this->recive_all )
-        {
+        return true;
+    }
+    for(size_t i = 0; i < category_list.size(); i++)
+    {
+        if(category_list[i] == category)
             return true;
-        }
-        for(size_t i = 0; i < category_list.size(); i++)
-        {
-            if(category_list[i] == category)
-                return true;
-        }
-        return false;
     }
+    return false;
+}
 
-    bool Subscriber::is_subscribed_type(int category, int type)
+bool Subscriber::is_subscribed_type(int category, int type)
+{
+    if( this->recive_all )
     {
-        if( this->recive_all )
-        {
+        return true;
+    }
+    for(size_t i = 0; i < category_and_type_list.size(); i++)
+    {
+        if(( category_and_type_list[i].x == category) && ( category_and_type_list[i].y == type))
             return true;
-        }
-        for(size_t i = 0; i < category_and_type_list.size(); i++)
-        {
-            if(( category_and_type_list[i].x == category) && ( category_and_type_list[i].y == type))
-                return true;
-        }
-        return false;
     }
+    return false;
+}
 
-   
 
-    void EventManager::send_events (std::shared_ptr<Event> event)
+
+void EventManager::send_events (std::shared_ptr<Event> event)
+{
+    for(size_t i = 0; i < subscriber_list.size(); i++)
     {
-        for(size_t i = 0; i < subscriber_list.size(); i++)
-        {
+        
+            if(subscriber_list[i].is_subscribed_category(event->get_category()))
+                subscriber_list[i].sub->on_event(event);              
+
+            if(subscriber_list[i].is_subscribed_type(event->get_category(), event->get_type()))
+                subscriber_list[i].sub->on_event(event);
             
-                if(subscriber_list[i].is_subscribed_category(event->get_category()))
-                    subscriber_list[i].sub->on_event(event);              
-
-                if(subscriber_list[i].is_subscribed_type(event->get_category(), event->get_type()))
-                    subscriber_list[i].sub->on_event(event);
-                
-        }
     }
+}
 
-    void EventManager::add_subscriber_type (EventSubscriber * feature_subscriber, int category, int type)
+void EventManager::add_subscriber_type (EventSubscriber * feature_subscriber, int category, int type)
+{
+    int flag = 0;
+    for(size_t i = 0; i < subscriber_list.size(); i++)
     {
-        int flag = 0;
-        for(size_t i = 0; i < subscriber_list.size(); i++)
+        if(subscriber_list[i].sub == feature_subscriber)
         {
-            if(subscriber_list[i].sub == feature_subscriber)
-            {
-                subscriber_list[i].add_event_type(category, type);
-                flag = 1;
-            }
-
+            subscriber_list[i].add_event_type(category, type);
+            flag = 1;
         }
 
-        if(flag == 0)
+    }
+
+    if(flag == 0)
+    {
+    subscriber_list.push_back(Subscriber(feature_subscriber));
+    subscriber_list.back().add_event_type(category, type);
+    }
+}
+
+
+void EventManager::add_subscriber_category (EventSubscriber * feature_subscriber, int category)
+{
+    int flag = 0;
+    for(size_t i = 0; i < subscriber_list.size(); i++)
+    {
+        if(subscriber_list[i].sub == feature_subscriber)
         {
-        subscriber_list.push_back(Subscriber(feature_subscriber));
-        subscriber_list.back().add_event_type(category, type);
+            subscriber_list[i].add_event_category(category);
+            flag = 1;
         }
+
     }
 
-
-    void EventManager::add_subscriber_category (EventSubscriber * feature_subscriber, int category)
+    if(flag == 0)
     {
-        int flag = 0;
-        for(size_t i = 0; i < subscriber_list.size(); i++)
+    subscriber_list.push_back(Subscriber(feature_subscriber));
+    subscriber_list.back().add_event_category(category);
+    }
+}
+
+void EventManager::unsubscribe(EventSubscriber * subscriber)
+{
+    for(size_t i = 0; i < subscriber_list.size(); i++)
+    {
+        if(subscriber_list[i].sub == subscriber)
         {
-            if(subscriber_list[i].sub == feature_subscriber)
-            {
-                subscriber_list[i].add_event_category(category);
-                flag = 1;
-            }
-
-        }
-
-        if(flag == 0)
-        {
-        subscriber_list.push_back(Subscriber(feature_subscriber));
-        subscriber_list.back().add_event_category(category);
+            subscriber_list.erase(subscriber_list.begin() + i);
+            break;
         }
     }
+}
 
-    void EventManager::unsubscribe(EventSubscriber * subscriber)
-    {
-        for(size_t i = 0; i < subscriber_list.size(); i++)
-        {
-            if(subscriber_list[i].sub == subscriber)
-            {
-                subscriber_list.erase(subscriber_list.begin() + i);
-                break;
-            }
-        }
-    }
-    // typedef std::shared_ptr<EventManager> EventManagerPtr;
-    
-    EventManager event_manager;
-
-    void subscribe_to_event_type(EventSubscriber * event_subscriber, int category, int type)
-    {
-        event_manager.add_subscriber_type(event_subscriber, category, type);
-    }
-
-     void subscribe_to_event_category(EventSubscriber * event_subscriber, int category)
-    {
-        event_manager.add_subscriber_category(event_subscriber,category);
-    }
-
-    void publish_event(std::shared_ptr<Event> set_event)
-    {
-        event_manager.send_events (set_event);
-    }
-
-    EventSubscriber::~ EventSubscriber()
-    {
-        event_manager.unsubscribe(this);
+EventSubscriber::~ EventSubscriber()
+{
+    event_manager.unsubscribe(this);
+}
 
 
-    }
+void subscribe_to_event_type(EventSubscriber * event_subscriber, int category, int type)
+{
+    event_manager.add_subscriber_type(event_subscriber, category, type);
+}
+
+
+void subscribe_to_event_category(EventSubscriber * event_subscriber, int category)
+{
+    event_manager.add_subscriber_category(event_subscriber,category);
+}
+
+
+void publish_event(std::shared_ptr<Event> set_event)
+{
+    event_manager.send_events (set_event);
+}
+
+
+void subscribe_to_all(EventSubscriber * event_subscriber){
+
+
+}
 
 
 }          // namespace re
