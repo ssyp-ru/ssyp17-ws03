@@ -10,13 +10,17 @@ namespace re {
        
     Subscriber::Subscriber(EventSubscriber * feature_sub ){
         sub = feature_sub;
+        this->recive_all = false;
     }
 
+    void Subscriber::subscride_to_all()
+    {
+        this->recive_all = true;
+    }
 
     void Subscriber::add_event_type(int category, int type)
     {
-        int i;
-        for(i = 0; i < category_list.size(); i++){
+        for(size_t i = 0; i < category_list.size(); i++){
             if(category_list[i] == category)
                 break;
         }
@@ -26,8 +30,7 @@ namespace re {
 
     void Subscriber::add_event_category(int category)
     {
-        int i;
-        for(i = 0; i < category_and_type_list.size(); i++){
+        for(size_t i = 0; i < category_and_type_list.size(); i++){
             if(category_and_type_list[i].x == category) 
                     category_and_type_list.erase(category_and_type_list.begin() + i);
         }
@@ -37,8 +40,7 @@ namespace re {
 
     void Subscriber::delete_event_type(int category, int type)
     {
-        int i;
-        for(i = 0; i < category_and_type_list.size(); i++)
+        for(size_t i = 0; i < category_and_type_list.size(); i++)
         {
             if((category_and_type_list[i].x == category) && (category_and_type_list[i].y == type))
             {
@@ -50,8 +52,7 @@ namespace re {
 
     void Subscriber::delete_event_category(int category)
     {
-        int i;
-        for(i = 0; i < category_list.size(); i++)
+        for(size_t i = 0; i < category_list.size(); i++)
         {
             if(category_list[i] == category) 
             {
@@ -71,8 +72,11 @@ namespace re {
     
     bool Subscriber::is_subscribed_category(int category)
     {
-        int i;
-        for(i = 0; i < category_list.size(); i++)
+        if( this->recive_all )
+        {
+            return true;
+        }
+        for(size_t i = 0; i < category_list.size(); i++)
         {
             if(category_list[i] == category)
                 return true;
@@ -82,8 +86,11 @@ namespace re {
 
     bool Subscriber::is_subscribed_type(int category, int type)
     {
-        int i;
-        for(i = 0; i < category_and_type_list.size(); i++)
+        if( this->recive_all )
+        {
+            return true;
+        }
+        for(size_t i = 0; i < category_and_type_list.size(); i++)
         {
             if(( category_and_type_list[i].x == category) && ( category_and_type_list[i].y == type))
                 return true;
@@ -95,9 +102,7 @@ namespace re {
 
     void EventManager::send_events (std::shared_ptr<Event> event)
     {
-        int i;
-        int j;
-        for(i = 0; i < subscriber_list.size(); i++)
+        for(size_t i = 0; i < subscriber_list.size(); i++)
         {
             
                 if(subscriber_list[i].is_subscribed_category(event->get_category()))
@@ -111,9 +116,8 @@ namespace re {
 
     void EventManager::add_subscriber_type (EventSubscriber * feature_subscriber, int category, int type)
     {
-        int i;
         int flag = 0;
-        for(i = 0; i < subscriber_list.size(); i++)
+        for(size_t i = 0; i < subscriber_list.size(); i++)
         {
             if(subscriber_list[i].sub == feature_subscriber)
             {
@@ -133,9 +137,8 @@ namespace re {
 
     void EventManager::add_subscriber_category (EventSubscriber * feature_subscriber, int category)
     {
-        int i;
         int flag = 0;
-        for(i = 0; i < subscriber_list.size(); i++)
+        for(size_t i = 0; i < subscriber_list.size(); i++)
         {
             if(subscriber_list[i].sub == feature_subscriber)
             {
@@ -154,7 +157,7 @@ namespace re {
 
     void EventManager::unsubscribe(EventSubscriber * subscriber)
     {
-        for(int i = 0; i < subscriber_list.size(); i++)
+        for(size_t i = 0; i < subscriber_list.size(); i++)
         {
             if(subscriber_list[i].sub == subscriber)
             {

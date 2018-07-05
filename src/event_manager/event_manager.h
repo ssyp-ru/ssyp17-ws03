@@ -14,6 +14,7 @@ public:
     Subscriber(EventSubscriber * feature_sub );
     void add_event_type(int category, int type);
     void add_event_category(int category);
+    void subscride_to_all();
     void delete_event_type(int category, int type);
     void delete_event_category(int category);
     int get_type_size();
@@ -23,6 +24,7 @@ public:
 private:
     std::vector <re::Point2f> category_and_type_list;
     std::vector <int> category_list;
+    bool recive_all;
 };
 
 class EventManager
