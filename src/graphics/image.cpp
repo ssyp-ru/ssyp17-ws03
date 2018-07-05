@@ -5,10 +5,14 @@
 #include <GL/glut.h>
 // #include <GL/glx.h>
 
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 // #define STB_IMAGE_WRITE_IMPLEMENTATION
 // #include "stb_image_write.h"
+#pragma GCC diagnostic pop
 
 #include <iostream>
 //#include <swap>

@@ -12,7 +12,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out)
 
 
-add_compile_options(-std=c++14)
+add_compile_options(-std=c++17)
 add_compile_options(-g)
 add_compile_options(-Wall)
 add_compile_options(-Wpedantic)
@@ -42,3 +42,4 @@ add_subdirectory(example/network_snake)
 add_subdirectory(example/physic_core)
 add_subdirectory(example/game_prototype)
 add_subdirectory(example/simple_map_try)
+add_subdirectory(example/simple_map)
