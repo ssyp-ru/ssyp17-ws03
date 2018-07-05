@@ -18,8 +18,8 @@ public:
     float meter_to_screen( float unit );
     float screen_to_meter( float unit );
 private:
-    re::Point2f cam_pos = {0,0};
-    float coff = 0;
+    re::Point2f cam_pos_ = {0,0};
+    float coff_ = 0;
 };
 
 }
