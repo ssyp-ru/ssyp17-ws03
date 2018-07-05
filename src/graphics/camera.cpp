@@ -6,6 +6,14 @@ void Camera::view_at( re::Point2f pos ) {
     this->cam_pos = pos;
 }
 
+void Camera::translate( re::Point2f offset ) {
+    this->cam_pos += offset;
+}
+
+re::Point2f Camera::get_cam_pos() {
+    return this->cam_pos;
+}
+
 void Camera::scale( float coff ) {
     this->coff = coff;
 }
