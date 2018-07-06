@@ -134,6 +134,12 @@ namespace re {
         }
     }
 
+    void EventManager::add_subscriber_to_all( EventSubscriber * feature_subscriber )
+    {
+        Subscriber n_subscriber(feature_subscriber);
+        n_subscriber.subscride_to_all();
+        subscriber_list.push_back(n_subscriber);
+    }
 
     void EventManager::add_subscriber_category (EventSubscriber * feature_subscriber, int category)
     {
@@ -145,13 +151,12 @@ namespace re {
                 subscriber_list[i].add_event_category(category);
                 flag = 1;
             }
-
         }
 
         if(flag == 0)
         {
-        subscriber_list.push_back(Subscriber(feature_subscriber));
-        subscriber_list.back().add_event_category(category);
+            subscriber_list.push_back(Subscriber(feature_subscriber));
+            subscriber_list.back().add_event_category(category);
         }
     }
 
@@ -175,14 +180,19 @@ namespace re {
         event_manager.add_subscriber_type(event_subscriber, category, type);
     }
 
-     void subscribe_to_event_category(EventSubscriber * event_subscriber, int category)
+    void subscribe_to_event_category(EventSubscriber * event_subscriber, int category)
     {
         event_manager.add_subscriber_category(event_subscriber,category);
     }
 
+    void subscribe_to_all(EventSubscriber * event_subscriber)
+    {
+        event_manager.add_subscriber_to_all( event_subscriber );
+    }
+
     void publish_event(std::shared_ptr<Event> set_event)
     {
-        event_manager.send_events (set_event);
+        event_manager.send_events (set_event); 
     }
 
     EventSubscriber::~ EventSubscriber()
