@@ -1,5 +1,5 @@
 #pragma once
-
+#include <vector>
 namespace re{
     class Point2f{
     public:
@@ -47,4 +47,17 @@ namespace re{
     float coordinate_x(Point2f first, Point2f second, Point2f third, Point2f fourth);
     //point of intersection of straight lines that are described with points 1,2 and points 3,4
     Point2f intersectionofstraights(Point2f first, Point2f second, Point2f third, Point2f fourth);
+
+
+
+    // Search the way function
+
+    void add_pair(re::Point2f addable_pair, std::vector<re::Point2f> &wave,
+                  re::Point2f start , re::Point2f end, std::vector <std::vector<int>> &count );
+
+    std::vector <re::Point2f> get_the_way(std::vector<std::vector<int>> map, int n, int startx,
+    int starty, int endx, int endy, std::vector<std::vector<int>> &count);
+
 }
+
+
