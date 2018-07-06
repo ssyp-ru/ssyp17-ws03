@@ -11,7 +11,7 @@
 //TODO: mouse-hover events?
 /*
  * magic-shmagic button constants:
- * 0: left-mouse click,
+ * 0: left-mouse click, 
  * 1: mid button click,
  * 2: right-mouse click,
  * 3: scroll up,
@@ -26,11 +26,16 @@ namespace re {
             std::string id;
             ImagePtr buttonImg, buttonImg_over;
             std::function<void()> actionFunc;
-            
+            std::string text;
+            Color baseColor;
+            Color textColor;
+            Color overColor;
+
         public:
             BaseButton(Point2f point, std::string id, ImagePtr img, ImagePtr img_over);
             BaseButton(int xSource, int ySource, std::string id, ImagePtr img, ImagePtr img_over);
             BaseButton(int xSource, int ySource, int xLength, int yLength, std::string id);
+            BaseButton(int xSource, int ySource, int xLength, int yLength, std::string id, std::string text, Color baseColor, Color textColor, Color overColor);
             std::string get_id();
             void set_active(bool active);
             bool is_active();

@@ -20,6 +20,7 @@ namespace re {
         }
     }
 
+
     void GuiManager::on_click(int mouse_button, int mouseX, int mouseY) {
         /*
          * magic-shmagic button constants:
@@ -56,5 +57,4 @@ namespace re {
             button->set_active(active);
         }
     }
-
 }
