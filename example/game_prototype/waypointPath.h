@@ -9,7 +9,7 @@
 
 class WaypointPath
 {
-    std::vector<re::Vector2f> waypoints;
+    std::vector<re::Point2f> waypoints;
     int nextPoint;
     int curDirection;
     double speed;
@@ -64,7 +64,7 @@ public:
         this->speed = speed;
         this->owner = owner;
     }
-    void addWaypoint(re::Vector2f destination)
+    void addWaypoint(re::Point2f destination)
     {
         waypoints.push_back(destination);
     }
@@ -79,7 +79,7 @@ public:
     void setActivated(bool value)
     {
         if (value == false)
-            owner->setVelocity(re::Vector2f(0, 0));
+            owner->setVelocity(re::Point2f(0, 0));
         if ((value == true) && (waypoints.size() > 1)) 
             owner->setVelocity((waypoints[nextPoint] - waypoints[getPrevIndex()]).Normalized() * speed);
         isActivated = value;
@@ -90,12 +90,12 @@ public:
     }
     void update()
     {
-        if (((re::GameObject)*owner).getCanChangeSpeed() == false)
-            ((re::GameObject)*owner).setCanChangeSpeed(true);
+        if (((re::PhysicObject)*owner).getCanChangeSpeed() == false)
+            ((re::PhysicObject)*owner).setCanChangeSpeed(true);
         if ((isActivated) && (waypoints.size() > 1))
         {
             owner->setVelocity((waypoints[nextPoint] - owner->getPosition()).Normalized() * speed);
-            if ((owner->getPosition() - waypoints[nextPoint]).Length() <= 0.25)
+            if ((owner->getPosition() - waypoints[nextPoint]).length() <= 0.25)
                 goNextWaypoint();
         }
     }
