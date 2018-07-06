@@ -2,7 +2,7 @@
 
 re::ImagePtr MovingPlatform::tex = nullptr;
 
-MovingPlatform::MovingPlatform(re::Vector2f pos, re::Vector2f size, double speed) : Platform::Platform(pos, size) 
+MovingPlatform::MovingPlatform(re::Point2f pos, re::Point2f size, double speed) : Platform::Platform(pos, size) 
 {
     path = new WaypointPath(speed, (DrawableGameObject*)this);
 }
@@ -19,7 +19,7 @@ void MovingPlatform::display(int scale)
         tex = std::make_shared<re::Image>( "map/metal.png" );
     }
 
-    re::draw_image_part( position.X * scale, position.Y * scale, (position.X * scale) + 64, (position.Y * scale) + 16,
+    re::draw_image_part( position.x * scale, position.y * scale, (position.x * scale) + 64, (position.y * scale) + 16,
                             0,0.25, 1,0.75,
                             tex );
 }

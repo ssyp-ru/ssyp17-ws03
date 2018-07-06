@@ -2,7 +2,7 @@
 
 re::ImagePtr WeakPlatform::tex = nullptr;
 
-WeakPlatform::WeakPlatform(re::Vector2f pos, re::Vector2f siz, double destroyTime) : Platform::Platform(pos, siz)
+WeakPlatform::WeakPlatform(re::Point2f pos, re::Point2f siz, double destroyTime) : Platform::Platform(pos, siz)
 {
     size = siz;
     touched = false;
@@ -11,9 +11,9 @@ WeakPlatform::WeakPlatform(re::Vector2f pos, re::Vector2f siz, double destroyTim
     setBounciness(0.0);
 }
 
-void WeakPlatform::onCollisionStay(re::GameObjectPtr to, re::Vector2f vec)
+void WeakPlatform::onCollisionStay(re::PhysicObjectPtr to, re::Point2f vec)
 {
-    if (re::Vector2f(0, 1).angleBetween(vec) < 30.0 / 180.0 * 3.14159)
+    if (re::Point2f(0, 1).angleBetween(vec) < 30.0 / 180.0 * 3.14159)
         touched = true;
 }
 
@@ -23,7 +23,7 @@ void WeakPlatform::update()
     if (hp <= 0)
     {
         destroy();
-        re::explode_image(  re::Point2f( position.X * 16, position.Y * 16 ), 
+        re::explode_image(  re::Point2f( position.x * 16, position.y * 16 ), 
                             re::Point2f( 64, 64 ), 
                             re::Point2f( 6, 6 ), 
                             tex, 
@@ -41,7 +41,7 @@ void WeakPlatform::display(int scale)
         tex = std::make_shared<re::Image>( "map/corr.png" );
     }
 
-    re::draw_image_part( position.X * scale, position.Y * scale, (position.X * scale) + 64, (position.Y * scale) + 64,
+    re::draw_image_part( position.x * scale, position.y * scale, (position.x * scale) + 64, (position.y * scale) + 64,
                             0,0, 1,1,
                             tex );
 }

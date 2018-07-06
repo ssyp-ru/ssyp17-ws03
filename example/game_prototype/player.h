@@ -19,14 +19,14 @@ public:
     re::AnimationPtr jumpingAnim;
     re::AnimationPtr slidingAnim;
     re::AnimationPtr attackAnim;
-    Player(re::Vector2f pos);
+    Player(re::Point2f pos);
     void tryCast(int abilityIndex);
     void addAbility(Ability *ab);
     std::vector<Ability*>* getAbilities();
     void addExp(int amount);
     int getLevel();
     void reduceCooldowns();
-    void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec);
+    void onCollisionStay(re::PhysicObjectPtr to, re::Point2f vec);
     void attack();
     void update();
     void display(int scale);

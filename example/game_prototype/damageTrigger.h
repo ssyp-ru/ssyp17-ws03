@@ -6,10 +6,10 @@ class DamageTrigger : public DrawableGameObject{
 private:
     double lifeTime;
     double damage;
-    re::GameObjectPtr sender;
+    re::PhysicObjectPtr sender;
 public:
-    DamageTrigger(re::Vector2f pos, re::Vector2f size, double damage, re::GameObjectPtr sender);
-    virtual void onTriggerStay(re::GameObjectPtr obj);
+    DamageTrigger(re::Point2f pos, re::Point2f size, double damage, re::PhysicObjectPtr sender);
+    virtual void onTriggerStay(re::PhysicObjectPtr obj);
     virtual void update();
     virtual void display(int k);
 };
