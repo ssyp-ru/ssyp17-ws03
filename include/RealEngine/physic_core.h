@@ -107,6 +107,8 @@ public:
 	void destroy();
 	virtual void onCollisionStay(std::shared_ptr<PhysicObject> to, re::Point2f vec) { }
 	virtual void onTriggerStay(std::shared_ptr<PhysicObject> obj) { }
+	re::Point2f removeCollisionWith(PhysicObject &gm);
+	bool needTestWith(PhysicObject &gm);
 	virtual ~PhysicObject() { }
 	friend class PhysicWorld;
 protected:
@@ -131,8 +133,6 @@ protected:
 	std::vector<std::function<void(std::shared_ptr<PhysicObject>, std::shared_ptr<PhysicObject>, re::Point2f)>> onCollisionEvents;
     void countMassCenter();
     re::Point2f getMassCenter();
-	bool needTestWith(PhysicObject &gm);
-	re::Point2f removeCollisionWith(PhysicObject &gm);
 	void updatePos();
 };
 typedef std::shared_ptr<PhysicObject> PhysicObjectPtr;
