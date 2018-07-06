@@ -196,13 +196,12 @@ void subscribe_to_event_category(EventSubscriber * event_subscriber, int categor
 
 void publish_event(std::shared_ptr<Event> set_event)
 {
-    event_manager.send_events (set_event);
+    event_manager.send_events(set_event);
 }
 
 
 void subscribe_to_all(EventSubscriber * event_subscriber){
-    
-
+    event_manager.add_subscriber_to_all(event_subscriber);
 }
 
 
