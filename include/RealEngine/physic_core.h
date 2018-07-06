@@ -138,6 +138,7 @@ protected:
 typedef std::shared_ptr<PhysicObject> PhysicObjectPtr;
 
 // Main physic core class, contents all real world and makes all physic
+
 class PhysicWorld
 {
 private: 
