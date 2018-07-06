@@ -38,7 +38,6 @@ public:
         return event_type_; 
     }
 
-
 private:
     const unsigned int event_category_;
     const unsigned int event_type_;
@@ -46,13 +45,12 @@ private:
 };
 typedef std::shared_ptr<Event> EventPtr;
 
+
 class EventSubscriber{
  public:
     virtual void on_event(std::shared_ptr<Event> event) = 0;
-    
 
     virtual ~EventSubscriber();
-
 };
 
 
