@@ -118,6 +118,32 @@ void EventManager::send_events (std::shared_ptr<Event> event)
     }
 }
 
+void EventManager::add_subscriber_to_all( EventSubscriber * feature_subscriber )
+{
+    Subscriber n_subscriber(feature_subscriber);
+    n_subscriber.subscride_to_all();
+    subscriber_list.push_back(n_subscriber);
+}
+
+void EventManager::add_subscriber_category (EventSubscriber * feature_subscriber, int category)
+{
+    int flag = 0;
+    for(size_t i = 0; i < subscriber_list.size(); i++)
+    {
+        if(subscriber_list[i].sub == feature_subscriber)
+        {
+            subscriber_list[i].add_event_category(category);
+            flag = 1;
+        }
+    }
+
+    if(flag == 0)
+    {
+        subscriber_list.push_back(Subscriber(feature_subscriber));
+        subscriber_list.back().add_event_category(category);
+    }
+}
+
 void EventManager::add_subscriber_type (EventSubscriber * feature_subscriber, int category, int type)
 {
     int flag = 0;
@@ -133,29 +159,8 @@ void EventManager::add_subscriber_type (EventSubscriber * feature_subscriber, in
 
     if(flag == 0)
     {
-    subscriber_list.push_back(Subscriber(feature_subscriber));
-    subscriber_list.back().add_event_type(category, type);
-    }
-}
-
-
-void EventManager::add_subscriber_category (EventSubscriber * feature_subscriber, int category)
-{
-    int flag = 0;
-    for(size_t i = 0; i < subscriber_list.size(); i++)
-    {
-        if(subscriber_list[i].sub == feature_subscriber)
-        {
-            subscriber_list[i].add_event_category(category);
-            flag = 1;
-        }
-
-    }
-
-    if(flag == 0)
-    {
-    subscriber_list.push_back(Subscriber(feature_subscriber));
-    subscriber_list.back().add_event_category(category);
+        subscriber_list.push_back(Subscriber(feature_subscriber));
+        subscriber_list.back().add_event_type(category, type);
     }
 }
 
@@ -191,13 +196,12 @@ void subscribe_to_event_category(EventSubscriber * event_subscriber, int categor
 
 void publish_event(std::shared_ptr<Event> set_event)
 {
-    event_manager.send_events (set_event);
+    event_manager.send_events(set_event);
 }
 
 
 void subscribe_to_all(EventSubscriber * event_subscriber){
-
-
+    event_manager.add_subscriber_to_all(event_subscriber);
 }
 
 

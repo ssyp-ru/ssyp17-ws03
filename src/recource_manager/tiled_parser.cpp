@@ -75,6 +75,24 @@ ObjectGroup parse_objectgroup(XmlElemPtr parsed_xml) {
     return objectgroup;
 }
 
+ImageLayer parse_imagelayer(XmlElemPtr parsed_xml)
+{
+    Log::msg("parsing to imagelayer " + parsed_xml->name, Log::LEVEL::TRACE);
+    ImageLayer imagelayer;
+    try {
+        //imagelayer.height = std::stoi( parsed_xml->field.at("height") );
+        //imagelayer.width = std::stoi( parsed_xml->field.at("width") );
+        imagelayer.name = parsed_xml->field.at("name");
+        //imagelayer.image = std::make_shared<>( parsed_xml.at("") )
+        XmlElemPtr image_xml = parsed_xml->get_children( "image" )[0];
+        imagelayer.height = std::stoi( image_xml->field.at("height") );
+        imagelayer.width = std::stoi( image_xml->field.at("width") );
+        imagelayer.img_path = image_xml->field.at("source");
+    } catch(...) {
+
+    }
+    return imagelayer;
+}
 
 Layer parse_layer(XmlElemPtr parsed_xml) {
     Log::msg("parsing to layer " + parsed_xml->name, Log::LEVEL::TRACE);
@@ -145,6 +163,9 @@ Map parse_map(XmlElemPtr parsed_xml) {
         }
         for(auto& xml : parsed_xml->get_children("layer")) {
             map.layer.push_back(parse_layer(xml));
+        }
+        for(auto& xml : parsed_xml->get_children("imagelayer")) {
+            map.imagelayer.push_back(parse_imagelayer(xml));
         }
         for(auto& xml : parsed_xml->get_children("objectgroup")) {
             map.objectgroup.push_back(parse_objectgroup(xml));

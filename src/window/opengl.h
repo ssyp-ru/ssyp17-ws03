@@ -44,6 +44,7 @@ public:
     void draw_image_part( int x0, int y0, int x1, int y1, float w0, float h0, float w1, float h1, ImagePtr img );
     
     void draw_text( int x0, int y0, std::string text, Color color );
+    void draw_text_custom( int x0, int y0, int font_id, std::string text, Color color );
 
     void translate( int x, int y );
     void viewAt( int x, int y );

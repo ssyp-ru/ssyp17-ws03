@@ -52,6 +52,11 @@ namespace re
         OpenGL::instance().draw_text( pos.x, pos.y, text, color );
     }
 
+    void draw_text_custom( int x, int y, int font_id, std::string text, Color color )
+    {
+        OpenGL::instance().draw_text_custom( x, y, font_id, text, color );
+    }
+
     bool get_key_state( Key key )
     {
         return OpenGL::instance().getKeyState( (int)key );
