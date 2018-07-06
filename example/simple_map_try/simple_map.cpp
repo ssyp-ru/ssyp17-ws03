@@ -10,11 +10,10 @@
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////
-re::Game mainGame;
 
 class MainApp : public re::IBaseApp {
 public:
-	re::Game mainGame;
+	re::PhysicWorld mainGame;
     re::Map map;
 
     void setup() override 
