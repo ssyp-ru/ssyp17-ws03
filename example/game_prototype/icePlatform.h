@@ -12,16 +12,16 @@
 
 class IcePlatform : public Platform{
 public:
-    IcePlatform(re::Vector2f pos, re::Vector2f size) : Platform::Platform(pos, size) 
+    IcePlatform(re::Point2f pos, re::Point2f size) : Platform::Platform(pos, size) 
     {
         setFriction(0.0);
         setBounciness(0.0);
     }
-    void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec) override
+    void onCollisionStay(re::PhysicObjectPtr to, re::Point2f vec) override
     {
         if (std::dynamic_pointer_cast<Player>(to) != 0)
         {
-            if (to->getVelocity().Length() > 2.5)
+            if (to->getVelocity().length() > 2.5)
             {
                 std::dynamic_pointer_cast<Player>(to)->isGrounded = false;
                 to->setCanChangeSpeed(false);

@@ -9,7 +9,7 @@ void DamageTrigger::update()
     lifeTime -= re::Time::delta_time;
     if (lifeTime <= 0) destroy();
 }
-void DamageTrigger::onTriggerStay(re::GameObjectPtr obj)
+void DamageTrigger::onTriggerStay(re::PhysicObjectPtr obj)
 {
     if ((std::dynamic_pointer_cast<Enemy>(obj) != 0) && (std::dynamic_pointer_cast<Player>(sender) != 0))
     {
@@ -22,14 +22,14 @@ void DamageTrigger::onTriggerStay(re::GameObjectPtr obj)
         destroy();
     }
 }
-DamageTrigger::DamageTrigger(re::Vector2f pos, re::Vector2f size, double damage, re::GameObjectPtr sender) : DrawableGameObject::DrawableGameObject(pos) 
+DamageTrigger::DamageTrigger(re::Point2f pos, re::Point2f size, double damage, re::PhysicObjectPtr sender) : DrawableGameObject::DrawableGameObject(pos) 
 {
     setRigidbodySimulated(false);
     setIsTrigger(true);
-    addPoint(re::Vector2f(0, 0));
-    addPoint(re::Vector2f(0, size.Y));
-    addPoint(re::Vector2f(size.X, size.Y));
-    addPoint(re::Vector2f(size.X, 0));
+    addPoint(re::Point2f(0, 0));
+    addPoint(re::Point2f(0, size.y));
+    addPoint(re::Point2f(size.x, size.y));
+    addPoint(re::Point2f(size.x, 0));
     addEdge(0, 1);
     addEdge(1, 2);
     addEdge(2, 3);

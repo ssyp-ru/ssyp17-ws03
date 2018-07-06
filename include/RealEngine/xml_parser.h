@@ -24,6 +24,8 @@ struct XmlElem {
     
     // prints XmlElem with its content to file
     void print(std::string output_filename);
+
+    std::string get_field_value(const std::string& field_name);
 };
 typedef std::shared_ptr<XmlElem> XmlElemPtr;
 

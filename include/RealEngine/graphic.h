@@ -7,6 +7,16 @@
 
 namespace re{
 
+    enum font
+    {
+        STANDART_8_BY_13,
+        STANDART_9_BY_15,
+        HELVETICA_10,
+        HELVETICA_12,
+        HELVETICA_18,
+        TIMES_ROMAN_10,
+        TIMES_ROMAN_24
+    };
     //set background color, pls don't run evry tick
     void background(Color color);
     //draw rectangle, too smart
@@ -41,6 +51,7 @@ namespace re{
     //draw text, roo smart comment
     void draw_text( int x0, int y0, std::string text, Color color );
     void draw_text( Point2f pos, std::string text, Color color );
+    void draw_text_custom( int x, int y, int font_id, std::string text, Color color );
     //return state( prese or not ) of key
     bool get_key_state( Key key );
 

@@ -13,15 +13,15 @@ class JumpPlatform : public Platform
 private:
     double power;
 public:
-    JumpPlatform(re::Vector2f pos, re::Vector2f size, double power) : Platform::Platform(pos, size) 
+    JumpPlatform(re::Point2f pos, re::Point2f size, double power) : Platform::Platform(pos, size) 
     {
         this->power = power;
     }
-    void onCollisionStay(re::GameObjectPtr obj, re::Vector2f vec)
+    void onCollisionStay(re::PhysicObjectPtr obj, re::Point2f vec)
     {
         if (std::dynamic_pointer_cast<Player>(obj) != 0)
             std::dynamic_pointer_cast<Player>(obj)->isGrounded = false;
-        obj->addImpulse(re::Vector2f(0, -power * obj->getMass()));
+        obj->addImpulse(re::Point2f(0, -power * obj->getMass()));
     }
 };
     

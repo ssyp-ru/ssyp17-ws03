@@ -361,6 +361,16 @@ public:
             int x = rand()%10;
             int y = rand()%10;
 
+            msg.clear();
+            msg.push_back(0x04);
+            msg.push_back(x);
+            msg.push_back(y);
+
+            for( size_t i = 1; i < players.size(); i++ )
+            {
+                tcp_server->send( i - 1, msg );
+            }
+
             players.push_back( Player( 
                 id+1,
                 get_player_color(id+1),
@@ -370,18 +380,20 @@ public:
             sync_eat();
             return;
         }
-        switch( msg[0] )
-        {
-        case 0x03:
-            if( ((msg[1] * -1) == players[id+1].input.x) ||
-                ((msg[2] * -1) == players[id+1].input.y) )
+        if (!msg.empty()){
+            switch( msg[0] )
             {
+            case 0x03:
+                if( ((msg[1] * -1) == players[id+1].input.x) ||
+                    ((msg[2] * -1) == players[id+1].input.y) )
+                {
+                    break;
+                }
+                players[id+1].new_input.x = msg[1];
+                players[id+1].new_input.y = msg[2];
+                sync_input( id+1 );
                 break;
             }
-            players[id+1].new_input.x = msg[1];
-            players[id+1].new_input.y = msg[2];
-            sync_input( id+1 );
-            break;
         }
     }
 
@@ -489,7 +501,7 @@ public:
                             {
                                 tcp_server->send(j-1,msg);
                             }
-                            return;
+                            break;
                         }
                     }
                     restart_game();
