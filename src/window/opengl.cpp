@@ -510,8 +510,41 @@ void OpenGL::draw_text( int x0, int y0, std::string text, Color color )
                 color.b / 255.0, 
                 color.t / 255.0 );
 
-    void *font = GLUT_BITMAP_9_BY_15;
+    void *font = GLUT_BITMAP_TIMES_ROMAN_24;
     char *s = (char *)text.c_str();
+
+    glRasterPos2f( x0, -y0 );
+
+    if (s && strlen(s)) {
+        while (*s) {
+            glutBitmapCharacter(font, *s);
+            s++;
+        }
+    }
+}
+
+void OpenGL::draw_text_custom( int x0, int y0, int font_id, std::string text, Color color )
+{
+    glColor4f(  color.r / 255.0, 
+                color.g / 255.0, 
+                color.b / 255.0, 
+                color.t / 255.0 );
+
+    char *s = (char *)text.c_str();
+
+    void *font;
+
+    switch( font_id )
+    {
+    case 0: font = GLUT_BITMAP_8_BY_13; break;
+    case 1: font = GLUT_BITMAP_9_BY_15; break;
+    case 2: font = GLUT_BITMAP_HELVETICA_10; break;
+    case 3: font = GLUT_BITMAP_HELVETICA_12; break;
+    case 4: font = GLUT_BITMAP_HELVETICA_18; break;
+    case 5: font = GLUT_BITMAP_TIMES_ROMAN_10; break;
+    case 6: font = GLUT_BITMAP_TIMES_ROMAN_24; break;
+    default: font = GLUT_BITMAP_8_BY_13;
+    }
 
     glRasterPos2f( x0, -y0 );
 

@@ -56,12 +56,12 @@ public:
             {
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Point2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
-                        re::Point2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF + 0.2)));
+                        re::Point2f((float)(*(object.width)) * SCALE_COEFF + 0.2, (float)(*(object.height)) * SCALE_COEFF + 0.2)));
 
             } else if( object.name == "ground" )            {
                 mainGame.addObject( std::make_shared<Platform>(
                         re::Point2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
-                        re::Point2f((float)object.width * SCALE_COEFF + 0.2, (float)object.height * SCALE_COEFF + 0.2)));
+                        re::Point2f((float)(*(object.width)) * SCALE_COEFF + 0.2, (float)(*(object.height)) * SCALE_COEFF + 0.2)));
 
 
             } else if ( object.name == "yojus" ) {
@@ -76,10 +76,10 @@ public:
             } else if ( object.name == "ice" ) {
                 re::PhysicObjectPtr platice = std::make_shared<IcePlatform>(
                         re::Point2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
-                        re::Point2f((float)object.width * SCALE_COEFF + 0.1, (float)object.height * SCALE_COEFF + 0.1));
+                        re::Point2f((float)(*(object.width)) * SCALE_COEFF + 0.1, (float)(*(object.height)) * SCALE_COEFF + 0.1));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
-                for(size_t i = 0; i < object.width / 64; i++ )
+                for(size_t i = 0; i < object.width.value() / 64; i++ )
                 {
                     re::PhysicObjectPtr weplat = std::make_shared<WeakPlatform>( 
                         re::Point2f(object.x * SCALE_COEFF + ( (i) * 4 ) - 4, object.y * SCALE_COEFF), 
@@ -93,23 +93,23 @@ public:
                         3.0);
                 mainGame.addObject(movplat);
                 movplat->path->addWaypoint(re::Point2f(
-                    (object.x * SCALE_COEFF) + 4 + (object.width / 128) * 4,// - 1) * 4,
+                    (object.x * SCALE_COEFF) + 4 + ((*(object.width)) / 128) * 4,// - 1) * 4,
                     (object.y * SCALE_COEFF) + 4// + ((object.height / 128) - 1) * 4
                 ));
                 movplat->path->setCycled(true);
                 movplat->path->setActivated(true);
             } else if ( object.name == "deth" ) {
                 re::PhysicObjectPtr deathTrig = std::make_shared<DeathTrigger>(
-                                re::Point2f(object.x * SCALE_COEFF - 3.6, object.y * SCALE_COEFF + (float)object.height * SCALE_COEFF * 0.1), 
-                                re::Point2f((float)object.width * SCALE_COEFF - 0.8, (float)object.height * SCALE_COEFF * 0.8));
+                                re::Point2f(object.x * SCALE_COEFF - 3.6, object.y * SCALE_COEFF + (float)(*(object.height)) * SCALE_COEFF * 0.1), 
+                                re::Point2f((float)(*(object.width)) * SCALE_COEFF - 0.8, (float)(*(object.height)) * SCALE_COEFF * 0.8));
                 mainGame.addObject(deathTrig);
             } else if (object.name == "EvilBird"){
                 auto evilbird = std::make_shared<EvilBird>(re::Point2f(object.x * 64 * SCALE_COEFF,
                 object.y * 64 * SCALE_COEFF + 1), 5.0);
                 mainGame.addObject(evilbird);
                 evilbird->path->addWaypoint(re::Point2f(
-                    evilbird->getPosition().x + object.width * 4,
-                    evilbird->getPosition().y + object.height * 4
+                    evilbird->getPosition().x + (*(object.width)) * 4,
+                    evilbird->getPosition().y + (*(object.height)) * 4
                 ));
                 evilbird->path->setActivated(true);
                 evilbird->movingAnim = resource_manager.get_animation("birdMovingAnim");

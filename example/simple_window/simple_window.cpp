@@ -48,7 +48,6 @@ public:
         re::draw_rectangle(x, y, 50, 50, re::RED);
         re::draw_rectangle(200, 200, 50, 50, re::RED);
         re::draw_line( x, 50, 200, 200, re::BLACK );
-        re::draw_text( 100, 100, "TEST TEXT", re::BLACK );
 
         re::Point2f pos = camera.world_to_screen( {40,400} );
         re::Point2f size(   camera.meter_to_screen( 10 ),
@@ -56,6 +55,11 @@ public:
         re::draw_rectangle( pos, size, re::BLUE );
 
         camera.scale( 1 + ( float(x)/100.0f ) );
+
+        for( int i = 0; i < 8; i++ )
+        {
+            re::draw_text_custom( 100, 100 + (i * 30), i, "TEST TEXT", re::BLACK );
+        }
 
         x = ( x+1 ) % 100;
     }
