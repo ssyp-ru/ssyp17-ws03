@@ -9,8 +9,8 @@ namespace re{
 
     enum font
     {
-        8_BY_13,
-        9_BY_15,
+        STANDART_8_BY_13,
+        STANDART_9_BY_15,
         HELVETICA_10,
         HELVETICA_12,
         HELVETICA_18,
