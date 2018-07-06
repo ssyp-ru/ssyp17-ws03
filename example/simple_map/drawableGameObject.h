@@ -8,10 +8,10 @@
 #include <iostream>
 #include <vector>
 
-class DrawableGameObject : public re::GameObject
+class DrawableGameObject : public re::PhysicObject
 {
 public:
-    DrawableGameObject(re::Vector2f pos) : re::GameObject::GameObject(pos) 
+    DrawableGameObject(re::Point2f pos) : re::PhysicObject::PhysicObject(pos) 
     {
 
     }
@@ -23,10 +23,10 @@ public:
     {
         for (auto curEdge : *getEdges())
         {
-            re::draw_line((curEdge.P1->X + getPosition().X) * scale,
-                         (curEdge.P1->Y + getPosition().Y) * scale,
-                         (curEdge.P2->X + getPosition().X) * scale,
-                         (curEdge.P2->Y + getPosition().Y) * scale,
+            re::draw_line((curEdge.P1->x + getPosition().x) * scale,
+                         (curEdge.P1->y + getPosition().y) * scale,
+                         (curEdge.P2->x + getPosition().x) * scale,
+                         (curEdge.P2->y + getPosition().y) * scale,
                          re::BLACK);
         }
     }

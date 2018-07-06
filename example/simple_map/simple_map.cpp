@@ -11,11 +11,10 @@
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////
-re::Game mainGame;
 
 class MainApp : public re::IBaseApp {
 public:
-	re::Game mainGame;
+	re::PhysicWorld mainGame;
     re::Map map;
 
     void setup() override 
@@ -28,14 +27,14 @@ public:
         std::cout << "end map parse" << std::endl;
         for (auto objectData : map.objectgroup[0].group)
         {
-            std::shared_ptr<DrawableGameObject> dobj = std::make_shared<DrawableGameObject>(re::Vector2f(objectData.x, objectData.y));
+            std::shared_ptr<DrawableGameObject> dobj = std::make_shared<DrawableGameObject>(re::Point2f(objectData.x, objectData.y));
             if (!objectData.poly.points.empty()){
                 for (auto vertex : objectData.poly.points)
-                    dobj->addPoint(re::Vector2f(vertex.x, vertex.y));
+                    dobj->addPoint(re::Point2f(vertex.x, vertex.y));
                 for (int i = 0; i < objectData.poly.points.size() - 1; i++)
                     dobj->addEdge(i, i + 1);
                 dobj->addEdge(objectData.poly.points.size() - 1, 0);
-                re::GameObjectPtr obj = dobj;
+                re::PhysicObjectPtr obj = dobj;
                 mainGame.addObject(obj);
             }
         }
@@ -48,7 +47,7 @@ public:
     void display() override {
         //re::view_at( 0, 0 ); дёргать view_at каждый кадр плохо
         for (auto obj : mainGame.getWorld()){
-            std::dynamic_pointer_cast<DrawableGameObject, re::GameObject>(obj)->display(1.0 / zoomOut);
+            std::dynamic_pointer_cast<DrawableGameObject, re::PhysicObject>(obj)->display(1.0 / zoomOut);
         }
         //re::draw_image_part(0,0, 400,400, 0,0, 1,1, 
         //                    map.layer[0].background);
