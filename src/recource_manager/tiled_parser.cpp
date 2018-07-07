@@ -10,7 +10,7 @@ namespace re{
 
 Polygon parse_polygon(XmlElemPtr parsed_xml)
 {
-    Log::msg("parsing to object " + parsed_xml->name, Log::LEVEL::TRACE);
+//    Log::msg("parsing to object " + parsed_xml->name, Log::LEVEL::TRACE);
 
     Polygon poly;
 
@@ -21,14 +21,14 @@ Polygon parse_polygon(XmlElemPtr parsed_xml)
             poly.points.push_back(Point2f(std::stof(values[0]), std::stof(values[1])));
         }
     } catch(...) {
-        Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
+//        Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
     }
 
     return poly;
 }
 
 Object parse_object(XmlElemPtr parsed_xml) {
-    Log::msg("parsing to object " + parsed_xml->name + " with ID " + parsed_xml->field.at("id"), Log::LEVEL::TRACE);
+//    Log::msg("parsing to object " + parsed_xml->name + " with ID " + parsed_xml->field.at("id"), Log::LEVEL::TRACE);
 
     Object object;
 
@@ -51,10 +51,10 @@ Object parse_object(XmlElemPtr parsed_xml) {
             if (object.poly.points.empty())
                 object.poly = parse_polygon(obj);
             else
-                Log::msg("Unexpected second polygon in object.", Log::LEVEL::DEBUG);
+//                Log::msg("Unexpected second polygon in object.", Log::LEVEL::DEBUG);
         }
     } catch(...) {
-        Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
+//        Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
     }
 
     return object;
@@ -62,7 +62,7 @@ Object parse_object(XmlElemPtr parsed_xml) {
 
 
 ObjectGroup parse_objectgroup(XmlElemPtr parsed_xml) {
-    Log::msg("parsing to objectgroup " + parsed_xml->name, Log::LEVEL::TRACE);    
+//    Log::msg("parsing to objectgroup " + parsed_xml->name, Log::LEVEL::TRACE);    
     ObjectGroup objectgroup;
     try {
         objectgroup.name = parsed_xml->field.at("name");
@@ -70,14 +70,14 @@ ObjectGroup parse_objectgroup(XmlElemPtr parsed_xml) {
             objectgroup.group.push_back((Object)parse_object(obj));
         }
     } catch(...) {
-        Log::msg("Error parsing " + parsed_xml->name + " as an objectgroup.", Log::LEVEL::DEBUG);
+//        Log::msg("Error parsing " + parsed_xml->name + " as an objectgroup.", Log::LEVEL::DEBUG);
     }
     return objectgroup;
 }
 
 ImageLayer parse_imagelayer(XmlElemPtr parsed_xml)
 {
-    Log::msg("parsing to imagelayer " + parsed_xml->name, Log::LEVEL::TRACE);
+//    Log::msg("parsing to imagelayer " + parsed_xml->name, Log::LEVEL::TRACE);
     ImageLayer imagelayer;
     try {
         //imagelayer.height = std::stoi( parsed_xml->field.at("height") );
@@ -95,7 +95,7 @@ ImageLayer parse_imagelayer(XmlElemPtr parsed_xml)
 }
 
 Layer parse_layer(XmlElemPtr parsed_xml) {
-    Log::msg("parsing to layer " + parsed_xml->name, Log::LEVEL::TRACE);
+//    Log::msg("parsing to layer " + parsed_xml->name, Log::LEVEL::TRACE);
     Layer layer;
     try {
         layer.height = std::stoi(parsed_xml->field.at("height"));
@@ -115,16 +115,16 @@ Layer parse_layer(XmlElemPtr parsed_xml) {
             layer.data.push_back(std::stoi(data.substr(0,found)));
             data.erase(0,found);
         }
-        Log::stream() << std::endl;
+//        Log::stream() << std::endl;
     } catch(...) {
-        Log::msg("Error parsing " + parsed_xml->name + " \""+layer.name+"\" as a layer.", Log::LEVEL::DEBUG);
+//        Log::msg("Error parsing " + parsed_xml->name + " \""+layer.name+"\" as a layer.", Log::LEVEL::DEBUG);
     }
     return layer;
 }
 
 
 Tileset parse_tileset(XmlElemPtr parsed_xml) {
-    Log::msg("parsing to tileset " + parsed_xml->name, Log::LEVEL::TRACE);    
+//    Log::msg("parsing to tileset " + parsed_xml->name, Log::LEVEL::TRACE);    
     Tileset tileset;
     try {
         tileset.firstgid = std::stoi(parsed_xml->field.at("firstgid"));
@@ -137,7 +137,7 @@ Tileset parse_tileset(XmlElemPtr parsed_xml) {
         tileset.tilecount = std::stoi(ts->field.at("tilecount"));
         tileset.columns = std::stoi(ts->field.at("columns"));
         ts = ts->get_children("image").at(0);
-        Log::msg("image : " + ts->name + ", source="+ts->field["source"], Log::LEVEL::TRACE);
+//        Log::msg("image : " + ts->name + ", source="+ts->field["source"], Log::LEVEL::TRACE);
         tileset.img_source = ts->field.at("source"); // this is filename
         tileset.img_width = std::stoi(ts->field.at("width"));
         tileset.img_height = std::stoi(ts->field.at("height"));
@@ -148,14 +148,14 @@ Tileset parse_tileset(XmlElemPtr parsed_xml) {
             }
         }
     } catch(...) {
-        Log::msg("Error parsing " + parsed_xml->name + " as a tileset.", Log::LEVEL::DEBUG);
+//        Log::msg("Error parsing " + parsed_xml->name + " as a tileset.", Log::LEVEL::DEBUG);
     }
     return tileset;
 }
 
 
 Map parse_map(XmlElemPtr parsed_xml) {
-    Log::msg("parsing to map " + parsed_xml->name, Log::LEVEL::TRACE);
+//    Log::msg("parsing to map " + parsed_xml->name, Log::LEVEL::TRACE);
     Map map;
     try {
         for(auto& xml : parsed_xml->get_children("tileset")) {
@@ -171,7 +171,7 @@ Map parse_map(XmlElemPtr parsed_xml) {
             map.objectgroup.push_back(parse_objectgroup(xml));
         }
     } catch(...) {
-        Log::msg("Error parsing " + parsed_xml->name + " as a map.", Log::LEVEL::DEBUG);
+//        Log::msg("Error parsing " + parsed_xml->name + " as a map.", Log::LEVEL::DEBUG);
     }
     if (map.tileset.size() > 0)
     {
@@ -194,7 +194,7 @@ Map parse_map(XmlElemPtr parsed_xml) {
                     }
                 layer.background->reGenTexture();
             } catch(...) {
-                Log::msg("Error creating background image for layer " + layer.name + ".", Log::LEVEL::TRACE);
+//                Log::msg("Error creating background image for layer " + layer.name + ".", Log::LEVEL::TRACE);
             }
 }
     }
