@@ -31,6 +31,20 @@ namespace re {
         this->id = id;
     }
 
+    BaseButton::BaseButton(int xSource, int ySource, int xLength, int yLength, std::string id, 
+                            std::string text, Color baseColor, Color textColor, Color overColor) {
+        x = xSource;
+        y = ySource;
+        this->xLength = xLength;
+        this->yLength = yLength;
+        buttonImg = nullptr;
+        buttonImg_over = nullptr;
+        this->baseColor = baseColor;
+        this->textColor = textColor;
+        this->overColor = overColor;
+        this->id = id;
+    }
+
     std::string BaseButton::get_id() {
         return id;
     }
@@ -64,15 +78,22 @@ namespace re {
         actionFunc();
     }
     
-    void BaseButton::display(){
+    void BaseButton::display(){    
         if (active && buttonImg){
             draw_image(x, y, buttonImg);
+        }else if(active){
+            draw_rectangle(x, y, xLength, yLength, baseColor);
+            draw_text(x, y, text, textColor);
         }
+
     }
     
     void BaseButton::display_mouse_over(){
         if (active && buttonImg_over){
             draw_image(x, y, buttonImg_over);
+        }else if(active){
+            draw_rectangle(x, y, xLength, yLength, overColor);
+            draw_text(x, y, text, textColor);
         }
     }
 

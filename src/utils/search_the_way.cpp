@@ -20,8 +20,8 @@ void re::add_pair(re::Point2f addable_pair, std::vector<re::Point2f> &wave,
         wave.push_back(addable_pair);
 }
 
-std::vector <re::Point2f> re::get_the_way(std::vector<std::vector<int>> map, int n, int startx,
-    int starty, int endx, int endy, std::vector<std::vector<int>> &count){
+std::vector <re::Point2f> re::get_the_way(std::vector<std::vector<int>> map, int n, int startx, int starty,
+                                          int endx, int endy, std::vector<std::vector<int>> &count){
     int indexx, indexy;
     std::vector<std::vector<re::Point2f>> parent;
     std::vector<re::Point2f> way;
@@ -48,16 +48,13 @@ std::vector <re::Point2f> re::get_the_way(std::vector<std::vector<int>> map, int
     indexx = startx;
     indexy = starty;
     count [indexx][indexy] = 0;
-    while((indexx != endx) || (indexy != endy))
-    {  
+    while((indexx != endx) || (indexy != endy)){  
         for( int i = 0; i < 4; i++){
             if((map[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] == 1) &&  
                 ((count [int(indexx + next_step[i].x)][int(indexy+ next_step[i].y)] == -1)||
                 ((count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] != -1) &&
                 (count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] > 
-                count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] + 1))))
-            {
-           
+                count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] + 1)))){
             count[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] = count[indexx][indexy] + 1;                          
             parent[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] = re::Point2f(indexx, indexy);
             re::add_pair(re::Point2f(indexx + next_step[i].x, indexy + next_step[i].y), wave,
@@ -72,8 +69,7 @@ std::vector <re::Point2f> re::get_the_way(std::vector<std::vector<int>> map, int
     int lastx = endx;
     int lasty = endy;
     int copy_lastx = lastx;
-    while((lastx != startx) || (lasty != starty))
-    {   
+    while((lastx != startx) || (lasty != starty)){   
         way.push_back(re::Point2f(lastx, lasty));
         lastx = parent[lastx][lasty].x;
         lasty = parent[copy_lastx][lasty].y;
