@@ -8,6 +8,8 @@
 
 class Platform : public DrawableGameObject{
 public:
+    static const int16_t PLATFORM_PHYSIC_TYPE = 0b01;
+
     Platform(re::Point2f pos, re::Point2f size) : DrawableGameObject::DrawableGameObject(pos) 
     {
         setRigidbodySimulated(false);
@@ -21,6 +23,9 @@ public:
         addEdge(1, 2);
         addEdge(2, 3);
         addEdge(3, 0);
+
+        physic_type = PLATFORM_PHYSIC_TYPE;
+        not_check_mask = PLATFORM_PHYSIC_TYPE;
     }
     void display(int scale) override
     {
