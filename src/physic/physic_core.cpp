@@ -487,7 +487,7 @@ void PhysicObject::updatePos()
 }
 bool PhysicObject::isPointInside(Point2f point)
 {
-	return (point - getPosition()) <= circleRadius;
+	return (point - getPosition()).length() <= circleRadius;
 }
 void PhysicObject::destroy()
 {
