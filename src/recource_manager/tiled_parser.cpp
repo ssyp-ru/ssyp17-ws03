@@ -50,10 +50,11 @@ Object parse_object(XmlElemPtr parsed_xml) {
         {
             if (object.poly.points.empty())
                 object.poly = parse_polygon(obj);
-            else
+//            else
 //                Log::msg("Unexpected second polygon in object.", Log::LEVEL::DEBUG);
         }
-    } catch(...) {
+    }
+        catch(...) {
 //        Log::msg("Error parsing " + parsed_xml->name + " as an object.", Log::LEVEL::DEBUG);
     }
 
