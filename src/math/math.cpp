@@ -183,6 +183,10 @@ double Point2f::angleBetween(Point2f vec){
 	if ((a == 0) || (b == 0) || (c == 0)) return 0;
 	return acos((a*a + b*b - c*c) / (2*a*b));
 }
+double Point2f::vecMul(Point2f vec)
+{
+    return x * vec.y - y * vec.x;
+}
 
 
 } // namespace re 

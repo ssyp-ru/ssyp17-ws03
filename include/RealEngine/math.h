@@ -53,6 +53,7 @@ public:
 	void rotate(double radians);
 	Point2f rotated(double radians);
 	double angleBetween(Point2f vec);
+    double vecMul(Point2f vec);
 };
 
 //coordinates y, x of intersection of straight lines (described with points 1,2 and points 3,4)

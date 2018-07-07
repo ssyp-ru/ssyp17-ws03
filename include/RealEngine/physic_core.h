@@ -109,9 +109,9 @@ public:
 	virtual void onTriggerStay(std::shared_ptr<PhysicObject> obj) { }
 	re::Point2f removeCollisionWith(PhysicObject &gm);
 	bool needTestWith(PhysicObject &gm);
+	bool isPointInside(Point2f point);
 	virtual ~PhysicObject() { }
 	friend class PhysicWorld;
-
 	int16_t not_check_mask = 0;
 	int16_t physic_type = 0;
 protected:
