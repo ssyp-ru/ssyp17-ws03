@@ -9,32 +9,26 @@ class Event{
 public:
     Event(unsigned int event_category, unsigned int event_type) : event_category_(event_category), event_type_(event_type){}     
 
-    virtual bool is_shared()
-    {
+    virtual bool is_shared() {
         return shared_;
     }
 
-    virtual void set_shared( bool shared )
-    {
+    virtual void set_shared( bool shared ) {
         this->shared_ = shared;
     }
 
-    virtual std::vector<char> serialize()
-    {
+    virtual std::vector<char> serialize() {
         return std::vector<char>();
     }
 
-    virtual void deserialize( std::vector<char> )
-    {
+    virtual void deserialize( std::vector<char> ) {
 
     }
 
-    unsigned int get_category()  
-    { 
+    unsigned int get_category() { 
         return event_category_;
     }
-    unsigned int get_type()      
-    { 
+    unsigned int get_type() { 
         return event_type_; 
     }
 
