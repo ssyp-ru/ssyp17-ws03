@@ -36,13 +36,13 @@ const double SCALE_COEFF = 0.0625;
 
 class MainApp : public re::IBaseApp{
 public:
-    re::Game mainGame;
+    re::PhysicWorld mainGame;
     int k = 16; // scale
     re::Map map;
     HUD *curHUD;
     //Setup:
 
-    re::GameObjectPtr getGameObject(re::Vector2f pos, re::Vector2f size)
+    re::PhysicObjectPtr getGameObject(re::Point2f pos, re::Point2f size)
     {
         return std::make_shared<Platform>(pos, size);
     }
@@ -55,17 +55,17 @@ public:
             if( object.name == "grass" )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
-                        re::Vector2f((float)object.width.value() * SCALE_COEFF + 0.2, (float)object.height.value() * SCALE_COEFF + 0.2)));
+                        re::Point2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
+                        re::Point2f((float)(*(object.width)) * SCALE_COEFF + 0.2, (float)(*(object.height)) * SCALE_COEFF + 0.2)));
 
             } else if( object.name == "ground" )            {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
-                        re::Vector2f((float)object.width.value() * SCALE_COEFF + 0.2, (float)object.height.value() * SCALE_COEFF + 0.2)));
+                        re::Point2f(object.x * SCALE_COEFF - 4.05, object.y * SCALE_COEFF - 0.05), 
+                        re::Point2f((float)(*(object.width)) * SCALE_COEFF + 0.2, (float)(*(object.height)) * SCALE_COEFF + 0.2)));
 
 
             } else if ( object.name == "yojus" ) {
-                player = std::make_shared<Player>(re::Vector2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
+                player = std::make_shared<Player>(re::Point2f(object.x * SCALE_COEFF, object.y * SCALE_COEFF));
                 player->movingAnim = resource_manager.get_animation("playerAnim");
                 player->slidingAnim = resource_manager.get_animation("onIceAnim");
                 player->jumpingAnim = resource_manager.get_animation("jumpAnim");
@@ -74,42 +74,42 @@ public:
                 player->setBounciness(0.0);
 
             } else if ( object.name == "ice" ) {
-                re::GameObjectPtr platice = std::make_shared<IcePlatform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
-                        re::Vector2f((float)object.width.value() * SCALE_COEFF + 0.1, (float)object.height.value() * SCALE_COEFF + 0.1));
+                re::PhysicObjectPtr platice = std::make_shared<IcePlatform>(
+                        re::Point2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF), 
+                        re::Point2f((float)(*(object.width)) * SCALE_COEFF + 0.1, (float)(*(object.height)) * SCALE_COEFF + 0.1));
                 mainGame.addObject(platice);
             } else if ( object.name == "corr" ) {
                 for(size_t i = 0; i < object.width.value() / 64; i++ )
                 {
-                    re::GameObjectPtr weplat = std::make_shared<WeakPlatform>( 
-                        re::Vector2f(object.x * SCALE_COEFF + ( (i) * 4 ) - 4, object.y * SCALE_COEFF), 
-                        re::Vector2f(4, 4), 0.75);
+                    re::PhysicObjectPtr weplat = std::make_shared<WeakPlatform>( 
+                        re::Point2f(object.x * SCALE_COEFF + ( (i) * 4 ) - 4, object.y * SCALE_COEFF), 
+                        re::Point2f(4, 4), 0.75);
                     mainGame.addObject(weplat);
                 }
             } else if ( object.name == "metal" ) {
                 auto movplat = std::make_shared<MovingPlatform>(
-                        re::Vector2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + 4), 
-                        re::Vector2f(4, 1), 
+                        re::Point2f(object.x * SCALE_COEFF - 4, object.y * SCALE_COEFF + 4), 
+                        re::Point2f(4, 1), 
                         3.0);
                 mainGame.addObject(movplat);
-                movplat->path->addWaypoint(re::Vector2f(
-                    (object.x * SCALE_COEFF) + 4 + (object.width.value() / 128) * 4,// - 1) * 4,
+                movplat->path->addWaypoint(re::Point2f(
+                    (object.x * SCALE_COEFF) + 4 + ((*(object.width)) / 128) * 4,// - 1) * 4,
                     (object.y * SCALE_COEFF) + 4// + ((object.height / 128) - 1) * 4
                 ));
                 movplat->path->setCycled(true);
                 movplat->path->setActivated(true);
             } else if ( object.name == "deth" ) {
-                re::GameObjectPtr deathTrig = std::make_shared<DeathTrigger>(
-                                re::Vector2f(object.x * SCALE_COEFF - 3.6, object.y * SCALE_COEFF + (float)object.height.value() * SCALE_COEFF * 0.1), 
-                                re::Vector2f((float)object.width.value() * SCALE_COEFF - 0.8, (float)object.height.value() * SCALE_COEFF * 0.8));
+                re::PhysicObjectPtr deathTrig = std::make_shared<DeathTrigger>(
+                                re::Point2f(object.x * SCALE_COEFF - 3.6, object.y * SCALE_COEFF + (float)(*(object.height)) * SCALE_COEFF * 0.1), 
+                                re::Point2f((float)(*(object.width)) * SCALE_COEFF - 0.8, (float)(*(object.height)) * SCALE_COEFF * 0.8));
                 mainGame.addObject(deathTrig);
             } else if (object.name == "EvilBird"){
-                auto evilbird = std::make_shared<EvilBird>(re::Vector2f(object.x * 64 * SCALE_COEFF,
+                auto evilbird = std::make_shared<EvilBird>(re::Point2f(object.x * 64 * SCALE_COEFF,
                 object.y * 64 * SCALE_COEFF + 1), 5.0);
                 mainGame.addObject(evilbird);
-                evilbird->path->addWaypoint(re::Vector2f(
-                    evilbird->getPosition().X + object.width.value() * 4,
-                    evilbird->getPosition().Y + object.height.value() * 4
+                evilbird->path->addWaypoint(re::Point2f(
+                    evilbird->getPosition().x + (*(object.width)) * 4,
+                    evilbird->getPosition().y + (*(object.height)) * 4
                 ));
                 evilbird->path->setActivated(true);
                 evilbird->movingAnim = resource_manager.get_animation("birdMovingAnim");
@@ -123,10 +123,10 @@ public:
 
         curHUD = new HUD(std::dynamic_pointer_cast<Player>(player).get(), &resource_manager);
 
-        mainGame.addObject(std::make_shared<Platform>(re::Vector2f(-7, -4), re::Vector2f(4, 9 * 4 * 3 + 8)));
-        mainGame.addObject(std::make_shared<Platform>(re::Vector2f(-4, -7), re::Vector2f(16 * 4 * 3 + 8, 4)));
-        mainGame.addObject(std::make_shared<Platform>(re::Vector2f(16 * 4 * 3 - 5, -4), re::Vector2f(4, 9 * 4 * 3 + 8)));
-        mainGame.addObject(std::make_shared<DeathTrigger>(re::Vector2f(-4, 9 * 4 * 3 - 1), re::Vector2f(16 * 4 * 3 + 8, 4)));
+        mainGame.addObject(std::make_shared<Platform>(re::Point2f(-7, -4), re::Point2f(4, 9 * 4 * 3 + 8)));
+        mainGame.addObject(std::make_shared<Platform>(re::Point2f(-4, -7), re::Point2f(16 * 4 * 3 + 8, 4)));
+        mainGame.addObject(std::make_shared<Platform>(re::Point2f(16 * 4 * 3 - 5, -4), re::Point2f(4, 9 * 4 * 3 + 8)));
+        mainGame.addObject(std::make_shared<DeathTrigger>(re::Point2f(-4, 9 * 4 * 3 - 1), re::Point2f(16 * 4 * 3 + 8, 4)));
     }
 
     void setup() override {
@@ -189,60 +189,60 @@ public:
 
     void display() override 
     {   
-        re::Vector2f campos;
+        re::Point2f campos;
         switch(curState){
         case AppState::Ingame:
-            //re::view_at( (int)((player->getPosition().X * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(player->getPosition().X * 16 / 16) * 1000,
-            //             (int)((player->getPosition().Y * 16) / (64 * 9) ) * 64 * 9 );//(player->getPosition().Y * 16 / 9 ) * 1000);
+            //re::view_at( (int)((player->getPosition().x * 16 + 64 * 16) / (64 * 16) ) * 64 * 16 - 64 * 17,//(player->getPosition().x * 16 / 16) * 1000,
+            //             (int)((player->getPosition().y * 16) / (64 * 9) ) * 64 * 9 );//(player->getPosition().y * 16 / 9 ) * 1000);
 
-            static re::Vector2f location = re::Vector2f( 1,0 );
+            static re::Point2f location = re::Point2f( 1,0 );
 
             int cam_x, cam_y;
-            cam_x = player->getPosition().X * 16;
-            cam_y = player->getPosition().Y * 16;
+            cam_x = player->getPosition().x * 16;
+            cam_y = player->getPosition().y * 16;
             cam_x+= 64 * 17;
             cam_x/= 64 * 16;
 
-            if( cam_x > location.X)
+            if( cam_x > location.x)
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(((location.X-1) * 4 * 16) - 0.5, location.Y * 4 * 9 - 0.5), 
-                        re::Vector2f(4 * 15 + 1, 4 * 9 + 1) ) );
+                        re::Point2f(((location.x-1) * 4 * 16) - 0.5, location.y * 4 * 9 - 0.5), 
+                        re::Point2f(4 * 15 + 1, 4 * 9 + 1) ) );
                 mainGame.addObject( std::make_shared<DeathTrigger>(
-                        re::Vector2f(((location.X-1) * 4 * 16) - 0.5 + 4, location.Y * 4 * 9 - 0.5 + 4), 
-                        re::Vector2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
+                        re::Point2f(((location.x-1) * 4 * 16) - 0.5 + 4, location.y * 4 * 9 - 0.5 + 4), 
+                        re::Point2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
                 player->reduceCooldowns();
             }
 
-            if( cam_x < location.X)
+            if( cam_x < location.x)
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(((location.X+1) * 4 * 16) - 0.5, location.Y * 4 * 9 - 0.5), 
-                        re::Vector2f(4 * 15 + 1, 4 * 9 + 1) ) );
+                        re::Point2f(((location.x+1) * 4 * 16) - 0.5, location.y * 4 * 9 - 0.5), 
+                        re::Point2f(4 * 15 + 1, 4 * 9 + 1) ) );
                 mainGame.addObject( std::make_shared<DeathTrigger>(
-                        re::Vector2f(((location.X+1) * 4 * 16) - 0.5 + 4, location.Y * 4 * 9 - 0.5 + 4), 
-                        re::Vector2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
+                        re::Point2f(((location.x+1) * 4 * 16) - 0.5 + 4, location.y * 4 * 9 - 0.5 + 4), 
+                        re::Point2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
                 player->reduceCooldowns();
             }
 
 
-            location.X = cam_x;
+            location.x = cam_x;
             cam_x*= 64 * 16;
             cam_x-= 64 * 17;
 
             cam_y/= 64 * 9;
 
-            if( cam_y != location.Y )
+            if( cam_y != location.y )
             {
                 mainGame.addObject( std::make_shared<Platform>(
-                        re::Vector2f(location.X * 64 * 16, (location.Y - 1) * 64 * 9 ), 
-                        re::Vector2f(4 * 15, 4 * 9) ) );
+                        re::Point2f(location.x * 64 * 16, (location.y - 1) * 64 * 9 ), 
+                        re::Point2f(4 * 15, 4 * 9) ) );
                 mainGame.addObject( std::make_shared<DeathTrigger>(
-                        re::Vector2f(location.X * 4 * 16 - 0.5 + 4, (location.Y - 1) * 4 * 9 - 0.5 + 4), 
-                        re::Vector2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
+                        re::Point2f(location.x * 4 * 16 - 0.5 + 4, (location.y - 1) * 4 * 9 - 0.5 + 4), 
+                        re::Point2f(4 * 15 + 1 - 8, 4 * 9 + 1 - 8) ) );
                 player->reduceCooldowns();
             }
-            location.Y = cam_y;
+            location.y = cam_y;
             
             cam_y*= 64 * 9;
             //don't show it to Kolya, srsly.

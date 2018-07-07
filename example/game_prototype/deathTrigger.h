@@ -5,7 +5,7 @@
 class DeathTrigger : public DrawableGameObject
 {
 public:
-    DeathTrigger(re::Vector2f pos, re::Vector2f size);
-    void onTriggerStay(re::GameObjectPtr obj);
+    DeathTrigger(re::Point2f pos, re::Point2f size);
+    void onTriggerStay(re::PhysicObjectPtr obj);
     virtual void display(int k);
 };

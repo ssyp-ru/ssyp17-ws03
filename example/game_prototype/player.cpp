@@ -9,7 +9,7 @@
 #include <iostream>
 #include "ability_damageBoost.h"
 
-Player::Player(re::Vector2f pos) : Unit::Unit(pos, re::Vector2f(2, 3)) 
+Player::Player(re::Point2f pos) : Unit::Unit(pos, re::Point2f(2, 3)) 
 {
     level = 1;
     exp = 0;
@@ -31,11 +31,11 @@ void Player::addAbility(Ability *ab)
         }
     }
 }
-void Player::onCollisionStay(re::GameObjectPtr to, re::Vector2f vec)
+void Player::onCollisionStay(re::PhysicObjectPtr to, re::Point2f vec)
 {
-    if (re::Vector2f(0, -1).angleBetween(vec) < 60.0 / 180.0 * 3.14159) 
+    if (re::Point2f(0, -1).angleBetween(vec) < 60.0 / 180.0 * 3.14159) 
     { 
-        if (!((std::dynamic_pointer_cast<IcePlatform>(to) != 0) && (getVelocity().Length() > 2.5)))
+        if (!((std::dynamic_pointer_cast<IcePlatform>(to) != 0) && (getVelocity().length() > 2.5)))
         {
             isOnIce = false;
             isGrounded = true;
@@ -70,7 +70,7 @@ void Player::addExp(int amount)
 }
 void Player::attack()
 {
-    re::GameObjectPtr ptr;
+    re::PhysicObjectPtr ptr;
     for (uint i = 0; i < (*worldContainer).size(); i++)
     {
         if ((*worldContainer)[i].get() == this)
@@ -79,37 +79,37 @@ void Player::attack()
             break;
         }
     }
-    re::GameObjectPtr trig;
+    re::PhysicObjectPtr trig;
     if (direction == 1){
         trig = std::make_shared<DamageTrigger>(position + vertexes[3] + vertexes[1] / 4,
-         re::Vector2f(vertexes[3].X * 2, vertexes[1].Y / 2), attackDamage, ptr);
+         re::Point2f(vertexes[3].x * 2, vertexes[1].y / 2), attackDamage, ptr);
     }
     else{
         trig = std::make_shared<DamageTrigger>(position + vertexes[1] / 4,
-         re::Vector2f(vertexes[3].X * -2, vertexes[1].Y / 2), attackDamage, ptr);
+         re::Point2f(vertexes[3].x * -2, vertexes[1].y / 2), attackDamage, ptr);
     }
     attackAnim->getNextFrame();
     worldContainer->push_back(trig);
 }
 void Player::update()
 {
-    if (velocity.Y > 20) setVelocity(re::Vector2f(velocity.X, 20));
+    if (velocity.y > 20) setVelocity(re::Point2f(velocity.x, 20));
 
-    addForce(re::Vector2f(0, 60 * getMass()));
+    addForce(re::Point2f(0, 60 * getMass()));
 
     for (uint i = 0; i < abilities.size(); i++)
         abilities[i]->update();
 
-    if ((getVelocity().Y > 0.1) && (isGrounded)) isGrounded = false;
+    if ((getVelocity().y > 0.1) && (isGrounded)) isGrounded = false;
     if (re::get_key_state(re::Key::D))
     {
         direction = 1;
-        setVelocity(re::Vector2f(10 * getMass(), getVelocity().Y));
+        setVelocity(re::Point2f(10 * getMass(), getVelocity().y));
     }
     if (re::get_key_state(re::Key::A))
     {
         direction = -1;
-        setVelocity(re::Vector2f(-10 * getMass(), getVelocity().Y));
+        setVelocity(re::Point2f(-10 * getMass(), getVelocity().y));
     }
     // abilities
     if (re::get_key_state(re::Key::Num1))
@@ -139,7 +139,7 @@ void Player::update()
     {
         if (isGrounded)
         {
-            addImpulse(re::Vector2f(0, -25 * getMass()));
+            addImpulse(re::Point2f(0, -25 * getMass()));
             isGrounded = false;
         }
     }
@@ -156,15 +156,15 @@ void Player::display(int scale)
     {
         if( direction == 1 )
         {
-            re::draw_image_part( position.X * scale, position.Y * scale,
-                                position.X * scale + 32, position.Y * scale +48,
+            re::draw_image_part( position.x * scale, position.y * scale,
+                                position.x * scale + 32, position.y * scale +48,
                                 0,0, 1,1,
                                 attackAnim->getNextFrame() );
         }
         else
         {
-            re::draw_image_part( position.X * scale, position.Y * scale,
-                                position.X * scale + 32, position.Y * scale +48,
+            re::draw_image_part( position.x * scale, position.y * scale,
+                                position.x * scale + 32, position.y * scale +48,
                                 1,0, 0,1,
                                 attackAnim->getNextFrame() );
         }
@@ -172,15 +172,15 @@ void Player::display(int scale)
     else if(isGrounded){
         if( direction == 1 )
         {
-            re::draw_image_part( position.X * scale, position.Y * scale,
-                                position.X * scale + 32, position.Y * scale +48,
+            re::draw_image_part( position.x * scale, position.y * scale,
+                                position.x * scale + 32, position.y * scale +48,
                                 0,0, 1,1,
                                 movingAnim->getNextFrame() );
         }
         else
         {
-            re::draw_image_part( position.X * scale, position.Y * scale,
-                                position.X * scale + 32, position.Y * scale +48,
+            re::draw_image_part( position.x * scale, position.y * scale,
+                                position.x * scale + 32, position.y * scale +48,
                                 1,0, 0,1,
                                 movingAnim->getNextFrame() );
         }
@@ -188,15 +188,15 @@ void Player::display(int scale)
     else if(isOnIce){
         if( direction == 1 )
         {
-            re::draw_image_part( position.X * scale, position.Y * scale,
-                            position.X * scale + 32, position.Y * scale +48,
+            re::draw_image_part( position.x * scale, position.y * scale,
+                            position.x * scale + 32, position.y * scale +48,
                             0,0, 1,1,
                             slidingAnim->getNextFrame() );
         }
         else
         {
-            re::draw_image_part( position.X * scale, position.Y * scale,
-                            position.X * scale + 32, position.Y * scale +48,
+            re::draw_image_part( position.x * scale, position.y * scale,
+                            position.x * scale + 32, position.y * scale +48,
                             1,0, 0,1,
                             slidingAnim->getNextFrame() );
         }
@@ -204,19 +204,19 @@ void Player::display(int scale)
     } else{
         if( direction == 1 )
         {
-            re::draw_image_part( position.X * scale, position.Y * scale,
-                            position.X * scale + 32, position.Y * scale +48,
+            re::draw_image_part( position.x * scale, position.y * scale,
+                            position.x * scale + 32, position.y * scale +48,
                             0,0, 1,1,
                             jumpingAnim->getNextFrame() );
         }
         else
         {
-            re::draw_image_part( position.X * scale, position.Y * scale,
-                            position.X * scale + 32, position.Y * scale +48,
+            re::draw_image_part( position.x * scale, position.y * scale,
+                            position.x * scale + 32, position.y * scale +48,
                             1,0, 0,1,
                             jumpingAnim->getNextFrame() );
         }
     }
-    //re::draw_image(position.X * scale, position.Y * scale, movingAnim->getNextFrame());
+    //re::draw_image(position.x * scale, position.y * scale, movingAnim->getNextFrame());
 }
 

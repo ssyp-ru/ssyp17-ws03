@@ -16,7 +16,7 @@ protected:
         curCooldown = 0;
     }
 public:
-    re::GameObjectPtr sender;
+    re::PhysicObjectPtr sender;
     void reduceCooldown() { curCooldown--;}
     bool canCast() { return (curCooldown <= 0); }
     virtual void cast() { curCooldown = cooldown; std::cout << "Ability casted.\n"; };

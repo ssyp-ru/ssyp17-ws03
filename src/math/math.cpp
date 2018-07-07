@@ -125,5 +125,64 @@ Point2f intersectionofstraights(Point2f first, Point2f second, Point2f third, Po
     return Point2f(coordinate_x(first, second, third, fourth), coordinate_y(first, second, third, fourth));
 }
 
+Point2f Point2f::Normalized()
+{
+	return Point2f(x / length(), y / length());
+}
+Point2f Point2f::projectOnVector(Point2f vec)
+{
+	// proj.x = ( dp / (b.x*b.x + b.y*b.y) ) * b.x;
+	// proj.y = ( dp / (b.x*b.x + b.y*b.y) ) * b.y;
+    if (vec.x == 0) return Point2f(0, y);
+    if (vec.y == 0) return Point2f(x, 0);
+	double scalarProduct = *this * vec;
+	return Point2f((scalarProduct / (vec.x * vec.x + vec.y * vec.y)) * vec.x, 
+		            (scalarProduct / (vec.x * vec.x + vec.y * vec.y)) * vec.y);
+}
+Point2f Point2f::getLeftNormal()
+{
+	return Point2f(y, -x);
+}
+Point2f Point2f::getRightNormal()
+{
+	return Point2f(-y, x);
+}
+double Point2f::ratio(Point2f vec)
+{
+	if (vec.x != 0)
+		return x / vec.x;
+	else
+		if (vec.y != 0)
+			return y / vec.y;
+		else
+			return 0;
+}
+Point2f Point2f::reflectFrom(Point2f mirror)
+{
+	return *this + (this->projectOnVector(mirror) - *this) * 2;
+}
+bool Point2f::isCollinearTo(Point2f vec)
+{
+    if (((vec.x == 0) && (x == 0)) || ((vec.y == 0) && (y == 0))) return true;
+    return (vec.x / vec.y == x / y);
+}
+void Point2f::rotate(double radians)
+{
+	double newx, newy;
+	newx = x * cos(radians) + y * sin(radians);
+	newy = y * cos(radians) - x * sin(radians);
+	x = newx;
+	y = newy;
+}
+Point2f Point2f::rotated(double radians)
+{
+	return Point2f(x * cos(radians) + y * sin(radians), y * cos(radians) - x * sin(radians));
+}
+double Point2f::angleBetween(Point2f vec){
+	double a = length(), b = vec.length(), c = (*this - vec).length();
+	if ((a == 0) || (b == 0) || (c == 0)) return 0;
+	return acos((a*a + b*b - c*c) / (2*a*b));
+}
+
 
 } // namespace re 

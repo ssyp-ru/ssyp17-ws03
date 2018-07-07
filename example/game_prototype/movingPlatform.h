@@ -14,7 +14,7 @@ class MovingPlatform : public Platform
 public:
     WaypointPath *path;
 
-    MovingPlatform(re::Vector2f pos, re::Vector2f size, double speed);
+    MovingPlatform(re::Point2f pos, re::Point2f size, double speed);
     virtual void display(int scale);
     virtual void update();
 };

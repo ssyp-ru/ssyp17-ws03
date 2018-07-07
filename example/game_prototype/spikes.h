@@ -9,7 +9,7 @@ private:
     double interval;
     re::StopWatch lastAttackTime;
 public:
-    Spikes(re::Vector2f pos, re::Vector2f size, double damage, double interval) : Platform::Platform(pos, size)
+    Spikes(re::Point2f pos, re::Point2f size, double damage, double interval) : Platform::Platform(pos, size)
     {
         this->damage = damage;
         this->interval = interval;
@@ -19,12 +19,12 @@ public:
     {
         return (lastAttackTime.stop_watch() / 1e9 > interval);
     }
-    void onCollisionStay(re::GameObjectPtr obj, re::Vector2f vec)
+    void onCollisionStay(re::PhysicObjectPtr obj, re::Point2f vec)
     {
         if (canAttack())
-            if (/*(vec.angleBetween(re::Vector2f(0, -1)) <= 100 / 180 * 3.14159) && */(std::dynamic_pointer_cast<Unit>(obj) != 0))
+            if (/*(vec.angleBetween(re::Point2f(0, -1)) <= 100 / 180 * 3.14159) && */(std::dynamic_pointer_cast<Unit>(obj) != 0))
             {
-                re::GameObjectPtr ptr;
+                re::PhysicObjectPtr ptr;
                 for (uint i = 0; i < (*worldContainer).size(); i++)
                 {
                     if ((*worldContainer)[i].get() == this)

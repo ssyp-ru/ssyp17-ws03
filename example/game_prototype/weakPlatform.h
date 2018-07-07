@@ -18,10 +18,10 @@ private:
 
     static re::ImagePtr tex;
 
-    re::Vector2f size;
+    re::Point2f size;
 public:
-    WeakPlatform(re::Vector2f pos, re::Vector2f siz, double destroyTime);
-    void onCollisionStay(re::GameObjectPtr to, re::Vector2f vec);
+    WeakPlatform(re::Point2f pos, re::Point2f siz, double destroyTime);
+    void onCollisionStay(re::PhysicObjectPtr to, re::Point2f vec);
     virtual void update();
 
     virtual void display(int scale);
