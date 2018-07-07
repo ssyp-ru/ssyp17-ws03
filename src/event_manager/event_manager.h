@@ -22,9 +22,9 @@ public:
     bool is_subscribed_category(int category);
     bool is_subscribed_type(int category, int type);
 private:
-    std::vector <re::Point2f> category_and_type_list;
-    std::vector <int> category_list;
-    bool recive_all;
+    std::vector <re::Point2f> category_and_type_list_;
+    std::vector <int> category_list_;
+    bool recive_all_;
 };
 
 class EventManager
