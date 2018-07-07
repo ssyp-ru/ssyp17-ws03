@@ -111,6 +111,9 @@ public:
 	bool needTestWith(PhysicObject &gm);
 	virtual ~PhysicObject() { }
 	friend class PhysicWorld;
+
+	int16_t not_check_mask = 0;
+	int16_t physic_type = 0;
 protected:
     // just don't touch it.
 	bool canChangeSpeed = true;

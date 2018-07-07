@@ -3,7 +3,9 @@
 #include <iostream>
 #include "RealEngine/logger.h"
 #include <vector>
+#include <chrono>
 #include <RealEngine/time.h>
+#include <RealEngine/benchmark.h>
 
 namespace re {
 
@@ -305,8 +307,14 @@ re::Point2f PhysicObject::getMassCenter()
 }
 bool PhysicObject::needTestWith(PhysicObject &gm)
 {
-    //std::cout << (&gm == this);
-	return (&gm == this)? false : (position - gm.position).length() <= (circleRadius + gm.circleRadius);
+    if (&gm == this)
+        return false;
+
+    if (not_check_mask && (gm.physic_type & not_check_mask))
+        return false;
+
+    double length = (position - gm.position).length();
+    return length <= (circleRadius + gm.circleRadius);
 }
 re::Point2f PhysicObject::removeCollisionWith(PhysicObject &gm)
 {
