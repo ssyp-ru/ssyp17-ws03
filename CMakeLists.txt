@@ -40,3 +40,6 @@ add_subdirectory(example/resource_example)
 add_subdirectory(example/network_snake)
 add_subdirectory(example/game_prototype)
 add_subdirectory(example/simple_map_try)
+add_subdirectory(example/test_event)
+add_subdirectory(example/simple_way)
+

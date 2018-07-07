@@ -23,6 +23,7 @@ set(SOURCE_LIB  window/opengl.cpp
                 gui/base_button.cpp
                 gui/gui_manager.cpp
                 event_manager/event_manager.cpp
+                utils/search_the_way.cpp
 )
 
 set_source_files_properties(graphics/Image.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)
