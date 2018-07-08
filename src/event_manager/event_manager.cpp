@@ -84,13 +84,12 @@ bool Subscriber::is_subscribed_type(int category, int type){
 
 
 void EventManager::send_events (std::shared_ptr<Event> event){
-    for(size_t i = 0; i < subscriber_list.size(); i++){
-            if(subscriber_list[i].is_subscribed_category(event->get_category()))
-                subscriber_list[i].sub->on_event(event);              
-
-            if(subscriber_list[i].is_subscribed_type(event->get_category(), event->get_type()))
-                subscriber_list[i].sub->on_event(event);
-            
+    size_t subscriber_count = subscriber_list.size();
+    for(size_t i = 0; i < subscriber_count; i++){
+        if(subscriber_list[i].is_subscribed_category(event->get_category()) ||
+           subscriber_list[i].is_subscribed_type(event->get_category(), event->get_type())) {
+            subscriber_list[i].sub->on_event(event);              
+        }    
     }
 }
 
