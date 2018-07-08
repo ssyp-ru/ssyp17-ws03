@@ -7,7 +7,7 @@ namespace re {
     class Log {
     public:
         enum class LEVEL {
-            INFO, DEBUG, TRACE
+            INFO, DEBUG, TRACE, NONE
         }; // Log::LEVEL::INFO
         static void log_level(LEVEL);       
 
@@ -24,12 +24,10 @@ namespace re {
         static uint file_msg(std::string, LEVEL);
         static uint msg(std::string, LEVEL);
 
-        static uint console_msg_TRACE (std::string);    
-        static uint console_msg_DEBUG (std::string);
-        static uint console_msg_INFO (std::string);
-        static uint file_msg_TRACE (std::string);    
-        static uint file_msg_DEBUG (std::string);
-        static uint file_msg_INFO (std::string);
+        static uint trace (std::string);    
+        static uint debug (std::string);
+        static uint info (std::string);
+        static uint none (std::string);
 
         // same as stream, but also writes default overhead of msg
         // +"> N: [StopWatch.getTimeString : time()]"

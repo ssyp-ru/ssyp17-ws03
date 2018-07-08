@@ -33,33 +33,29 @@ public:
     }
         
 
-    unsigned int console_msg_DEBUG(std::string msg) {
+    unsigned int debug(std::string msg) {
         std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-        return msg_count;
-    }
-    unsigned int console_msg_INFO(std::string msg) {
-        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-        return msg_count;
-    }
-    unsigned int console_msg_TRACE(std::string msg) {
-        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-        return msg_count;
-    }
-
-
-    unsigned int file_msg_DEBUG(std::string msg) {
-        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-        return msg_count;
-    }
-    unsigned int file_msg_INFO(std::string msg) {
-        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-        return msg_count;
-    }
-    unsigned int file_msg_TRACE(std::string msg) {
         stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
         return msg_count;
     }
 
+    unsigned int info(std::string msg) {
+        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
+    }
+
+    unsigned int trace(std::string msg) {
+        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
+    }
+
+    unsigned int none(std::string msg) {
+        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
+    }
 
     std::ofstream& stream() { return stream_; }
     std::ofstream& stream_msg() {
@@ -114,26 +110,18 @@ uint re::Log::file_msg(std::string message, re::Log::LEVEL level) {
 }
 
 
-uint re::Log::console_msg_DEBUG(std::string message) {
-    return log.console_msg_DEBUG(message);
+uint re::Log::debug(std::string message) {
+    return log.debug(message);
 }
-uint re::Log::console_msg_INFO(std::string message) {
-    return log.console_msg_INFO(message);
+uint re::Log::info(std::string message) {
+    return log.info(message);
 }
-uint re::Log::console_msg_TRACE(std::string message) {
-    return log.console_msg_TRACE(message);
+uint re::Log::trace(std::string message) {
+    return log.trace(message);
 }
-
-uint re::Log::file_msg_DEBUG(std::string message) {
-    return log.file_msg_DEBUG(message);
+uint re::Log::none(std::string message) {
+    return log.none(message);
 }
-uint re::Log::file_msg_INFO(std::string message) {
-    return log.file_msg_INFO(message);
-}
-uint re::Log::file_msg_TRACE(std::string message) {
-    return log.file_msg_TRACE(message);
-}
-
 std::ofstream& re::Log::stream_msg() {
     return log.stream_msg();
 }
