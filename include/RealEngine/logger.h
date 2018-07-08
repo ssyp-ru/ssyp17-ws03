@@ -7,9 +7,13 @@ namespace re {
     class Log {
     public:
         enum class LEVEL {
-            INFO, DEBUG, TRACE, NONE
+             NONE, INFO, DEBUG, TRACE
         }; // Log::LEVEL::INFO
-        static void set_level(LEVEL);       
+        static void set_console_level(LEVEL);       
+        static void set_file_level(LEVEL);       
+
+        static re::Log::LEVEL get_console_level();       
+        static re::Log::LEVEL get_file_level();       
 
         // returns time since execution of program
         static long time();        
