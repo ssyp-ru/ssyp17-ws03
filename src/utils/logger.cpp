@@ -11,35 +11,48 @@ public:
     re::Log::LEVEL level;
 
     unsigned int msg(std::string msg, re::Log::LEVEL level) {
-        if(this->level >= level) {
+        if(this->level == re::Log::LEVEL::DEBUG) {
             stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+            return msg_count;
+        }
+        if(this->level == re::Log::LEVEL::INFO) {
+            std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+            return msg_count;
+        }
+        if(this->level == re::Log::LEVEL::TRACE) {
+            stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+            std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+            return msg_count;
+        }
+        if(this->level == re::Log::LEVEL::NONE) {
             return msg_count;
         }
         return -1;
     }
-       
 
-    unsigned int debug(std::string msg) {
-        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-//        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+
+
+    unsigned int debug(std::string mesg) {
+        set_level(re::Log::LEVEL::DEBUG);
+        msg(mesg, re::Log::LEVEL::DEBUG);
         return msg_count;
     }
 
-    unsigned int info(std::string msg) {
-//        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+    unsigned int info(std::string mesg) {
+        set_level(re::Log::LEVEL::INFO);
+        msg(mesg, re::Log::LEVEL::INFO);
         return msg_count;
     }
 
-    unsigned int trace(std::string msg) {
-//        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-//        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+    unsigned int trace(std::string mesg) {
+        set_level(re::Log::LEVEL::TRACE);
+        msg(mesg, re::Log::LEVEL::TRACE);
         return msg_count;
     }
 
-    unsigned int none(std::string msg) {
-//        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-//        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+    unsigned int none(std::string mesg) {
+        set_level(re::Log::LEVEL::NONE);
+        msg(mesg, re::Log::LEVEL::NONE);
         return msg_count;
     }
 
@@ -56,7 +69,7 @@ public:
     long time() {
         return clock_.stop_watch()/1000000;
     }
-    void log_level(re::Log::LEVEL) {
+    void set_level(re::Log::LEVEL) {
         this->level = level;
     }
     Log_(std::string outputFile) {
@@ -76,8 +89,8 @@ public:
 
 Log_ log("log.txt");
 
-void re::Log::log_level(LEVEL level) {
-    log.log_level(level);
+void re::Log::set_level(LEVEL level) {
+    log.set_level(level);
 }
 long re::Log::time() {
     return log.time();
