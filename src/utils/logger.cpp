@@ -1,4 +1,5 @@
 #include <RealEngine/logger.h>
+#include <iostream>
 
 class Log_ {
 public:
@@ -16,19 +17,49 @@ public:
         }
         return -1;
     }
-        
-    void TRACE (std::string mesg){
-        msg(mesg, re::Log::LEVEL::TRACE);
+    unsigned int file_msg(std::string msg, re::Log::LEVEL level) {
+        if(this->level >= level) {
+            stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+            return msg_count;
+        }
+        return -1;
     }
-    
-    void DEBUG (std::string mesg){
-        msg(mesg, re::Log::LEVEL::DEBUG);
+    unsigned int console_msg(std::string msg, re::Log::LEVEL level) {
+        if(this->level >= level) {
+            std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+            return msg_count;
+        }
+        return -1;
+    }
+        
+
+    unsigned int console_msg_DEBUG(std::string msg) {
+        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
+    }
+    unsigned int console_msg_INFO(std::string msg) {
+        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
+    }
+    unsigned int console_msg_TRACE(std::string msg) {
+        std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
     }
 
-    void INFO (std::string mesg){
-        msg(mesg, re::Log::LEVEL::INFO);
+
+    unsigned int file_msg_DEBUG(std::string msg) {
+        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
     }
-    
+    unsigned int file_msg_INFO(std::string msg) {
+        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
+    }
+    unsigned int file_msg_TRACE(std::string msg) {
+        stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+        return msg_count;
+    }
+
 
     std::ofstream& stream() { return stream_; }
     std::ofstream& stream_msg() {
@@ -75,6 +106,34 @@ std::ofstream& re::Log::stream() {
 uint re::Log::msg(std::string message, re::Log::LEVEL level) {
     return log.msg(message, level);
 }
+uint re::Log::console_msg(std::string message, re::Log::LEVEL level) {
+    return log.console_msg(message, level);
+}
+uint re::Log::file_msg(std::string message, re::Log::LEVEL level) {
+    return log.file_msg(message, level);
+}
+
+
+uint re::Log::console_msg_DEBUG(std::string message) {
+    return log.console_msg_DEBUG(message);
+}
+uint re::Log::console_msg_INFO(std::string message) {
+    return log.console_msg_INFO(message);
+}
+uint re::Log::console_msg_TRACE(std::string message) {
+    return log.console_msg_TRACE(message);
+}
+
+uint re::Log::file_msg_DEBUG(std::string message) {
+    return log.file_msg_DEBUG(message);
+}
+uint re::Log::file_msg_INFO(std::string message) {
+    return log.file_msg_INFO(message);
+}
+uint re::Log::file_msg_TRACE(std::string message) {
+    return log.file_msg_TRACE(message);
+}
+
 std::ofstream& re::Log::stream_msg() {
     return log.stream_msg();
 }

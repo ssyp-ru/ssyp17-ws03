@@ -20,14 +20,16 @@ namespace re {
         
         // prints message to log, in format "> N: [StopWatch.getTimeString : time()] msg"
         // returns index of msg printed.
+        static uint console_msg(std::string, LEVEL);
+        static uint file_msg(std::string, LEVEL);
         static uint msg(std::string, LEVEL);
 
-    
-    void TRACE (std::string);    
-    void DEBUG (std::string);
-    void INFO (std::string);
-    
-
+        static uint console_msg_TRACE (std::string);    
+        static uint console_msg_DEBUG (std::string);
+        static uint console_msg_INFO (std::string);
+        static uint file_msg_TRACE (std::string);    
+        static uint file_msg_DEBUG (std::string);
+        static uint file_msg_INFO (std::string);
 
         // same as stream, but also writes default overhead of msg
         // +"> N: [StopWatch.getTimeString : time()]"
