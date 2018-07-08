@@ -1,5 +1,7 @@
 #pragma once
-#include <RealEngine/math.h>
+#include "RealEngine/math.h"
+#include "RealEngine/graphic.h"
+#include "RealEngine/camera.h"
 #include <vector>
 #include <memory>
 #include <string>
@@ -153,13 +155,14 @@ private:
     void update();
 public:
 	int getTicksAlive(); // Returns count of ticks world exists
-	std::vector<PhysicObjectPtr> getWorld(); // Returns copy of array of objects
+	const std::vector<PhysicObjectPtr>& getWorld(); // Returns copy of array of objects
 	PhysicWorld(); // Empty constructor... yep, too lazy to delete it.
     void start(); // Starts game by sending thread(that calles method) in
     void addObject(PhysicObjectPtr obj); // Adds object(PhysicObject) to world
     void updateTick(); // Makes one physic tick, use it if you don't want to send thread off by method 'start()'
 	PhysicObjectPtr addTriangle(re::Point2f pos, re::Point2f p1, re::Point2f p2, re::Point2f p3); // Adds a triangle in world, pos - position, p1, p2, p3 - vertexes, returns pointer to this gameobject (vertexes in local space, remember it)
 	PhysicObjectPtr addQuadrangle(re::Point2f pos, re::Point2f p1, re::Point2f p2, re::Point2f p3, re::Point2f p4); // same as triangle, but 4 vertexes
+	void debug_display(Camera camera, Color col = BLACK);
 };
 
 } // namespace re

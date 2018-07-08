@@ -1,141 +1,14 @@
 #include "RealEngine/physic_core.h"
+#include "RealEngine/logger.h"
+#include "RealEngine/time.h"
+#include "RealEngine/benchmark.h"
+
 #include <cmath>
 #include <iostream>
-#include "RealEngine/logger.h"
 #include <vector>
 #include <chrono>
-#include <RealEngine/time.h>
-#include <RealEngine/benchmark.h>
 
 namespace re {
-
-//Vector2f::Vector2f() 
-//{
-//	x = 0;
-//	y = 0;
-//}
-//Vector2f::Vector2f(double x, double y)
-//{
-//	this->x = x;
-//	this->y = y;
-//}
-//double Vector2f::length()
-//{
-//	if ((x == 0) && (y == 0)) return 0;
-//	return sqrt(x*x+y*y);
-//}
-//void Vector2f::Normalize()
-//{
-//	double len = length();
-//	x /= len;
-//	y /= len;
-//}
-//Vector2f Vector2f::Normalized()
-//{
-//	return Vector2f(x / length(), y / length());
-//}
-//Vector2f Vector2f::operator+(Vector2f vec)
-//{
-//	return Vector2f(x + vec.x, y + vec.y);
-//}
-//Vector2f Vector2f::operator-(Vector2f vec)
-//{
-//	return Vector2f(x - vec.x, y - vec.y);
-//}
-//Vector2f Vector2f::operator*(double val)
-//{
-//	return Vector2f(x * val, y * val);
-//}
-//Vector2f Vector2f::operator/(double val)
-//{
-//	return Vector2f(x / val, y / val);
-//}
-//void Vector2f::operator*=(double val)
-//{
-//	x *= val;
-//	y *= val;
-//}
-//void Vector2f::operator/=(double val)
-//{
-//	x /= val;
-//	y /= val;
-//}
-//void Vector2f::operator+=(Vector2f vec)
-//{
-//	x += vec.x;
-//	y += vec.y;
-//}
-//void Vector2f::operator-=(Vector2f vec)
-//{
-//	x -= vec.x;
-//	y -= vec.y;
-//}
-//bool Vector2f::operator!=(Vector2f vec)
-//{
-//	return ((x != vec.x) || (y != vec.y));
-//}
-//bool Vector2f::operator==(Vector2f vec)
-//{
-//	return ((x == vec.x) && (y == vec.y));
-//}
-//double Vector2f::operator*(Vector2f vec)
-//{
-//	return x * vec.x + y * vec.y;
-//}
-//Vector2f Vector2f::projectOnVector(Vector2f vec)
-//{
-//	// proj.x = ( dp / (b.x*b.x + b.y*b.y) ) * b.x;
-//	// proj.y = ( dp / (b.x*b.x + b.y*b.y) ) * b.y;
-//    if (vec.x == 0) return Vector2f(0, y);
-//    if (vec.y == 0) return Vector2f(x, 0);
-//	double scalarProduct = *this * vec;
-//	return Vector2f((scalarProduct / (vec.x * vec.x + vec.y * vec.y)) * vec.x, 
-//		            (scalarProduct / (vec.x * vec.x + vec.y * vec.y)) * vec.y);
-//}
-//Vector2f Vector2f::getLeftNormal()
-//{
-//	return Vector2f(y, -x);
-//}
-//Vector2f Vector2f::getRightNormal()
-//{
-//	return Vector2f(-y, x);
-//}
-//double Vector2f::operator/(Vector2f vec)
-//{
-//	if (vec.x != 0)
-//		return x / vec.x;
-//	else
-//		if (vec.y != 0)
-//			return y / vec.y;
-//		else
-//			return 0;
-//}
-//Vector2f Vector2f::reflectFrom(Vector2f mirror)
-//{
-//	return *this + (this->projectOnVector(mirror) - *this) * 2;
-//}
-//bool Vector2f::isCollinearTo(Vector2f vec)
-//{
-//    if (((vec.x == 0) && (x == 0)) || ((vec.y == 0) && (y == 0))) return true;
-//    return (vec.x / vec.y == x / y);
-//}
-//void Vector2f::rotate(double radians)
-//{
-//	double newx, newy;
-//	newx = x * cos(radians) + y * sin(radians);
-//	newy = y * cos(radians) - x * sin(radians);
-//	x = newx;
-//	y = newy;
-//}
-//Vector2f Vector2f::rotated(double radians)
-//{
-//	return Vector2f(x * cos(radians) + y * sin(radians), y * cos(radians) - x * sin(radians));
-//}
-//double Vector2f::angleBetween(Vector2f vec){
-//	double a = length(), b = vec.length(), c = (*this - vec).length();
-//	if ((a == 0) || (b == 0) || (c == 0)) return 0;
-//	return acos((a*a + b*b - c*c) / (2*a*b));
-//}
 
 
 Edge::Edge(re::Point2f *P1, re::Point2f *P2)
@@ -566,7 +439,7 @@ void PhysicWorld::update()
     }
 }
 int PhysicWorld::getTicksAlive() { return ticksAlive; }
-std::vector<PhysicObjectPtr> PhysicWorld::getWorld()
+const std::vector<PhysicObjectPtr>& PhysicWorld::getWorld()
 {
 	return world;
 }
@@ -630,6 +503,16 @@ PhysicObjectPtr PhysicWorld::addQuadrangle(re::Point2f pos, re::Point2f p1, re::
 	obj->addEdge(3, 0);
 	addObject(obj);
 	return obj;
+}
+
+void PhysicWorld::debug_display(Camera camera, Color col) {
+    for (auto & obj : world){
+        for (auto & edge : obj->edges){
+            re::Point2f p1 = camera.world_to_screen(obj->position + *edge.P1);
+            re::Point2f p2 = camera.world_to_screen(obj->position + *edge.P2);
+            draw_line(p1.x, p1.y, p2.x, p2.y, col);
+        }
+    }
 }
 
 } // namespace re
