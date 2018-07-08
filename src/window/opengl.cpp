@@ -65,6 +65,7 @@ void OpenGL::init( uint width, uint height, IBaseAppPtr BaseApp )
     glutKeyboardFunc( OpenGL::keyboardDown );
     glutKeyboardUpFunc( OpenGL::keyboardUp );
     glutMouseFunc( OpenGL::mousePress );
+    glutPassiveMotionFunc( OpenGL::mouseMove );
     glutMotionFunc( OpenGL::mouseMove );
 
     glutSpecialFunc( OpenGL::keyboardSpecial );
@@ -391,7 +392,7 @@ bool OpenGL::getKeyState( unsigned char c )
 
 void OpenGL::mouseMove( int x, int y )
 {
-    OpenGL::mousePress( 0, 0, x, y );
+    OpenGL::instance().baseApp->on_mouse_move( x, y );
 }
 
 void OpenGL::keyboardSpecial( int c, int a, int b )
