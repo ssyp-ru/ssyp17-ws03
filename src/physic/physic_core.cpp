@@ -456,6 +456,16 @@ void PhysicWorld::addObject(PhysicObjectPtr obj)
 	obj->worldContainer = &world;
     world.push_back(obj);
 }
+void PhysicWorld::removeObject(PhysicObjectPtr obj)
+{
+    for (auto iter = world.begin(); iter != world.end(); iter++){
+        if (*iter == obj){
+            world.erase(iter);
+            return;
+        }
+    }
+}
+
 void PhysicWorld::updateTick()
 {
     if (ticksAlive == 0) isGame = true;

@@ -91,8 +91,18 @@ void EventManager::send_events (std::shared_ptr<Event> event){
     std::string describe_sring = event->get_describe_string();
     if (!describe_sring.empty())
         Log::msg(describe_sring, event->get_log_level());
+
+    for (auto iter = subscriber_list.begin(); iter != subscriber_list.end(); ){
+        if (iter->sub == nullptr){
+            iter = subscriber_list.erase(iter);
+        } else {
+            iter++;
+        }
+    }
     size_t subscriber_count = subscriber_list.size();
     for(size_t i = 0; i < subscriber_count; i++){
+        if (subscriber_list[i].sub == nullptr)
+            continue;
         if(subscriber_list[i].is_subscribed_category(event->get_category()) ||
            subscriber_list[i].is_subscribed_type(event->get_category(), event->get_type())) {
             subscriber_list[i].sub->on_event(event);              
@@ -138,7 +148,8 @@ void EventManager::add_subscriber_type (EventSubscriber * feature_subscriber, in
 void EventManager::unsubscribe(EventSubscriber * subscriber){
     for(size_t i = 0; i < subscriber_list.size(); i++){
         if(subscriber_list[i].sub == subscriber){
-            subscriber_list.erase(subscriber_list.begin() + i);
+            // subscriber_list.erase(subscriber_list.begin() + i);
+            subscriber_list[i].sub = nullptr;
             break;
         }
     }

@@ -159,6 +159,7 @@ public:
 	PhysicWorld(); // Empty constructor... yep, too lazy to delete it.
     void start(); // Starts game by sending thread(that calles method) in
     void addObject(PhysicObjectPtr obj); // Adds object(PhysicObject) to world
+	void removeObject(PhysicObjectPtr obj);
     void updateTick(); // Makes one physic tick, use it if you don't want to send thread off by method 'start()'
 	PhysicObjectPtr addTriangle(re::Point2f pos, re::Point2f p1, re::Point2f p2, re::Point2f p3); // Adds a triangle in world, pos - position, p1, p2, p3 - vertexes, returns pointer to this gameobject (vertexes in local space, remember it)
 	PhysicObjectPtr addQuadrangle(re::Point2f pos, re::Point2f p1, re::Point2f p2, re::Point2f p3, re::Point2f p4); // same as triangle, but 4 vertexes
