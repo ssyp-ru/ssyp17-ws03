@@ -7,9 +7,13 @@ namespace re {
     class Log {
     public:
         enum class LEVEL {
-            INFO, DEBUG, TRACE
+             NONE, INFO, DEBUG, TRACE
         }; // Log::LEVEL::INFO
-        static void log_level(LEVEL);       
+        static void set_console_level(LEVEL);       
+        static void set_file_level(LEVEL);       
+
+        static re::Log::LEVEL get_console_level();       
+        static re::Log::LEVEL get_file_level();       
 
         // returns time since execution of program
         static long time();        
@@ -21,7 +25,11 @@ namespace re {
         // prints message to log, in format "> N: [StopWatch.getTimeString : time()] msg"
         // returns index of msg printed.
         static uint msg(std::string, LEVEL);
-        
+
+        static uint trace (std::string);    
+        static uint debug (std::string);
+        static uint info (std::string);
+
         // same as stream, but also writes default overhead of msg
         // +"> N: [StopWatch.getTimeString : time()]"
         // endl or flush required

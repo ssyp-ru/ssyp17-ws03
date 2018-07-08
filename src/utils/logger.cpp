@@ -1,21 +1,43 @@
 #include <RealEngine/logger.h>
+#include <iostream>
 
 class Log_ {
 public:
     std::ofstream stream_;
     re::StopWatch clock_;
-
+    re::Log::LEVEL file_level;
+    re::Log::LEVEL console_level;
     // each msg has its index which is returned by
     unsigned int msg_count;
     re::Log::LEVEL level;
 
     unsigned int msg(std::string msg, re::Log::LEVEL level) {
-        if(this->level >= level) {
+        if(get_file_level() >= level) {
             stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+            return msg_count;
+        }
+        if(get_console_level() == level) {
+            std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
             return msg_count;
         }
         return -1;
     }
+
+    unsigned int debug(std::string mesg) {
+        msg(mesg, re::Log::LEVEL::DEBUG);
+        return msg_count;
+    }
+
+    unsigned int info(std::string mesg) {
+        msg(mesg, re::Log::LEVEL::INFO);
+        return msg_count;
+    }
+
+    unsigned int trace(std::string mesg) {
+        msg(mesg, re::Log::LEVEL::TRACE);
+        return msg_count;
+    }
+
     std::ofstream& stream() { return stream_; }
     std::ofstream& stream_msg() {
         stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] ";
@@ -29,8 +51,17 @@ public:
     long time() {
         return clock_.stop_watch()/1000000;
     }
-    void log_level(re::Log::LEVEL) {
-        this->level = level;
+    void set_file_level(re::Log::LEVEL level) {
+        console_level = level;
+    }
+    void set_console_level(re::Log::LEVEL level) {
+        file_level = level;
+    }
+    re::Log::LEVEL get_file_level(){
+        return file_level;
+    }
+    re::Log::LEVEL get_console_level(){
+        return re::Log::LEVEL(console_level);
     }
     Log_(std::string outputFile) {
         msg_count = 0;
@@ -49,17 +80,41 @@ public:
 
 Log_ log("log.txt");
 
-void re::Log::log_level(LEVEL level) {
-    log.log_level(level);
+void re::Log::set_console_level(LEVEL level) {
+    log.set_console_level(level);
+}
+void re::Log::set_file_level(LEVEL level) {
+    log.set_file_level(level);
 }
 long re::Log::time() {
     return log.time();
 }
+re::Log::LEVEL re::Log::get_console_level(){
+    return log.get_console_level();
+}
+re::Log::LEVEL re::Log::get_file_level(){
+    return log.get_file_level();
+}
+
 std::ofstream& re::Log::stream() {
     return log.stream();
 }
 uint re::Log::msg(std::string message, re::Log::LEVEL level) {
     return log.msg(message, level);
+}
+
+
+uint re::Log::debug(std::string message) {
+    return log.debug(message);
+}
+uint re::Log::info(std::string message) {
+    return log.info(message);
+}
+uint re::Log::trace(std::string message) {
+    return log.trace(message);
+}
+uint re::Log::none(std::string message) {
+    return log.none(message);
 }
 std::ofstream& re::Log::stream_msg() {
     return log.stream_msg();
