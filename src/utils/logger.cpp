@@ -9,7 +9,7 @@ public:
     unsigned int msg_count;
     re::Log::LEVEL level;
 
-    unsigned int msg(std::string msg, re::Log::LEVEL) {
+    unsigned int msg(std::string msg, re::Log::LEVEL level) {
         if(this->level >= level) {
             stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
             return msg_count;
