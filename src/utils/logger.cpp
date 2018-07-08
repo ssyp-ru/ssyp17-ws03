@@ -113,9 +113,6 @@ uint re::Log::info(std::string message) {
 uint re::Log::trace(std::string message) {
     return log.trace(message);
 }
-uint re::Log::none(std::string message) {
-    return log.none(message);
-}
 std::ofstream& re::Log::stream_msg() {
     return log.stream_msg();
 }
