@@ -17,21 +17,7 @@ public:
         }
         return -1;
     }
-    unsigned int file_msg(std::string msg, re::Log::LEVEL level) {
-        if(this->level >= level) {
-            stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-            return msg_count;
-        }
-        return -1;
-    }
-    unsigned int console_msg(std::string msg, re::Log::LEVEL level) {
-        if(this->level >= level) {
-            std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
-            return msg_count;
-        }
-        return -1;
-    }
-        
+       
 
     unsigned int debug(std::string msg) {
         std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
