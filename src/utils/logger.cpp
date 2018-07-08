@@ -38,11 +38,6 @@ public:
         return msg_count;
     }
 
-    unsigned int none(std::string mesg) {
-        msg(mesg,re::Log::LEVEL::NONE);
-        return msg_count;
-    }
-
     std::ofstream& stream() { return stream_; }
     std::ofstream& stream_msg() {
         stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] ";

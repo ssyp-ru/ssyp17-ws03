@@ -29,7 +29,6 @@ namespace re {
         static uint trace (std::string);    
         static uint debug (std::string);
         static uint info (std::string);
-        static uint none (std::string);
 
         // same as stream, but also writes default overhead of msg
         // +"> N: [StopWatch.getTimeString : time()]"
