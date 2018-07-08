@@ -104,6 +104,7 @@ uint re::Log::msg(std::string message, re::Log::LEVEL level) {
 }
 
 
+
 uint re::Log::debug(std::string message) {
     return log.debug(message);
 }
@@ -112,9 +113,6 @@ uint re::Log::info(std::string message) {
 }
 uint re::Log::trace(std::string message) {
     return log.trace(message);
-}
-uint re::Log::none(std::string message) {
-    return log.none(message);
 }
 std::ofstream& re::Log::stream_msg() {
     return log.stream_msg();
