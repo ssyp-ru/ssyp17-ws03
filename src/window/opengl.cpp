@@ -437,12 +437,12 @@ void OpenGL::mousePress( int button, int state, int x, int y )
 
 uint OpenGL::getWidth()
 {
-    return w;
+    return glutGet(GLUT_WINDOW_WIDTH);
 }
 
 uint OpenGL::getHeight()
 {
-    return h;
+    return glutGet(GLUT_WINDOW_HEIGHT);
 }
 
 void OpenGL::set_fps(uint new_fps){
