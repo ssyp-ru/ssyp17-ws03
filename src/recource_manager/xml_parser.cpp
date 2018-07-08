@@ -106,8 +106,8 @@ XmlElemPtr parse_xml(std::string input_filename) {
         // read next line
         std::string buffer;
         getline(in, buffer);
-        Log::msg("Read line #"+std::to_string(++lineN)+": \""+buffer+"\"",
-        Log::LEVEL::DEBUG);
+//        Log::msg("Read line #"+std::to_string(++lineN)+": \""+buffer+"\"",
+//        Log::LEVEL::DEBUG);
 
         // remove any spaces before and after content of buffer
         size_t found = buffer.find_first_not_of(" \t");
