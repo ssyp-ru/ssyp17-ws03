@@ -485,6 +485,10 @@ void PhysicObject::updatePos()
 			acceleration = re::Point2f(0, 0);
 	}
 }
+bool PhysicObject::isPointInside(Point2f point)
+{
+	return (point - getPosition()).length() <= circleRadius;
+}
 void PhysicObject::destroy()
 {
 	destroyNextFrame = true;
