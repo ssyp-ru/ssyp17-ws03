@@ -1,3 +1,5 @@
+#pragma once
+
 #include <RealEngine/graphic/animation.h>
 #include <RealEngine/graphic/image.h>
 #include <RealEngine/xml_parser.h>
