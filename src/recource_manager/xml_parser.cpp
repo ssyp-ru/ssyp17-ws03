@@ -18,9 +18,9 @@ std::vector<XmlElemPtr> XmlElem::get_children(std::string name) {
     for(auto it = child.begin(); it != child.end(); it++) {
         if((*it)->name == name) arr.push_back(*it);
     }
-    Log::msg(".getChildren on \""+this->name+"\" took "
-        +std::to_string(stopwatch.stop_watch())+" ns.",
-        Log::LEVEL::DEBUG);
+    // Log::msg(".getChildren on \""+this->name+"\" took "
+    //     +std::to_string(stopwatch.stop_watch())+" ns.",
+    //     Log::LEVEL::DEBUG);
     return arr;
 }
 
@@ -81,8 +81,8 @@ void XmlElem::print(std::string output_filename) {
     }
     StopWatch stopwatch;
     xml_elem_print_rec(this, out, 0);
-    Log::msg("Printing \""+name+"\" took "+std::to_string(stopwatch.stop_watch()/1000000)+" ms.",
-        Log::LEVEL::DEBUG);
+    // Log::msg("Printing \""+name+"\" took "+std::to_string(stopwatch.stop_watch()/1000000)+" ms.",
+    //     Log::LEVEL::DEBUG);
 }
 
 XmlElemPtr parse_xml(std::string input_filename) {
@@ -93,11 +93,11 @@ XmlElemPtr parse_xml(std::string input_filename) {
     origin->parent = nullptr;
     if(!in.is_open()) {
         Log::msg("Could not open the file \""+input_filename+"\"!",
-            Log::LEVEL::DEBUG);
+            Log::LEVEL::INFO);
         return origin;
     }
     Log::msg("File \""+input_filename+"\" found!",
-        Log::LEVEL::DEBUG);
+        Log::LEVEL::INFO);
     StopWatch stopwatch; // recording the time for this cpp
     XmlElemPtr current = origin; // current object reading now
     int lineN = 0; // Counter for lines used only for logging
@@ -166,7 +166,7 @@ XmlElemPtr parse_xml(std::string input_filename) {
             found_closure = buffer.find(">");
             if(found_closure == buffer.npos) {
                 Log::msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
-                    +"Not found '>' on line.", Log::LEVEL::DEBUG);
+                    +"Not found '>' on line.", Log::LEVEL::INFO);
                 break;
             } else {
                 std::string closure = buffer.substr(1,found_closure-found-1);
@@ -178,12 +178,12 @@ XmlElemPtr parse_xml(std::string input_filename) {
                         if(closure == current->name) {
                             if(current->parent == nullptr) {
                                 Log::msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
-                                    +"Can't exit main object.", Log::LEVEL::DEBUG);
+                                    +"Can't exit main object.", Log::LEVEL::INFO);
                             }
                             current = current->parent;
                         } else {
                             Log::msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
-                                +"Wrong name in closing brackets.", Log::LEVEL::DEBUG);
+                                +"Wrong name in closing brackets.", Log::LEVEL::INFO);
                         }
                     break;
                     case '?':
@@ -204,7 +204,7 @@ XmlElemPtr parse_xml(std::string input_filename) {
                         line_stream >> str;
                         if(str.length() <= 0) {
                             Log::msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
-                                +"Couldn't find name.", Log::LEVEL::DEBUG);
+                                +"Couldn't find name.", Log::LEVEL::INFO);
                             break;
                         }
                         // <NAME ...>
@@ -224,24 +224,24 @@ XmlElemPtr parse_xml(std::string input_filename) {
                                 size_t f = str.find("=");
                                 if(f == str.npos) {
                                     Log::msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
-                                        +"A field without value.", Log::LEVEL::DEBUG);
+                                        +"A field without value.", Log::LEVEL::INFO);
                                     break;
                                 }
                                 if(f <= 0) {
                                     Log::msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
-                                        +"Couldn't find field name.", Log::LEVEL::DEBUG);
+                                        +"Couldn't find field name.", Log::LEVEL::INFO);
                                     break;
                                 }
                                 name = str.substr(0,f);
                                 value = str.substr(f+1,str.npos);
                                 if(value.length() <= 0) {
                                     Log::msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
-                                        +"Empty field value.", Log::LEVEL::DEBUG);
+                                        +"Empty field value.", Log::LEVEL::INFO);
                                     break;
                                 }
                                 if(value[0] != '"') {
                                     Log::msg("Error on ("+std::to_string(lineN)+", \""+buffer+"\"): "
-                                        +"Where is '\"'?", Log::LEVEL::DEBUG);
+                                        +"Where is '\"'?", Log::LEVEL::INFO);
                                     break;
                                 }
                                 value.erase(0,1);
@@ -269,9 +269,9 @@ XmlElemPtr parse_xml(std::string input_filename) {
         }
     }
     in.close();
-    Log::msg("File closed successfully.", Log::LEVEL::DEBUG);
-    Log::msg("Parsing took "+std::to_string(stopwatch.stop_watch()/1000)+" micros.",
-        Log::LEVEL::DEBUG);
+    // Log::msg("File closed successfully.", Log::LEVEL::DEBUG);
+    // Log::msg("Parsing took "+std::to_string(stopwatch.stop_watch()/1000)+" micros.",
+    //     Log::LEVEL::DEBUG);
     return origin;
 }
 

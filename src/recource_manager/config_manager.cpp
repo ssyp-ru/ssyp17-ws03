@@ -25,7 +25,10 @@ std::string ConfigManager::get_property(std::string path_to_property) {
     XmlElemPtr elem = instance().root;
     auto l = path_to_property.find('/');
     while (l != std::string::npos) {
-        elem = elem->get_children(path_to_property.substr(0, l))[0];
+        auto child_vector = elem->get_children(path_to_property.substr(0, l));
+        if (child_vector.empty())
+            return "";
+        elem = child_vector[0];
         path_to_property.erase(0, l + 1);
         l = path_to_property.find('/');
     }

@@ -1,10 +1,14 @@
 #include "RealEngine/event.h"
+#include "RealEngine/math.h"
+#include "RealEngine/logger.h"
+
+#include "event_manager.h"
+
 #include <vector>
 #include <functional>
 #include <memory>
 #include <algorithm>
-#include "RealEngine/math.h"
-#include "event_manager.h"
+
 namespace re {
 
 EventManager event_manager;
@@ -84,6 +88,7 @@ bool Subscriber::is_subscribed_type(int category, int type){
 
 
 void EventManager::send_events (std::shared_ptr<Event> event){
+    Log::debug(event->get_describe_string());
     size_t subscriber_count = subscriber_list.size();
     for(size_t i = 0; i < subscriber_count; i++){
         if(subscriber_list[i].is_subscribed_category(event->get_category()) ||

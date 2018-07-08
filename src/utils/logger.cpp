@@ -12,11 +12,11 @@ public:
     re::Log::LEVEL level;
 
     unsigned int msg(std::string msg, re::Log::LEVEL level) {
-        if(get_file_level() >= level) {
+        if(file_level >= level) {
             stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
             return msg_count;
         }
-        if(get_console_level() == level) {
+        if(console_level == level) {
             std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
             return msg_count;
         }
@@ -61,7 +61,7 @@ public:
         return file_level;
     }
     re::Log::LEVEL get_console_level(){
-        return re::Log::LEVEL(console_level);
+        return console_level;
     }
     Log_(std::string outputFile) {
         msg_count = 0;

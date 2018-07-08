@@ -32,6 +32,8 @@ public:
         return event_type_; 
     }
 
+    virtual std::string get_describe_string() = 0;
+
 private:
     const unsigned int event_category_;
     const unsigned int event_type_;
