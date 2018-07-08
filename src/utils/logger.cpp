@@ -104,6 +104,7 @@ uint re::Log::msg(std::string message, re::Log::LEVEL level) {
 }
 
 
+
 uint re::Log::debug(std::string message) {
     return log.debug(message);
 }
