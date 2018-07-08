@@ -32,8 +32,8 @@ namespace re {
             Color overColor;
 
         public:
-            BaseButton(Point2f point, std::string id, ImagePtr img, ImagePtr img_over);
-            BaseButton(int xSource, int ySource, std::string id, ImagePtr img, ImagePtr img_over);
+            BaseButton(Point2f point,std::string id, ImagePtr img, ImagePtr img_over);
+            BaseButton(int xSource, int ySource,std::string id, ImagePtr img, ImagePtr img_over);
             BaseButton(int xSource, int ySource, int xLength, int yLength, std::string id);
             BaseButton(int xSource, int ySource, int xLength, int yLength, std::string id, std::string text, Color baseColor, Color textColor, Color overColor);
             std::string get_id();
@@ -45,6 +45,7 @@ namespace re {
             void action(int button); // mouse button
             bool check_if_mouse_over(int mouseX, int mouseY);
             bool check_if_mouse_over(Point2f point);
+            Point2f get_pos();
     };
 
     typedef std::shared_ptr<BaseButton> BaseButtonPtr;
