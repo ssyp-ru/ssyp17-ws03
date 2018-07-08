@@ -16,6 +16,20 @@ public:
         }
         return -1;
     }
+        
+    void TRACE (std::string mesg){
+        msg(mesg, re::Log::LEVEL::TRACE);
+    }
+    
+    void DEBUG (std::string mesg){
+        msg(mesg, re::Log::LEVEL::DEBUG);
+    }
+
+    void INFO (std::string mesg){
+        msg(mesg, re::Log::LEVEL::INFO);
+    }
+    
+
     std::ofstream& stream() { return stream_; }
     std::ofstream& stream_msg() {
         stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] ";
