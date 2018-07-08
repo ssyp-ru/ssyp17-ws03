@@ -90,7 +90,7 @@ void BaseButton::display(){
 
 void BaseButton::display_mouse_over(){
     if (active && buttonImg_over){
-        draw_image_part(x, y,xLength, yLength, 0, 0, 1, 1, buttonImg_over);
+        draw_image(x, y, buttonImg_over);
     }else if(active){
         draw_rectangle(x, y, xLength, yLength, overColor);
         draw_text(x, y, text, textColor);
