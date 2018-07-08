@@ -88,12 +88,6 @@ std::ofstream& re::Log::stream() {
 uint re::Log::msg(std::string message, re::Log::LEVEL level) {
     return log.msg(message, level);
 }
-uint re::Log::console_msg(std::string message, re::Log::LEVEL level) {
-    return log.console_msg(message, level);
-}
-uint re::Log::file_msg(std::string message, re::Log::LEVEL level) {
-    return log.file_msg(message, level);
-}
 
 
 uint re::Log::debug(std::string message) {
