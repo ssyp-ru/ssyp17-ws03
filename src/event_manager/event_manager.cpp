@@ -90,7 +90,7 @@ bool Subscriber::is_subscribed_type(int category, int type){
 void EventManager::send_events (std::shared_ptr<Event> event){
     std::string describe_sring = event->get_describe_string();
     if (!describe_sring.empty())
-        Log::debug(describe_sring);
+        Log::msg(describe_sring, event->get_log_level());
     size_t subscriber_count = subscriber_list.size();
     for(size_t i = 0; i < subscriber_count; i++){
         if(subscriber_list[i].is_subscribed_category(event->get_category()) ||

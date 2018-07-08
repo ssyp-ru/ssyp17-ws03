@@ -46,7 +46,8 @@ public:
         heal = x;
     }
 
-   
+    virtual std::string get_describe_string() { return ""; };
+    virtual re::Log::LEVEL get_log_level() { return re::Log::LEVEL::DEBUG; }
 };
 class Heal2 : public re::Event
 {
@@ -56,6 +57,8 @@ public:
         heal = x;
     }
 
+    virtual std::string get_describe_string() { return ""; };
+    virtual re::Log::LEVEL get_log_level() { return re::Log::LEVEL::DEBUG; }
    
 };
 

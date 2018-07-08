@@ -3,6 +3,8 @@
 #include <functional>
 #include <memory>
 
+#include "RealEngine/logger.h"
+
 namespace re {
 
 class Event{
@@ -33,6 +35,7 @@ public:
     }
 
     virtual std::string get_describe_string() = 0;
+    virtual re::Log::LEVEL get_log_level() = 0;
 
 private:
     const unsigned int event_category_;
