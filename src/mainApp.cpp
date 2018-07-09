@@ -5,6 +5,7 @@
 #include <RealEngine/time.h>
 #include <unistd.h>
 #include <iostream>
+#include <RealEngine/logger.h>
 
 namespace re{
 
@@ -48,7 +49,7 @@ void MainApp::tick()
 
     baseApp->update();
     baseApp->display();
-    
+    re::Log::screen_msg();
     drawParticles( 0.1 );
 
     OpenGL::instance().draw();
