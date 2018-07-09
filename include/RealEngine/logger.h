@@ -24,6 +24,8 @@ namespace re {
         
         // prints message to log, in format "> N: [StopWatch.getTimeString : time()] msg"
         // returns index of msg printed.
+        static uint file_msg(std::string, LEVEL);
+        static uint console_msg(std::string, LEVEL);
         static uint msg(std::string, LEVEL);
 
         static uint trace (std::string);    
