@@ -11,9 +11,11 @@ namespace re {
         }; // Log::LEVEL::INFO
         static void set_console_level(LEVEL);       
         static void set_file_level(LEVEL);       
+        static void set_screen_level(LEVEL);       
 
         static re::Log::LEVEL get_console_level();       
         static re::Log::LEVEL get_file_level();       
+        static re::Log::LEVEL get_screen_level();       
 
         // returns time since execution of program
         static long time();        
@@ -26,6 +28,8 @@ namespace re {
         // returns index of msg printed.
         static uint file_msg(std::string, LEVEL);
         static uint console_msg(std::string, LEVEL);
+        static uint screen_msg(LEVEL);
+        static void add_screen_msg(std::string);
         static uint msg(std::string, LEVEL);
 
         static uint trace (std::string);    
