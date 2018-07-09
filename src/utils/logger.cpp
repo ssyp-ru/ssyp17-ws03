@@ -11,12 +11,22 @@ public:
     unsigned int msg_count;
     re::Log::LEVEL level;
 
+    unsigned int file_msg(std::string msg, re::Log::LEVEL level) {
+        if(file_level >= level) {
+            stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
+            return msg_count;
+        }
+        return -1;
+    }
     unsigned int msg(std::string msg, re::Log::LEVEL level) {
         if(file_level >= level) {
             stream_ << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
             return msg_count;
         }
-        if(console_level == level) {
+        return -1;
+    }
+    unsigned int console_msg(std::string msg, re::Log::LEVEL level) {
+        if(console_level >= level) {
             std::cout << "> " << ++msg_count << ": [" << clock_.getTimeString() << " : " << time() << "] " << msg << std::endl;
             return msg_count;
         }
@@ -24,17 +34,20 @@ public:
     }
 
     unsigned int debug(std::string mesg) {
-        msg(mesg, re::Log::LEVEL::DEBUG);
+        file_msg(mesg, re::Log::LEVEL::DEBUG);
+        console_msg(mesg, re::Log::LEVEL::DEBUG);
         return msg_count;
     }
 
     unsigned int info(std::string mesg) {
-        msg(mesg, re::Log::LEVEL::INFO);
+        file_msg(mesg, re::Log::LEVEL::INFO);
+        console_msg(mesg, re::Log::LEVEL::INFO);
         return msg_count;
     }
 
     unsigned int trace(std::string mesg) {
-        msg(mesg, re::Log::LEVEL::TRACE);
+        file_msg(mesg, re::Log::LEVEL::TRACE);
+        console_msg(mesg, re::Log::LEVEL::TRACE);
         return msg_count;
     }
 
@@ -68,10 +81,12 @@ public:
         level = re::Log::LEVEL::TRACE;
         clock_ = re::StopWatch();
         stream_ = std::ofstream(outputFile);
-        msg("Log opened successfully.", re::Log::LEVEL::DEBUG);
+        console_msg("Log opened successfully.", re::Log::LEVEL::DEBUG);
+        file_msg("Log opened successfully.", re::Log::LEVEL::DEBUG);
     }
     ~Log_() {
-        msg("Closing the log.", re::Log::LEVEL::DEBUG);
+        console_msg("Closing the log.", re::Log::LEVEL::DEBUG);
+        file_msg("Closing the log.", re::Log::LEVEL::DEBUG);
         stream_.close();
     };
 };
@@ -99,8 +114,14 @@ re::Log::LEVEL re::Log::get_file_level(){
 std::ofstream& re::Log::stream() {
     return log.stream();
 }
+uint re::Log::file_msg(std::string message, re::Log::LEVEL level) {
+    return log.file_msg(message, level);
+}
 uint re::Log::msg(std::string message, re::Log::LEVEL level) {
     return log.msg(message, level);
+}
+uint re::Log::console_msg(std::string message, re::Log::LEVEL level) {
+    return log.console_msg(message, level);
 }
 
 
