@@ -31,11 +31,18 @@ class EventManager
 {
 public:
     void send_events (std::shared_ptr<Event> event);
+    void add_event_to_buffer(EventPtr event);
     void add_subscriber_type (EventSubscriber * feature_subscriber, int category, int type);
     void add_subscriber_category (EventSubscriber * feature_subscriber, int category);
     void add_subscriber_to_all( EventSubscriber * feature_subscriber );
     void unsubscribe(EventSubscriber * subscriber);
+
+    void send_events_from_buffer();
 private:
-    std::vector <Subscriber> subscriber_list;    
+    std::vector<Subscriber> subscriber_list;    
+    std::vector<EventPtr> event_buffer, event_to_send;
 };
+
+void send_all_event();
+
 } //namespace re

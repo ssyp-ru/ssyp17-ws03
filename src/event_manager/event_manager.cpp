@@ -92,6 +92,7 @@ void EventManager::send_events (std::shared_ptr<Event> event){
     if (!describe_sring.empty()){
         Log::file_msg(describe_sring, event->get_log_level());
         Log::console_msg(describe_sring, event->get_log_level());
+        Log::add_screen_msg(describe_sring, event->get_log_level());
     }
 
     for (auto iter = subscriber_list.begin(); iter != subscriber_list.end(); ){
@@ -157,6 +158,21 @@ void EventManager::unsubscribe(EventSubscriber * subscriber){
     }
 }
 
+void EventManager::add_event_to_buffer(EventPtr event){
+    event_buffer.push_back(event);
+}
+
+void EventManager::send_events_from_buffer(){
+    if (event_buffer.empty())
+        return;
+    
+    event_to_send.swap(event_buffer);
+    for (auto event : event_to_send){
+        send_events(event);
+    }
+    event_to_send.clear();
+}
+
 EventSubscriber::~ EventSubscriber(){
     event_manager.unsubscribe(this);
 }
@@ -173,7 +189,7 @@ void subscribe_to_event_category(EventSubscriber * event_subscriber, int categor
 
 
 void publish_event(std::shared_ptr<Event> set_event){
-    event_manager.send_events(set_event);
+    event_manager.add_event_to_buffer(set_event);
 }
 
 
@@ -181,5 +197,9 @@ void subscribe_to_all(EventSubscriber * event_subscriber){
     event_manager.add_subscriber_to_all(event_subscriber);
 }
 
+
+void send_all_event(){
+    event_manager.send_events_from_buffer();
+}
 
 }          // namespace re

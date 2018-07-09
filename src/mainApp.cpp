@@ -2,6 +2,7 @@
 
 #include "window/opengl.h"
 #include "graphics/particle.h"
+#include "event_manager/event_manager.h"
 #include <RealEngine/time.h>
 #include <unistd.h>
 #include <iostream>
@@ -46,6 +47,8 @@ StopWatch Time::previous_time;
 void MainApp::tick()
 {
     Time::updateTime();
+
+    send_all_event();
 
     baseApp->update();
     baseApp->display();

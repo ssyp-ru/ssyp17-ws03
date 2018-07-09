@@ -50,11 +50,11 @@ std::vector <re::Point2f> re::a_star(std::vector<std::vector<int>> map, int n, i
     count [indexx][indexy] = 0;
     while((indexx != endx) || (indexy != endy)){  
         for( int i = 0; i < 4; i++){
-            if((map[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] == 0) &&  
-                ((count [int(indexx + next_step[i].x)][int(indexy+ next_step[i].y)] == -1)||
-                ((count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] != -1) &&
-                (count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] > 
-                count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] + 1))))
+            int x = int(indexx + next_step[i].x);
+            int y = int(indexy + next_step[i].y);
+
+            if( (map[x][y] == 0) &&  
+                ( (count [x][y] == -1) || ((count [x][y] != -1) &&  (count [x][y] >  count [x][y] + 1))) )
             {
                 count[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] = count[indexx][indexy] + 1;  
                 parent[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] = re::Point2f(indexx, indexy);
