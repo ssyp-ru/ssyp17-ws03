@@ -39,11 +39,10 @@ public:
         return -1;
     }
     unsigned int screen_msg() {
-        size_t i = 0;
-        if (screen_messeg.size() > 10){
-            i = screen_messeg.size() - 10;
+        while (screen_messeg.size() > 10){
+            screen_messeg.erase(screen_messeg.begin());
         }
-        for (i; i < screen_messeg.size(); i++){
+        for (size_t i = 0; i < screen_messeg.size(); i++){
             if(screen_level >= screen_messeg_lvl[i]) {
                 re::draw_text(0, i * 40, screen_messeg[i], re::Color(0, 0, 0));
             }
