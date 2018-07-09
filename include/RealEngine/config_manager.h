@@ -1,3 +1,5 @@
+#pragma once
+
 #include <RealEngine/xml_parser.h>
 #include <RealEngine/math.h>
 
