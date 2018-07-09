@@ -28,8 +28,8 @@ namespace re {
         // returns index of msg printed.
         static uint file_msg(std::string, LEVEL);
         static uint console_msg(std::string, LEVEL);
-        static uint screen_msg(LEVEL);
-        static void add_screen_msg(std::string);
+        static uint screen_msg();
+        static void add_screen_msg(std::string, LEVEL);
         static uint msg(std::string, LEVEL);
 
         static uint trace (std::string);    

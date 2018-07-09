@@ -49,8 +49,7 @@ void MainApp::tick()
 
     baseApp->update();
     baseApp->display();
-    re::Log::set_screen_level(re::Log::LEVEL::INFO);
-    re::Log::screen_msg(re::Log::LEVEL::INFO);
+    re::Log::screen_msg();
     drawParticles( 0.1 );
 
     OpenGL::instance().draw();
