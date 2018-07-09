@@ -54,14 +54,18 @@ std::vector <re::Point2f> re::a_star(std::vector<std::vector<int>> map, int n, i
                 ((count [int(indexx + next_step[i].x)][int(indexy+ next_step[i].y)] == -1)||
                 ((count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] != -1) &&
                 (count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] > 
-                count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] + 1)))){
-            count[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] = count[indexx][indexy] + 1;                          
-            parent[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] = re::Point2f(indexx, indexy);
-            re::add_pair(re::Point2f(indexx + next_step[i].x, indexy + next_step[i].y), wave,
-            re::Point2f(startx, starty), re::Point2f(endx, endy), count);      
+                count [int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] + 1))))
+            {
+                count[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] = count[indexx][indexy] + 1;  
+                parent[int(indexx + next_step[i].x)][int(indexy + next_step[i].y)] = re::Point2f(indexx, indexy);
+                re::add_pair(re::Point2f(indexx + next_step[i].x, indexy + next_step[i].y), wave,
+                re::Point2f(startx, starty), re::Point2f(endx, endy), count);      
             }
         }
        // std::cout << indexx << " " << indexy << std::endl; 
+        if (wave.empty()){
+            return {};
+        }
         indexx = wave[0].x;
         indexy = wave[0].y;
         wave.erase(wave.begin());
