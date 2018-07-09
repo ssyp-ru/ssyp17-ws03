@@ -48,7 +48,7 @@ public:
         }
 
         way_.reserve(n_*n_);
-        way_ = re::get_the_way(map_, n_, startx_, starty_, endx_, endy_, count_);
+        way_ = re::a_star(map_, n_, startx_, starty_, endx_, endy_, count_);
         auto finish_time = std::chrono::steady_clock::now();
         std::cout << "time = " << std::chrono::duration_cast
                                 <std::chrono::milliseconds>(finish_time - start_time).count() << std::endl;

@@ -68,7 +68,7 @@ Point2f intersectionofstraights(Point2f first, Point2f second, Point2f third, Po
 void add_pair(re::Point2f addable_pair, std::vector<re::Point2f> &wave,
                 re::Point2f start , re::Point2f end, std::vector <std::vector<int>> &count );
 
-std::vector <re::Point2f> get_the_way(std::vector<std::vector<int>> map, int n, int startx,
+std::vector <re::Point2f> a_star(std::vector<std::vector<int>> map, int n, int startx,
         int starty, int endx, int endy, std::vector<std::vector<int>> &count);
 
 
